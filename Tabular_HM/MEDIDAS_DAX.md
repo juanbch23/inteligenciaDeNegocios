@@ -1,25 +1,11 @@
 # Cubo tabular H&M — medidas DAX
 
 Servidor `localhost\TABULAR` · base `Tabular_HM` · modelo `Modelo` · compatibilidad 1200 (como pide *Cubos Tabulares y Pbi.pdf*).
-Origen: `LAPTOP-IO596P6A\DEV` → `DWH_HM`. Generado por `gen_bim_hm.py`; este documento se genera desde el mismo `Model.bim`.
+Origen: `LAPTOP-IO596P6A\DEV` → `DWH_HM` (vistas de `sql/04_vistas_cubo.sql`). Generado por `gen_bim_hm.py`; este documento sale del mismo `Model.bim`.
 
-## Modelo
+Los indicadores del caso (carpeta *6. Indicadores del caso*) están explicados en `docs/Indicadores_y_Dashboards.md`.
 
-| Tabla | Rol | Origen |
-|---|---|---|
-| DimFecha | Dimensión | `[GENERICO].[DimFecha]` |
-| DimTemporada | Dimensión | `[Ventas].[DimTemporada]` |
-| DimCanal | Dimensión | `[Ventas].[DimCanal]` |
-| DimDepartamento | Dimensión | `[Ventas].[DimDepartamento]` |
-| DimArticulo | Dimensión | `[Ventas].[DimArticulo]` |
-| DimCliente | Dimensión | `[Ventas].[DimCliente]` |
-| FactVentas | Hechos: 1 fila por artículo vendido (31,788,324) | `[Ventas].[FactVentas]` |
-| FactMetas | Hechos: meta diaria por escenario/sección/día (618,483) | `[Ventas].[vw_FactMetasDiaria]` |
-
-**Relaciones:** FactVentas → DimFecha, DimCliente, DimArticulo, DimDepartamento, DimCanal, DimTemporada · FactMetas → DimFecha, DimDepartamento, DimTemporada.
-DimFecha marcada como tabla de fechas; `Nombre_Mes` ordenado por `Mes_Anio`, `Nombre_Dia_Semana` por `Dia_Semana`, `Periodo` (Sep-2018) por `AnioMes`.
-
-**Sobre las metas:** en `GoalsHyM.xlsx` el `Monto` se comporta como **meta diaria** (ventas ÷ (Monto × días) = 127 % / 110 % / 95 % para los escenarios 1/2/3; como meta mensual daría ~2.800 %). Por eso el cubo la usa expandida por día (`Ventas.vw_FactMetasDiaria`), y se suma correctamente con cualquier filtro de fechas.
+**Total: 73 medidas.**
 
 ## 1. Ventas
 
@@ -106,9 +92,12 @@ AVERAGEX ( DATESINPERIOD ( DimFecha[Fecha], MAX ( DimFecha[Fecha] ), -7, DAY ), 
 ```
 
 ### `.Ventas_Mismo_Periodo_AA`  ·  tabla FactVentas  ·  formato `#,0.00`
-Ventas del mismo periodo del año anterior.
+Ventas de exactamente los mismos días del año anterior (SAMEPERIODLASTYEAR completaba septiembre 2019).
 ```dax
-CALCULATE([.Ventas], SAMEPERIODLASTYEAR(DimFecha[Fecha]))
+VAR fechas = SELECTCOLUMNS(VALUES(DimFecha[Fecha]), "F", EDATE(DimFecha[Fecha], -12))
+RETURN
+    IF(HASONEVALUE(DimFecha[Anio]),                       -- solo tiene sentido dentro de un año
+       CALCULATE([.Ventas], ALL(DimFecha), TREATAS(fechas, DimFecha[Fecha])))
 ```
 
 ### `.%Crecimiento_Interanual`  ·  tabla FactVentas  ·  formato `0.00 %;-0.00 %;0.00 %`
@@ -225,9 +214,9 @@ RETURN
 ## 4. Metas
 
 ### `.Escenario_Activo`  ·  tabla FactMetas
-Escenario elegido en el segmentador; si no hay uno solo, se usa Escenario 1.
+Escenario elegido en el segmentador; si no hay uno solo, se usa el Escenario 2 (meta oficial del caso).
 ```dax
-SELECTEDVALUE(FactMetas[Escenario], "Escenario 1")
+SELECTEDVALUE(FactMetas[Escenario], "Escenario 2")
 ```
 
 ### `.Meta`  ·  tabla FactMetas  ·  formato `#,0.00`
@@ -283,4 +272,222 @@ CALCULATE(AVERAGE(DimCliente[Edad]), CROSSFILTER(FactVentas[ClienteKey], DimClie
 ### `.%Clientes_Compradores`  ·  tabla DimCliente  ·  formato `0.00 %;-0.00 %;0.00 %`
 ```dax
 DIVIDE([.Clientes_Unicos], [.Clientes_Registrados])
+```
+
+## 6. Indicadores del caso\Cesta
+
+### `.Cestas`  ·  tabla FactVentas  ·  formato `#,0`
+Cesta = mismo cliente + mismo día + mismo canal (no hay número de pedido).
+```dax
+COUNTROWS(SUMMARIZE(FactVentas, FactVentas[ClienteKey], FactVentas[FechaKey], FactVentas[CanalKey]))
+```
+
+### `.Ticket_Cesta`  ·  tabla FactVentas  ·  formato `#,0.00`
+Ventas / cestas.
+```dax
+DIVIDE([.Ventas], [.Cestas])
+```
+
+### `.Articulos_por_Cesta`  ·  tabla FactVentas  ·  formato `#,0.00`
+Artículos (líneas) / cestas.
+```dax
+DIVIDE([.Transacciones], [.Cestas])
+```
+
+## 6. Indicadores del caso\Clientes
+
+### `.Clientes_Nuevos`  ·  tabla DimCliente  ·  formato `#,0`
+Clientes cuya primera compra cae en el periodo filtrado.
+```dax
+VAR d1 = MIN(DimFecha[Fecha])
+VAR d2 = MAX(DimFecha[Fecha])
+RETURN
+    CALCULATE(COUNTROWS(DimCliente), DimCliente[FechaPrimeraCompra] >= d1, DimCliente[FechaPrimeraCompra] <= d2)
+```
+
+### `.%Recompra`  ·  tabla DimCliente  ·  formato `0.00 %;-0.00 %;0.00 %`
+Compradores con compra en más de un mes.
+```dax
+DIVIDE(CALCULATE(COUNTROWS(DimCliente), DimCliente[MesesConCompra] > 1),
+       CALCULATE(COUNTROWS(DimCliente), DimCliente[MesesConCompra] >= 1))
+```
+
+### `.%Retencion_2019_2020`  ·  tabla DimCliente  ·  formato `0.00 %;-0.00 %;0.00 %`
+Compradores de 2019 que vuelven en 2020.
+```dax
+DIVIDE(CALCULATE(COUNTROWS(DimCliente), DimCliente[Compra2019] = 1, DimCliente[Compra2020] = 1),
+       CALCULATE(COUNTROWS(DimCliente), DimCliente[Compra2019] = 1))
+```
+
+### `.Color_Retencion`  ·  tabla DimCliente
+Meta propuesta >= 65 %.
+```dax
+VAR x = [.%Retencion_2019_2020]
+RETURN
+    SWITCH(TRUE(), ISBLANK(x), BLANK(), x >= 0.65, "#2E7D32", x >= 0.65 - 0.05, "#F9A825", "#C62828")
+```
+
+### `.%Clientes_Omnicanal`  ·  tabla FactVentas  ·  formato `0.00 %;-0.00 %;0.00 %`
+```dax
+DIVIDE(CALCULATE([.Clientes_Unicos], DimCliente[TipoCanal] = "Omnicanal"), [.Clientes_Unicos])
+```
+
+### `.%Penetracion_Club`  ·  tabla FactVentas  ·  formato `0.00 %;-0.00 %;0.00 %`
+```dax
+DIVIDE(CALCULATE([.Clientes_Unicos], DimCliente[ClubActivo] = "Club activo"), [.Clientes_Unicos])
+```
+
+### `.%Ventas_Top20_Clientes`  ·  tabla FactVentas  ·  formato `0.00 %;-0.00 %;0.00 %`
+```dax
+DIVIDE(CALCULATE([.Ventas], DimCliente[SegmentoValor] = "1. Top 20 %"), [.Ventas])
+```
+
+### `.Ventas_por_Cliente_Omnicanal`  ·  tabla FactVentas  ·  formato `#,0.00`
+```dax
+CALCULATE([.Ventas_por_Cliente], DimCliente[TipoCanal] = "Omnicanal")
+```
+
+### `.Ventas_por_Cliente_UnCanal`  ·  tabla FactVentas  ·  formato `#,0.00`
+```dax
+CALCULATE([.Ventas_por_Cliente], DimCliente[TipoCanal] IN {"Solo online", "Solo tienda"})
+```
+
+### `.Multiplicador_Omnicanal`  ·  tabla FactVentas  ·  formato `0.0"x"`
+Cuántas veces más compra el cliente omnicanal.
+```dax
+DIVIDE([.Ventas_por_Cliente_Omnicanal], [.Ventas_por_Cliente_UnCanal])
+```
+
+### `.%Plus_Club`  ·  tabla FactVentas  ·  formato `0.00 %;-0.00 %;0.00 %`
+Cuánto más compra el cliente con club activo.
+```dax
+DIVIDE(CALCULATE([.Ventas_por_Cliente], DimCliente[ClubActivo] = "Club activo"),
+       CALCULATE([.Ventas_por_Cliente], DimCliente[ClubActivo] = "No activo")) - 1
+```
+
+## 6. Indicadores del caso\Crecimiento
+
+### `.Delta_Interanual`  ·  tabla FactVentas  ·  formato `#,0.00`
+Diferencia contra el mismo periodo del año anterior.
+```dax
+IF(ISBLANK([.Ventas_Mismo_Periodo_AA]), BLANK(), [.Ventas] - [.Ventas_Mismo_Periodo_AA])
+```
+
+### `.%Interanual_Tienda`  ·  tabla FactVentas  ·  formato `0.00 %;-0.00 %;0.00 %`
+```dax
+CALCULATE([.%Crecimiento_Interanual], DimCanal[NombreCanal] = "Tienda fisica")
+```
+
+### `.%Interanual_Online`  ·  tabla FactVentas  ·  formato `0.00 %;-0.00 %;0.00 %`
+```dax
+CALCULATE([.%Crecimiento_Interanual], DimCanal[NombreCanal] = "Online")
+```
+
+### `.Interanual_I`  ·  tabla FactVentas
+```dax
+VAR x = [.%Crecimiento_Interanual]
+RETURN
+    IF(ISBLANK(x), BLANK(), FORMAT(x, "+0.0 %;-0.0 %") & IF(x >= 0, "  ▲", "  ▼"))
+```
+
+### `.Color_Interanual`  ·  tabla FactVentas
+Meta propuesta >= 0 %.
+```dax
+VAR x = [.%Crecimiento_Interanual]
+RETURN
+    SWITCH(TRUE(), ISBLANK(x), BLANK(), x >= 0, "#2E7D32", x >= 0 - 0.05, "#F9A825", "#C62828")
+```
+
+### `.Ventas_Acumuladas`  ·  tabla FactVentas  ·  formato `#,0.00`
+```dax
+CALCULATE([.Ventas], FILTER(ALLSELECTED(DimFecha[Fecha]), DimFecha[Fecha] <= MAX(DimFecha[Fecha])))
+```
+
+## 6. Indicadores del caso\Metas
+
+### `.Meta_Acumulada`  ·  tabla FactMetas  ·  formato `#,0.00`
+```dax
+CALCULATE([.Meta], FILTER(ALLSELECTED(DimFecha[Fecha]), DimFecha[Fecha] <= MAX(DimFecha[Fecha])))
+```
+
+### `.Secciones_con_Meta`  ·  tabla FactMetas  ·  formato `#,0`
+```dax
+COUNTROWS(FILTER(VALUES(DimDepartamento[Seccion]), NOT ISBLANK([.Meta])))
+```
+
+### `.Secciones_Cumplen`  ·  tabla FactMetas  ·  formato `#,0`
+```dax
+COUNTROWS(FILTER(VALUES(DimDepartamento[Seccion]), [.%Cumplimiento_Meta] >= 1))
+```
+
+### `.Secciones_Bajo_50`  ·  tabla FactMetas  ·  formato `#,0`
+```dax
+COUNTROWS(FILTER(VALUES(DimDepartamento[Seccion]), NOT ISBLANK([.Meta]) && [.%Cumplimiento_Meta] < 0.5))
+```
+
+### `.Cumplimiento_Top5`  ·  tabla FactMetas  ·  formato `0.00 %;-0.00 %;0.00 %`
+```dax
+VAR r = RANKX(FILTER(ALLSELECTED(DimDepartamento[Seccion]), NOT ISBLANK([.Meta])), [.%Cumplimiento_Meta], , DESC)
+RETURN
+    IF(HASONEVALUE(DimDepartamento[Seccion]) && NOT ISBLANK([.Meta]) && r <= 5, [.%Cumplimiento_Meta])
+```
+
+### `.Cumplimiento_Bottom5`  ·  tabla FactMetas  ·  formato `0.00 %;-0.00 %;0.00 %`
+```dax
+VAR r = RANKX(FILTER(ALLSELECTED(DimDepartamento[Seccion]), NOT ISBLANK([.Meta])), [.%Cumplimiento_Meta], , ASC)
+RETURN
+    IF(HASONEVALUE(DimDepartamento[Seccion]) && NOT ISBLANK([.Meta]) && r <= 5, [.%Cumplimiento_Meta])
+```
+
+## 6. Indicadores del caso\Narrativa
+
+### `.Narrativa_Estrategica`  ·  tabla FactVentas
+Elige un año para ver la comparación interanual.
+```dax
+VAR y = [.%Crecimiento_Interanual]
+RETURN
+    "Cumplimos el " & FORMAT([.%Cumplimiento_Meta], "0 %") & " de la meta, pero vendemos " & FORMAT(y, "+0.0 %;-0.0 %")
+        & " vs. el año anterior (tienda " & FORMAT([.%Interanual_Tienda], "+0.0 %;-0.0 %") & ", online "
+        & FORMAT([.%Interanual_Online], "+0.0 %;-0.0 %") & "). El cliente omnicanal compra "
+        & FORMAT([.Multiplicador_Omnicanal], "0.0") & " veces más."
+```
+
+### `.Narrativa_Cliente`  ·  tabla FactVentas
+```dax
+"El cliente omnicanal compra " & FORMAT([.Multiplicador_Omnicanal], "0.0") & " veces más y el de club activo "
+    & FORMAT([.%Plus_Club], "+0 %") & "; el top 20 % genera el " & FORMAT([.%Ventas_Top20_Clientes], "0 %")
+    & " de la venta. Descuento implícito: " & FORMAT([.%Descuento_Implicito], "0.0 %") & "."
+```
+
+### `.Narrativa_Metas`  ·  tabla FactMetas
+```dax
+"Llegamos al " & FORMAT([.%Cumplimiento_Meta], "0 %") & " de la meta, pero solo " & [.Secciones_Cumplen] & " de "
+    & [.Secciones_con_Meta] & " secciones cumplen y " & [.Secciones_Bajo_50] & " no llegan al 50 %: metas mal repartidas."
+```
+
+## 6. Indicadores del caso\Precio
+
+### `.Precio_Lista`  ·  tabla FactVentas  ·  formato `#,0.00`
+```dax
+SUM(FactVentas[PrecioLista])
+```
+
+### `.%Descuento_Implicito`  ·  tabla FactVentas  ·  formato `0.00 %;-0.00 %;0.00 %`
+1 - precio cobrado / precio máximo observado del artículo.
+```dax
+IF([.Precio_Lista] > 0, 1 - DIVIDE([.Ventas], [.Precio_Lista]))
+```
+
+### `.%Lineas_Descuento_30`  ·  tabla FactVentas  ·  formato `0.00 %;-0.00 %;0.00 %`
+Líneas vendidas con más de 30 % de descuento.
+```dax
+DIVIDE(CALCULATE([.Transacciones], FactVentas[BandaDescuento] = "4. Más de 30 %"), [.Transacciones])
+```
+
+### `.Color_Descuento`  ·  tabla FactVentas
+Meta propuesta <= 17 %.
+```dax
+VAR x = [.%Descuento_Implicito]
+RETURN
+    SWITCH(TRUE(), ISBLANK(x), BLANK(), x <= 0.17, "#2E7D32", x <= 0.17 + 0.02, "#F9A825", "#C62828")
 ```

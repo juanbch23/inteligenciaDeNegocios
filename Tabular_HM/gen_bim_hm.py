@@ -70,18 +70,26 @@ TABLES = [
       col("GrupoIndice", "string"), col("GrupoPrenda", "string")]),
     ("DimCliente",
      """SELECT [ClienteKey], [FN], [Active], [ClubMemberStatus] AS [EstadoClub],
-       [FashionNewsFrequency] AS [FrecuenciaNoticias], [Edad], [RangoEdad]
-  FROM [Ventas].[DimCliente] WHERE [ClienteKey] > 0""",
+       [FashionNewsFrequency] AS [FrecuenciaNoticias], [Edad], [RangoEdad], [ClubActivo],
+       [FechaPrimeraCompra], [MesesConCompra], [TipoCanal], [Compra2019], [Compra2020], [SegmentoValor]
+  FROM [Ventas].[vw_ClienteComportamiento]""",
      [col("ClienteKey", "int64", hidden=True), col("FN", "boolean"), col("Active", "boolean"),
       col("EstadoClub", "string"), col("FrecuenciaNoticias", "string"), col("Edad", "int64"),
-      col("RangoEdad", "string")]),
+      col("RangoEdad", "string"), col("ClubActivo", "string"),
+      col("FechaPrimeraCompra", "dateTime", fmt="dd/MM/yyyy"), col("MesesConCompra", "int64"),
+      col("TipoCanal", "string", desc="Omnicanal / Solo online / Solo tienda (todo el historial)"),
+      col("Compra2019", "int64", hidden=True), col("Compra2020", "int64", hidden=True),
+      col("SegmentoValor", "string", desc="Top 20 % / Siguiente 30 % / Resto 50 % de compradores por venta total")]),
     ("FactVentas",
-     """SELECT [FechaKey], [ClienteKey], [ArticuloKey], [DepartamentoKey], [CanalKey], [TemporadaKey], [Precio]
-  FROM [Ventas].[FactVentas]""",
+     """SELECT [FechaKey], [ClienteKey], [ArticuloKey], [DepartamentoKey], [CanalKey], [TemporadaKey], [Precio],
+       [PrecioLista], [BandaDescuento]
+  FROM [Ventas].[vw_FactVentasCubo]""",
      [col("FechaKey", "int64", hidden=True), col("ClienteKey", "int64", hidden=True),
       col("ArticuloKey", "int64", hidden=True), col("DepartamentoKey", "int64", hidden=True),
       col("CanalKey", "int64", hidden=True), col("TemporadaKey", "int64", hidden=True),
-      col("Precio", "decimal", fmt=MONEY, hidden=True)]),
+      col("Precio", "decimal", fmt=MONEY, hidden=True),
+      col("PrecioLista", "decimal", fmt=MONEY, hidden=True, desc="Precio máximo observado del artículo"),
+      col("BandaDescuento", "string", desc="Descuento de la línea frente al precio de lista")]),
     ("FactMetas",
      """SELECT [Escenario], [FechaKey], [DepartamentoKey], [TemporadaKey], [MetaDiaria]
   FROM [Ventas].[vw_FactMetasDiaria]""",
@@ -124,8 +132,12 @@ m("FactVentas", ".Acumulado_Anual", "TOTALYTD([.Ventas], DimFecha[Fecha])", MONE
 m("FactVentas", ".Ventas_Ultimos_Dias_7", f"CALCULATE ( [.Ventas], {L7} )", MONEY, F)
 m("FactVentas", ".Ventas_Ultimos_Dias_7_avg", f"AVERAGEX ( {L7}, [.Ventas] )", MONEY, F,
   "Promedio diario de ventas de los últimos 7 días (media móvil)")
-m("FactVentas", ".Ventas_Mismo_Periodo_AA", "CALCULATE([.Ventas], SAMEPERIODLASTYEAR(DimFecha[Fecha]))", MONEY, F,
-  "Ventas del mismo periodo del año anterior")
+m("FactVentas", ".Ventas_Mismo_Periodo_AA", """
+VAR fechas = SELECTCOLUMNS(VALUES(DimFecha[Fecha]), "F", EDATE(DimFecha[Fecha], -12))
+RETURN
+    IF(HASONEVALUE(DimFecha[Anio]),                       -- solo tiene sentido dentro de un año
+       CALCULATE([.Ventas], ALL(DimFecha), TREATAS(fechas, DimFecha[Fecha])))""", MONEY, F,
+  "Ventas de exactamente los mismos días del año anterior (SAMEPERIODLASTYEAR completaba septiembre 2019)")
 m("FactVentas", ".%Crecimiento_Interanual",
   "DIVIDE([.Ventas] - [.Ventas_Mismo_Periodo_AA], [.Ventas_Mismo_Periodo_AA])", PCT, F)
 for i, suf in enumerate(["Actual", "prev-1", "prev-2"]):
@@ -180,8 +192,8 @@ RETURN
 
 # 4. Metas (GoalsHyM.xlsx)
 F = "4. Metas"
-m("FactMetas", ".Escenario_Activo", 'SELECTEDVALUE(FactMetas[Escenario], "Escenario 1")', None, F,
-  "Escenario elegido en el segmentador; si no hay uno solo, se usa Escenario 1")
+m("FactMetas", ".Escenario_Activo", 'SELECTEDVALUE(FactMetas[Escenario], "Escenario 2")', None, F,
+  "Escenario elegido en el segmentador; si no hay uno solo, se usa el Escenario 2 (meta oficial del caso)")
 m("FactMetas", ".Meta", """
 VAR esc = [.Escenario_Activo]
 RETURN
@@ -206,6 +218,99 @@ m("DimCliente", ".Edad_Promedio_Compradores",
   "CALCULATE(AVERAGE(DimCliente[Edad]), CROSSFILTER(FactVentas[ClienteKey], DimCliente[ClienteKey], BOTH))", "0.0", F,
   "Edad promedio de los clientes que compraron en el contexto")
 m("DimCliente", ".%Clientes_Compradores", "DIVIDE([.Clientes_Unicos], [.Clientes_Registrados])", PCT, F)
+
+# 6. Indicadores del caso (docs\Indicadores_y_Dashboards.md)
+VERDE, AMBAR, ROJO = '"#2E7D32"', '"#F9A825"', '"#C62828"'
+def semaforo(measure, meta, mayor_es_mejor=True, tolerancia=0.05):
+    if mayor_es_mejor:
+        return (f"VAR x = [{measure}]\nRETURN\n    SWITCH(TRUE(), ISBLANK(x), BLANK(), x >= {meta}, {VERDE}, "
+                f"x >= {meta} - {tolerancia}, {AMBAR}, {ROJO})")
+    return (f"VAR x = [{measure}]\nRETURN\n    SWITCH(TRUE(), ISBLANK(x), BLANK(), x <= {meta}, {VERDE}, "
+            f"x <= {meta} + {tolerancia}, {AMBAR}, {ROJO})")
+
+F = "6. Indicadores del caso\\Cesta"
+m("FactVentas", ".Cestas", "COUNTROWS(SUMMARIZE(FactVentas, FactVentas[ClienteKey], FactVentas[FechaKey], FactVentas[CanalKey]))",
+  INT, F, "Cesta = mismo cliente + mismo día + mismo canal (no hay número de pedido)")
+m("FactVentas", ".Ticket_Cesta", "DIVIDE([.Ventas], [.Cestas])", MONEY, F, "Ventas / cestas")
+m("FactVentas", ".Articulos_por_Cesta", "DIVIDE([.Transacciones], [.Cestas])", "#,0.00", F, "Artículos (líneas) / cestas")
+
+F = "6. Indicadores del caso\\Precio"
+m("FactVentas", ".Precio_Lista", "SUM(FactVentas[PrecioLista])", MONEY, F)
+m("FactVentas", ".%Descuento_Implicito", "IF([.Precio_Lista] > 0, 1 - DIVIDE([.Ventas], [.Precio_Lista]))", PCT, F,
+  "1 - precio cobrado / precio máximo observado del artículo")
+m("FactVentas", ".%Lineas_Descuento_30", 'DIVIDE(CALCULATE([.Transacciones], FactVentas[BandaDescuento] = "4. Más de 30 %"), [.Transacciones])',
+  PCT, F, "Líneas vendidas con más de 30 % de descuento")
+m("FactVentas", ".Color_Descuento", semaforo(".%Descuento_Implicito", 0.17, False, 0.02), None, F, "Meta propuesta <= 17 %")
+
+F = "6. Indicadores del caso\\Crecimiento"
+m("FactVentas", ".Delta_Interanual", "IF(ISBLANK([.Ventas_Mismo_Periodo_AA]), BLANK(), [.Ventas] - [.Ventas_Mismo_Periodo_AA])",
+  MONEY, F, "Diferencia contra el mismo periodo del año anterior")
+m("FactVentas", ".%Interanual_Tienda", 'CALCULATE([.%Crecimiento_Interanual], DimCanal[NombreCanal] = "Tienda fisica")', PCT, F)
+m("FactVentas", ".%Interanual_Online", 'CALCULATE([.%Crecimiento_Interanual], DimCanal[NombreCanal] = "Online")', PCT, F)
+m("FactVentas", ".Interanual_I", """
+VAR x = [.%Crecimiento_Interanual]
+RETURN
+    IF(ISBLANK(x), BLANK(), FORMAT(x, "+0.0 %;-0.0 %") & IF(x >= 0, "  ▲", "  ▼"))""", None, F)
+m("FactVentas", ".Color_Interanual", semaforo(".%Crecimiento_Interanual", 0, True, 0.05), None, F, "Meta propuesta >= 0 %")
+m("FactVentas", ".Ventas_Acumuladas", """
+CALCULATE([.Ventas], FILTER(ALLSELECTED(DimFecha[Fecha]), DimFecha[Fecha] <= MAX(DimFecha[Fecha])))""", MONEY, F)
+
+F = "6. Indicadores del caso\\Clientes"
+m("DimCliente", ".Clientes_Nuevos", """
+VAR d1 = MIN(DimFecha[Fecha])
+VAR d2 = MAX(DimFecha[Fecha])
+RETURN
+    CALCULATE(COUNTROWS(DimCliente), DimCliente[FechaPrimeraCompra] >= d1, DimCliente[FechaPrimeraCompra] <= d2)""",
+  INT, F, "Clientes cuya primera compra cae en el periodo filtrado")
+m("DimCliente", ".%Recompra", """
+DIVIDE(CALCULATE(COUNTROWS(DimCliente), DimCliente[MesesConCompra] > 1),
+       CALCULATE(COUNTROWS(DimCliente), DimCliente[MesesConCompra] >= 1))""", PCT, F, "Compradores con compra en más de un mes")
+m("DimCliente", ".%Retencion_2019_2020", """
+DIVIDE(CALCULATE(COUNTROWS(DimCliente), DimCliente[Compra2019] = 1, DimCliente[Compra2020] = 1),
+       CALCULATE(COUNTROWS(DimCliente), DimCliente[Compra2019] = 1))""", PCT, F, "Compradores de 2019 que vuelven en 2020")
+m("DimCliente", ".Color_Retencion", semaforo(".%Retencion_2019_2020", 0.65, True, 0.05), None, F, "Meta propuesta >= 65 %")
+m("FactVentas", ".%Clientes_Omnicanal", 'DIVIDE(CALCULATE([.Clientes_Unicos], DimCliente[TipoCanal] = "Omnicanal"), [.Clientes_Unicos])', PCT, F)
+m("FactVentas", ".%Penetracion_Club", 'DIVIDE(CALCULATE([.Clientes_Unicos], DimCliente[ClubActivo] = "Club activo"), [.Clientes_Unicos])', PCT, F)
+m("FactVentas", ".%Ventas_Top20_Clientes", 'DIVIDE(CALCULATE([.Ventas], DimCliente[SegmentoValor] = "1. Top 20 %"), [.Ventas])', PCT, F)
+m("FactVentas", ".Ventas_por_Cliente_Omnicanal", 'CALCULATE([.Ventas_por_Cliente], DimCliente[TipoCanal] = "Omnicanal")', MONEY, F)
+m("FactVentas", ".Ventas_por_Cliente_UnCanal", 'CALCULATE([.Ventas_por_Cliente], DimCliente[TipoCanal] IN {"Solo online", "Solo tienda"})', MONEY, F)
+m("FactVentas", ".Multiplicador_Omnicanal", "DIVIDE([.Ventas_por_Cliente_Omnicanal], [.Ventas_por_Cliente_UnCanal])", '0.0"x"', F,
+  "Cuántas veces más compra el cliente omnicanal")
+m("FactVentas", ".%Plus_Club", """
+DIVIDE(CALCULATE([.Ventas_por_Cliente], DimCliente[ClubActivo] = "Club activo"),
+       CALCULATE([.Ventas_por_Cliente], DimCliente[ClubActivo] = "No activo")) - 1""", PCT, F,
+  "Cuánto más compra el cliente con club activo")
+
+F = "6. Indicadores del caso\\Metas"
+m("FactMetas", ".Meta_Acumulada", """
+CALCULATE([.Meta], FILTER(ALLSELECTED(DimFecha[Fecha]), DimFecha[Fecha] <= MAX(DimFecha[Fecha])))""", MONEY, F)
+m("FactMetas", ".Secciones_con_Meta", "COUNTROWS(FILTER(VALUES(DimDepartamento[Seccion]), NOT ISBLANK([.Meta])))", INT, F)
+m("FactMetas", ".Secciones_Cumplen", "COUNTROWS(FILTER(VALUES(DimDepartamento[Seccion]), [.%Cumplimiento_Meta] >= 1))", INT, F)
+m("FactMetas", ".Secciones_Bajo_50", "COUNTROWS(FILTER(VALUES(DimDepartamento[Seccion]), NOT ISBLANK([.Meta]) && [.%Cumplimiento_Meta] < 0.5))", INT, F)
+for nombre, orden in (("Top5", "DESC"), ("Bottom5", "ASC")):
+    m("FactMetas", f".Cumplimiento_{nombre}", f"""
+VAR r = RANKX(FILTER(ALLSELECTED(DimDepartamento[Seccion]), NOT ISBLANK([.Meta])), [.%Cumplimiento_Meta], , {orden})
+RETURN
+    IF(HASONEVALUE(DimDepartamento[Seccion]) && NOT ISBLANK([.Meta]) && r <= 5, [.%Cumplimiento_Meta])""", PCT, F)
+
+F = "6. Indicadores del caso\\Narrativa"
+m("FactVentas", ".Narrativa_Estrategica", """
+VAR y = [.%Crecimiento_Interanual]
+RETURN
+    "Cumplimos el " & FORMAT([.%Cumplimiento_Meta], "0 %") & " de la meta, pero vendemos " & FORMAT(y, "+0.0 %;-0.0 %")
+        & " vs. el año anterior (tienda " & FORMAT([.%Interanual_Tienda], "+0.0 %;-0.0 %") & ", online "
+        & FORMAT([.%Interanual_Online], "+0.0 %;-0.0 %") & "). El cliente omnicanal compra "
+        & FORMAT([.Multiplicador_Omnicanal], "0.0") & " veces más."
+""", None, F, "Elige un año para ver la comparación interanual")
+m("FactMetas", ".Narrativa_Metas", """
+"Llegamos al " & FORMAT([.%Cumplimiento_Meta], "0 %") & " de la meta, pero solo " & [.Secciones_Cumplen] & " de "
+    & [.Secciones_con_Meta] & " secciones cumplen y " & [.Secciones_Bajo_50] & " no llegan al 50 %: metas mal repartidas."
+""", None, F)
+m("FactVentas", ".Narrativa_Cliente", """
+"El cliente omnicanal compra " & FORMAT([.Multiplicador_Omnicanal], "0.0") & " veces más y el de club activo "
+    & FORMAT([.%Plus_Club], "+0 %") & "; el top 20 % genera el " & FORMAT([.%Ventas_Top20_Clientes], "0 %")
+    & " de la venta. Descuento implícito: " & FORMAT([.%Descuento_Implicito], "0.0 %") & "."
+""", None, F)
 
 # ------------------------------------------------------------------ ensamblado
 tables = []

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "b51b70af0c57afacc5cf",
+  "displayName": "1 · Estratégico",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "ffeb1e14ff717aa1a074",
+      "target": "09a2ea4b144510ac187f",
+      "type": "NoFilter"
+    },
+    {
+      "source": "ffeb1e14ff717aa1a074",
+      "target": "946e977d852d02b601fb",
+      "type": "NoFilter"
+    },
+    {
+      "source": "ffeb1e14ff717aa1a074",
+      "target": "93a537e18c775cac244c",
+      "type": "NoFilter"
+    }
+  ],
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#F3F4F6'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

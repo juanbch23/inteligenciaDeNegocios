@@ -374,6 +374,46 @@
             "name": "RangoEdad",
             "dataType": "string",
             "sourceColumn": "RangoEdad"
+          },
+          {
+            "name": "ClubActivo",
+            "dataType": "string",
+            "sourceColumn": "ClubActivo"
+          },
+          {
+            "name": "FechaPrimeraCompra",
+            "dataType": "dateTime",
+            "sourceColumn": "FechaPrimeraCompra",
+            "formatString": "dd/MM/yyyy"
+          },
+          {
+            "name": "MesesConCompra",
+            "dataType": "int64",
+            "sourceColumn": "MesesConCompra"
+          },
+          {
+            "name": "TipoCanal",
+            "dataType": "string",
+            "sourceColumn": "TipoCanal",
+            "description": "Omnicanal / Solo online / Solo tienda (todo el historial)"
+          },
+          {
+            "name": "Compra2019",
+            "dataType": "int64",
+            "sourceColumn": "Compra2019",
+            "isHidden": true
+          },
+          {
+            "name": "Compra2020",
+            "dataType": "int64",
+            "sourceColumn": "Compra2020",
+            "isHidden": true
+          },
+          {
+            "name": "SegmentoValor",
+            "dataType": "string",
+            "sourceColumn": "SegmentoValor",
+            "description": "Top 20 % / Siguiente 30 % / Resto 50 % de compradores por venta total"
           }
         ],
         "partitions": [
@@ -381,7 +421,7 @@
             "name": "DimCliente",
             "dataView": "full",
             "source": {
-              "query": "SELECT [ClienteKey], [FN], [Active], [ClubMemberStatus] AS [EstadoClub],\n       [FashionNewsFrequency] AS [FrecuenciaNoticias], [Edad], [RangoEdad]\n  FROM [Ventas].[DimCliente] WHERE [ClienteKey] > 0",
+              "query": "SELECT [ClienteKey], [FN], [Active], [ClubMemberStatus] AS [EstadoClub],\n       [FashionNewsFrequency] AS [FrecuenciaNoticias], [Edad], [RangoEdad], [ClubActivo],\n       [FechaPrimeraCompra], [MesesConCompra], [TipoCanal], [Compra2019], [Compra2020], [SegmentoValor]\n  FROM [Ventas].[vw_ClienteComportamiento]",
               "dataSource": "DWH_HM"
             }
           }
@@ -405,6 +445,33 @@
             "expression": "DIVIDE([.Clientes_Unicos], [.Clientes_Registrados])",
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "displayFolder": "5. Clientes"
+          },
+          {
+            "name": ".Clientes_Nuevos",
+            "expression": "VAR d1 = MIN(DimFecha[Fecha])\nVAR d2 = MAX(DimFecha[Fecha])\nRETURN\n    CALCULATE(COUNTROWS(DimCliente), DimCliente[FechaPrimeraCompra] >= d1, DimCliente[FechaPrimeraCompra] <= d2)",
+            "formatString": "#,0",
+            "displayFolder": "6. Indicadores del caso\\Clientes",
+            "description": "Clientes cuya primera compra cae en el periodo filtrado"
+          },
+          {
+            "name": ".%Recompra",
+            "expression": "DIVIDE(CALCULATE(COUNTROWS(DimCliente), DimCliente[MesesConCompra] > 1),\n       CALCULATE(COUNTROWS(DimCliente), DimCliente[MesesConCompra] >= 1))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "6. Indicadores del caso\\Clientes",
+            "description": "Compradores con compra en más de un mes"
+          },
+          {
+            "name": ".%Retencion_2019_2020",
+            "expression": "DIVIDE(CALCULATE(COUNTROWS(DimCliente), DimCliente[Compra2019] = 1, DimCliente[Compra2020] = 1),\n       CALCULATE(COUNTROWS(DimCliente), DimCliente[Compra2019] = 1))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "6. Indicadores del caso\\Clientes",
+            "description": "Compradores de 2019 que vuelven en 2020"
+          },
+          {
+            "name": ".Color_Retencion",
+            "expression": "VAR x = [.%Retencion_2019_2020]\nRETURN\n    SWITCH(TRUE(), ISBLANK(x), BLANK(), x >= 0.65, \"#2E7D32\", x >= 0.65 - 0.05, \"#F9A825\", \"#C62828\")",
+            "displayFolder": "6. Indicadores del caso\\Clientes",
+            "description": "Meta propuesta >= 65 %"
           }
         ]
       },
@@ -453,6 +520,20 @@
             "sourceColumn": "Precio",
             "isHidden": true,
             "formatString": "#,0.00"
+          },
+          {
+            "name": "PrecioLista",
+            "dataType": "decimal",
+            "sourceColumn": "PrecioLista",
+            "isHidden": true,
+            "formatString": "#,0.00",
+            "description": "Precio máximo observado del artículo"
+          },
+          {
+            "name": "BandaDescuento",
+            "dataType": "string",
+            "sourceColumn": "BandaDescuento",
+            "description": "Descuento de la línea frente al precio de lista"
           }
         ],
         "partitions": [
@@ -460,7 +541,7 @@
             "name": "FactVentas",
             "dataView": "full",
             "source": {
-              "query": "SELECT [FechaKey], [ClienteKey], [ArticuloKey], [DepartamentoKey], [CanalKey], [TemporadaKey], [Precio]\n  FROM [Ventas].[FactVentas]",
+              "query": "SELECT [FechaKey], [ClienteKey], [ArticuloKey], [DepartamentoKey], [CanalKey], [TemporadaKey], [Precio],\n       [PrecioLista], [BandaDescuento]\n  FROM [Ventas].[vw_FactVentasCubo]",
               "dataSource": "DWH_HM"
             }
           }
@@ -557,10 +638,10 @@
           },
           {
             "name": ".Ventas_Mismo_Periodo_AA",
-            "expression": "CALCULATE([.Ventas], SAMEPERIODLASTYEAR(DimFecha[Fecha]))",
+            "expression": "VAR fechas = SELECTCOLUMNS(VALUES(DimFecha[Fecha]), \"F\", EDATE(DimFecha[Fecha], -12))\nRETURN\n    IF(HASONEVALUE(DimFecha[Anio]),                       -- solo tiene sentido dentro de un año\n       CALCULATE([.Ventas], ALL(DimFecha), TREATAS(fechas, DimFecha[Fecha])))",
             "formatString": "#,0.00",
             "displayFolder": "2. Tiempo",
-            "description": "Ventas del mismo periodo del año anterior"
+            "description": "Ventas de exactamente los mismos días del año anterior (SAMEPERIODLASTYEAR completaba septiembre 2019)"
           },
           {
             "name": ".%Crecimiento_Interanual",
@@ -636,6 +717,144 @@
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "displayFolder": "3. Pareto",
             "description": "Porcentaje acumulado de ventas (secciones ordenadas de mayor a menor)"
+          },
+          {
+            "name": ".Cestas",
+            "expression": "COUNTROWS(SUMMARIZE(FactVentas, FactVentas[ClienteKey], FactVentas[FechaKey], FactVentas[CanalKey]))",
+            "formatString": "#,0",
+            "displayFolder": "6. Indicadores del caso\\Cesta",
+            "description": "Cesta = mismo cliente + mismo día + mismo canal (no hay número de pedido)"
+          },
+          {
+            "name": ".Ticket_Cesta",
+            "expression": "DIVIDE([.Ventas], [.Cestas])",
+            "formatString": "#,0.00",
+            "displayFolder": "6. Indicadores del caso\\Cesta",
+            "description": "Ventas / cestas"
+          },
+          {
+            "name": ".Articulos_por_Cesta",
+            "expression": "DIVIDE([.Transacciones], [.Cestas])",
+            "formatString": "#,0.00",
+            "displayFolder": "6. Indicadores del caso\\Cesta",
+            "description": "Artículos (líneas) / cestas"
+          },
+          {
+            "name": ".Precio_Lista",
+            "expression": "SUM(FactVentas[PrecioLista])",
+            "formatString": "#,0.00",
+            "displayFolder": "6. Indicadores del caso\\Precio"
+          },
+          {
+            "name": ".%Descuento_Implicito",
+            "expression": "IF([.Precio_Lista] > 0, 1 - DIVIDE([.Ventas], [.Precio_Lista]))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "6. Indicadores del caso\\Precio",
+            "description": "1 - precio cobrado / precio máximo observado del artículo"
+          },
+          {
+            "name": ".%Lineas_Descuento_30",
+            "expression": "DIVIDE(CALCULATE([.Transacciones], FactVentas[BandaDescuento] = \"4. Más de 30 %\"), [.Transacciones])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "6. Indicadores del caso\\Precio",
+            "description": "Líneas vendidas con más de 30 % de descuento"
+          },
+          {
+            "name": ".Color_Descuento",
+            "expression": "VAR x = [.%Descuento_Implicito]\nRETURN\n    SWITCH(TRUE(), ISBLANK(x), BLANK(), x <= 0.17, \"#2E7D32\", x <= 0.17 + 0.02, \"#F9A825\", \"#C62828\")",
+            "displayFolder": "6. Indicadores del caso\\Precio",
+            "description": "Meta propuesta <= 17 %"
+          },
+          {
+            "name": ".Delta_Interanual",
+            "expression": "IF(ISBLANK([.Ventas_Mismo_Periodo_AA]), BLANK(), [.Ventas] - [.Ventas_Mismo_Periodo_AA])",
+            "formatString": "#,0.00",
+            "displayFolder": "6. Indicadores del caso\\Crecimiento",
+            "description": "Diferencia contra el mismo periodo del año anterior"
+          },
+          {
+            "name": ".%Interanual_Tienda",
+            "expression": "CALCULATE([.%Crecimiento_Interanual], DimCanal[NombreCanal] = \"Tienda fisica\")",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "6. Indicadores del caso\\Crecimiento"
+          },
+          {
+            "name": ".%Interanual_Online",
+            "expression": "CALCULATE([.%Crecimiento_Interanual], DimCanal[NombreCanal] = \"Online\")",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "6. Indicadores del caso\\Crecimiento"
+          },
+          {
+            "name": ".Interanual_I",
+            "expression": "VAR x = [.%Crecimiento_Interanual]\nRETURN\n    IF(ISBLANK(x), BLANK(), FORMAT(x, \"+0.0 %;-0.0 %\") & IF(x >= 0, \"  ▲\", \"  ▼\"))",
+            "displayFolder": "6. Indicadores del caso\\Crecimiento"
+          },
+          {
+            "name": ".Color_Interanual",
+            "expression": "VAR x = [.%Crecimiento_Interanual]\nRETURN\n    SWITCH(TRUE(), ISBLANK(x), BLANK(), x >= 0, \"#2E7D32\", x >= 0 - 0.05, \"#F9A825\", \"#C62828\")",
+            "displayFolder": "6. Indicadores del caso\\Crecimiento",
+            "description": "Meta propuesta >= 0 %"
+          },
+          {
+            "name": ".Ventas_Acumuladas",
+            "expression": "CALCULATE([.Ventas], FILTER(ALLSELECTED(DimFecha[Fecha]), DimFecha[Fecha] <= MAX(DimFecha[Fecha])))",
+            "formatString": "#,0.00",
+            "displayFolder": "6. Indicadores del caso\\Crecimiento"
+          },
+          {
+            "name": ".%Clientes_Omnicanal",
+            "expression": "DIVIDE(CALCULATE([.Clientes_Unicos], DimCliente[TipoCanal] = \"Omnicanal\"), [.Clientes_Unicos])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "6. Indicadores del caso\\Clientes"
+          },
+          {
+            "name": ".%Penetracion_Club",
+            "expression": "DIVIDE(CALCULATE([.Clientes_Unicos], DimCliente[ClubActivo] = \"Club activo\"), [.Clientes_Unicos])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "6. Indicadores del caso\\Clientes"
+          },
+          {
+            "name": ".%Ventas_Top20_Clientes",
+            "expression": "DIVIDE(CALCULATE([.Ventas], DimCliente[SegmentoValor] = \"1. Top 20 %\"), [.Ventas])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "6. Indicadores del caso\\Clientes"
+          },
+          {
+            "name": ".Ventas_por_Cliente_Omnicanal",
+            "expression": "CALCULATE([.Ventas_por_Cliente], DimCliente[TipoCanal] = \"Omnicanal\")",
+            "formatString": "#,0.00",
+            "displayFolder": "6. Indicadores del caso\\Clientes"
+          },
+          {
+            "name": ".Ventas_por_Cliente_UnCanal",
+            "expression": "CALCULATE([.Ventas_por_Cliente], DimCliente[TipoCanal] IN {\"Solo online\", \"Solo tienda\"})",
+            "formatString": "#,0.00",
+            "displayFolder": "6. Indicadores del caso\\Clientes"
+          },
+          {
+            "name": ".Multiplicador_Omnicanal",
+            "expression": "DIVIDE([.Ventas_por_Cliente_Omnicanal], [.Ventas_por_Cliente_UnCanal])",
+            "formatString": "0.0\"x\"",
+            "displayFolder": "6. Indicadores del caso\\Clientes",
+            "description": "Cuántas veces más compra el cliente omnicanal"
+          },
+          {
+            "name": ".%Plus_Club",
+            "expression": "DIVIDE(CALCULATE([.Ventas_por_Cliente], DimCliente[ClubActivo] = \"Club activo\"),\n       CALCULATE([.Ventas_por_Cliente], DimCliente[ClubActivo] = \"No activo\")) - 1",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "6. Indicadores del caso\\Clientes",
+            "description": "Cuánto más compra el cliente con club activo"
+          },
+          {
+            "name": ".Narrativa_Estrategica",
+            "expression": "VAR y = [.%Crecimiento_Interanual]\nRETURN\n    \"Cumplimos el \" & FORMAT([.%Cumplimiento_Meta], \"0 %\") & \" de la meta, pero vendemos \" & FORMAT(y, \"+0.0 %;-0.0 %\")\n        & \" vs. el año anterior (tienda \" & FORMAT([.%Interanual_Tienda], \"+0.0 %;-0.0 %\") & \", online \"\n        & FORMAT([.%Interanual_Online], \"+0.0 %;-0.0 %\") & \"). El cliente omnicanal compra \"\n        & FORMAT([.Multiplicador_Omnicanal], \"0.0\") & \" veces más.\"",
+            "displayFolder": "6. Indicadores del caso\\Narrativa",
+            "description": "Elige un año para ver la comparación interanual"
+          },
+          {
+            "name": ".Narrativa_Cliente",
+            "expression": "\"El cliente omnicanal compra \" & FORMAT([.Multiplicador_Omnicanal], \"0.0\") & \" veces más y el de club activo \"\n    & FORMAT([.%Plus_Club], \"+0 %\") & \"; el top 20 % genera el \" & FORMAT([.%Ventas_Top20_Clientes], \"0 %\")\n    & \" de la venta. Descuento implícito: \" & FORMAT([.%Descuento_Implicito], \"0.0 %\") & \".\"",
+            "displayFolder": "6. Indicadores del caso\\Narrativa"
           }
         ]
       },
@@ -687,9 +906,9 @@
         "measures": [
           {
             "name": ".Escenario_Activo",
-            "expression": "SELECTEDVALUE(FactMetas[Escenario], \"Escenario 1\")",
+            "expression": "SELECTEDVALUE(FactMetas[Escenario], \"Escenario 2\")",
             "displayFolder": "4. Metas",
-            "description": "Escenario elegido en el segmentador; si no hay uno solo, se usa Escenario 1"
+            "description": "Escenario elegido en el segmentador; si no hay uno solo, se usa el Escenario 2 (meta oficial del caso)"
           },
           {
             "name": ".Meta",
@@ -724,6 +943,47 @@
             "name": ".Titulo_Ventas_vs_Meta",
             "expression": "\"Ventas vs meta diaria acumulada - \" & [.Escenario_Activo]",
             "displayFolder": "4. Metas"
+          },
+          {
+            "name": ".Meta_Acumulada",
+            "expression": "CALCULATE([.Meta], FILTER(ALLSELECTED(DimFecha[Fecha]), DimFecha[Fecha] <= MAX(DimFecha[Fecha])))",
+            "formatString": "#,0.00",
+            "displayFolder": "6. Indicadores del caso\\Metas"
+          },
+          {
+            "name": ".Secciones_con_Meta",
+            "expression": "COUNTROWS(FILTER(VALUES(DimDepartamento[Seccion]), NOT ISBLANK([.Meta])))",
+            "formatString": "#,0",
+            "displayFolder": "6. Indicadores del caso\\Metas"
+          },
+          {
+            "name": ".Secciones_Cumplen",
+            "expression": "COUNTROWS(FILTER(VALUES(DimDepartamento[Seccion]), [.%Cumplimiento_Meta] >= 1))",
+            "formatString": "#,0",
+            "displayFolder": "6. Indicadores del caso\\Metas"
+          },
+          {
+            "name": ".Secciones_Bajo_50",
+            "expression": "COUNTROWS(FILTER(VALUES(DimDepartamento[Seccion]), NOT ISBLANK([.Meta]) && [.%Cumplimiento_Meta] < 0.5))",
+            "formatString": "#,0",
+            "displayFolder": "6. Indicadores del caso\\Metas"
+          },
+          {
+            "name": ".Cumplimiento_Top5",
+            "expression": "VAR r = RANKX(FILTER(ALLSELECTED(DimDepartamento[Seccion]), NOT ISBLANK([.Meta])), [.%Cumplimiento_Meta], , DESC)\nRETURN\n    IF(HASONEVALUE(DimDepartamento[Seccion]) && NOT ISBLANK([.Meta]) && r <= 5, [.%Cumplimiento_Meta])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "6. Indicadores del caso\\Metas"
+          },
+          {
+            "name": ".Cumplimiento_Bottom5",
+            "expression": "VAR r = RANKX(FILTER(ALLSELECTED(DimDepartamento[Seccion]), NOT ISBLANK([.Meta])), [.%Cumplimiento_Meta], , ASC)\nRETURN\n    IF(HASONEVALUE(DimDepartamento[Seccion]) && NOT ISBLANK([.Meta]) && r <= 5, [.%Cumplimiento_Meta])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "6. Indicadores del caso\\Metas"
+          },
+          {
+            "name": ".Narrativa_Metas",
+            "expression": "\"Llegamos al \" & FORMAT([.%Cumplimiento_Meta], \"0 %\") & \" de la meta, pero solo \" & [.Secciones_Cumplen] & \" de \"\n    & [.Secciones_con_Meta] & \" secciones cumplen y \" & [.Secciones_Bajo_50] & \" no llegan al 50 %: metas mal repartidas.\"",
+            "displayFolder": "6. Indicadores del caso\\Narrativa"
           }
         ]
       }

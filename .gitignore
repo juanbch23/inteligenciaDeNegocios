@@ -13,3 +13,6 @@ obj/
 **/.pbi/localSettings.json
 **/.pbi/cache.abf
 *.abf
+
+# Material de referencia de terceros (no se publica)
+referencia/

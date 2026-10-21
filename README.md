@@ -15,6 +15,7 @@ Sigue las guías del curso incluidas en el repositorio: `proceso_bi_parte 1 y  2
 | `Tabular_HM/` | Cubo tabular (compatibilidad 1200): `Model.bim`, generador, despliegue y `MEDIDAS_DAX.md` |
 | `PowerBI/` | Informe `HM_Dashboard.pbip` (conexión en directo al cubo) y script de formato |
 | `herramientas/generador_ssis/` | Generador de los paquetes SSIS (API de SSIS 2025) |
+| `docs/` | **Informe y guion de presentación** (`Informe_Proyecto_HM.docx`), indicadores verificados y capturas |
 
 ## Datos de origen (no incluidos)
 
@@ -76,10 +77,23 @@ Si se usan en otra ruta, cambiar el parámetro de proyecto **`RutaDatos`** del p
   en los escenarios 1/2/3; como meta mensual daría ~2.800 %). El cubo la usa expandida por día
   (`Ventas.vw_FactMetasDiaria`).
 
-## Informe Power BI
+## Indicadores y dashboards
 
-| Página | Contenido |
-|---|---|
-| Resumen de Ventas | KPIs, ventas por grupo índice y grupo de prenda, ventas vs meta, Pareto por sección con título dinámico |
-| Comparación Anual | Año actual vs previos, variaciones ▲▼, comparación por grupo y por mes, evolución global |
-| Ventas vs Metas y Clientes | Cumplimiento por escenario, temporada y sección, canal, rango de edad (con tooltip de tendencia 7 días) |
+Los indicadores se definieron y **verificaron primero con los datos** (`sql/05_indicadores.sql`,
+`docs/Indicadores_y_Dashboards.md`) siguiendo la estructura del caso integrador *Grupo Comercial Andino*:
+fórmula, meta, valor real, lectura y acción.
+
+**La historia:** la meta se cumple (103 % en 2020), pero frente al mismo periodo de 2019 se vende **10.6 % menos**:
+la tienda física cae 21.9 % (0 ventas en abril 2020), el online vende cestas más pequeñas (−9.4 % de ticket), la tienda
+liquida con más descuento (20.9 %) y solo 16 de 56 secciones cumplen su meta. El cliente omnicanal compra 3.8 veces más.
+
+| Dashboard | Pregunta | Audiencia |
+|---|---|---|
+| 1 · Estratégico | ¿Crecemos de forma sana? | Gerencia |
+| 2 · Táctico: Torre de metas | ¿Qué secciones y temporadas no cumplen y por qué? | Jefes de sección |
+| 3 · Analítico: Cliente y precio | ¿Qué palanca de cliente y precio genera más impacto? | Marketing / pricing |
+
+![Dashboard estratégico](docs/img/d1.png)
+
+Reglas: cesta = cliente + día + canal; precio de lista = precio máximo observado del artículo; meta = Escenario 2
+(monto diario). Las metas de los demás indicadores son propuestas.

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "a09bd4023024d8abccf9",
+  "displayName": "Resumen de Ventas",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "55560c71d05b63f144ac",
+      "target": "2e14852cee13f0621fb5",
+      "type": "NoFilter"
+    },
+    {
+      "source": "55560c71d05b63f144ac",
+      "target": "a47042751b51f25561f4",
+      "type": "NoFilter"
+    },
+    {
+      "source": "55560c71d05b63f144ac",
+      "target": "26d64accbc6273412c5a",
+      "type": "NoFilter"
+    },
+    {
+      "source": "55560c71d05b63f144ac",
+      "target": "9d7e61058b42d6eb7a28",
+      "type": "NoFilter"
+    },
+    {
+      "source": "55560c71d05b63f144ac",
+      "target": "4b81c1d53c15a20c579e",
+      "type": "NoFilter"
+    },
+    {
+      "source": "55560c71d05b63f144ac",
+      "target": "b04bf593e2f6029df332",
+      "type": "NoFilter"
+    },
+    {
+      "source": "55560c71d05b63f144ac",
+      "target": "95816e83ced83c6f9cb9",
+      "type": "NoFilter"
+    },
+    {
+      "source": "55560c71d05b63f144ac",
+      "target": "c21bb36743db4bfc17a8",
+      "type": "NoFilter"
+    },
+    {
+      "source": "55560c71d05b63f144ac",
+      "target": "8fb275eb6327675c6254",
+      "type": "NoFilter"
+    },
+    {
+      "source": "55560c71d05b63f144ac",
+      "target": "80f98746fe4e7ea13427",
+      "type": "NoFilter"
+    }
+  ]
+}

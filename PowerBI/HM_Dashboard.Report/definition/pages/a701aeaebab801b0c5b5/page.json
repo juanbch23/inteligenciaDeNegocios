@@ -1,0 +1,8 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "a701aeaebab801b0c5b5",
+  "displayName": "Comparación Anual",
+  "displayOption": "FitToPage",
+  "height": 920,
+  "width": 1280
+}

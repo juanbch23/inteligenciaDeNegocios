@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="AdoNet DWH_HM"
+  DTS:DTSID="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+  DTS:CreationName="ADO.NET:System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Data Source=LAPTOP-IO596P6A\DEV;Initial Catalog=DWH_HM;Integrated Security=True;TrustServerCertificate=True;Application Name=SSIS-H&amp;M;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

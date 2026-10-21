@@ -1,0 +1,1339 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="10/21/2026 12:07:47 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="LAPTOP-IO596P6A"
+  DTS:CreatorName="LAPTOP-IO596P6A\Juan"
+  DTS:DTSID="{4E4F19E0-7292-404E-90B1-E5602BA86F6B}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1000.7"
+  DTS:LocaleID="3082"
+  DTS:ObjectName="StageArticles"
+  DTS:ProtectionLevel="0"
+  DTS:VersionGUID="{19C9F941-9426-4480-831E-6137C333A4F9}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{5A7FB67C-85C8-46E0-97DC-810ADF39AFC8}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="AuditKey">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{2135D761-B960-4231-AAE0-847B992718D4}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="RowCount">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A9E337A3-D1C8-487F-BF42-BF6084BEB244}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="TableName">
+      <DTS:VariableValue
+        DTS:DataType="8">[HM].[StageArticles]</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\DF StageArticles"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Tarea Flujo de datos"
+      DTS:DTSID="{C1FA580D-AE57-4F0B-9682-5F49ADD395A5}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DF StageArticles"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          autoAdjustBufferSize="true"
+          version="1">
+          <components>
+            <component
+              refId="Package\DF StageArticles\Origen de archivo plano"
+              componentClassID="Microsoft.FlatFileSource"
+              contactInfo="Origen de archivo plano;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;1"
+              description="Origen de archivo plano"
+              localeId="1033"
+              name="Origen de archivo plano"
+              usesDispositions="true"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Especifica si las columnas de longitud cero se tratan como NULL."
+                  name="RetainNulls">true</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica el nombre de una columna de salida que contiene el nombre de archivo. Si no se especifica ningún nombre, no se genera ninguna columna de salida con el nombre de archivo."
+                  name="FileNameColumnName"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DF StageArticles\Origen de archivo plano.Connections[FlatFileConnection]"
+                  connectionManagerID="{9D57701F-5E05-463D-B031-4C2152740C28}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[FF articles]"
+                  name="FlatFileConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano]"
+                  name="Salida de origen de archivo plano">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[article_id]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[article_id]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[article_id]"
+                      name="article_id"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[product_code]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[product_code]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[product_code]"
+                      name="product_code"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[prod_name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[prod_name]"
+                      length="100"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[prod_name]"
+                      name="prod_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[product_type_no]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[product_type_no]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[product_type_no]"
+                      name="product_type_no"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[product_type_name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[product_type_name]"
+                      length="50"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[product_type_name]"
+                      name="product_type_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[product_group_name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[product_group_name]"
+                      length="50"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[product_group_name]"
+                      name="product_group_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[graphical_appearance_no]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[graphical_appearance_no]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[graphical_appearance_no]"
+                      name="graphical_appearance_no"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[graphical_appearance_name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[graphical_appearance_name]"
+                      length="50"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[graphical_appearance_name]"
+                      name="graphical_appearance_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[colour_group_code]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[colour_group_code]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[colour_group_code]"
+                      name="colour_group_code"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[colour_group_name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[colour_group_name]"
+                      length="50"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[colour_group_name]"
+                      name="colour_group_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[perceived_colour_value_id]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[perceived_colour_value_id]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[perceived_colour_value_id]"
+                      name="perceived_colour_value_id"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[perceived_colour_value_name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[perceived_colour_value_name]"
+                      length="50"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[perceived_colour_value_name]"
+                      name="perceived_colour_value_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[perceived_colour_master_id]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[perceived_colour_master_id]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[perceived_colour_master_id]"
+                      name="perceived_colour_master_id"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[perceived_colour_master_name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[perceived_colour_master_name]"
+                      length="50"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[perceived_colour_master_name]"
+                      name="perceived_colour_master_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[department_no]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[department_no]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[department_no]"
+                      name="department_no"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[department_name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[department_name]"
+                      length="60"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[department_name]"
+                      name="department_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[index_code]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[index_code]"
+                      length="5"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[index_code]"
+                      name="index_code"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[index_name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[index_name]"
+                      length="50"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[index_name]"
+                      name="index_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[index_group_no]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[index_group_no]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[index_group_no]"
+                      name="index_group_no"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[index_group_name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[index_group_name]"
+                      length="50"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[index_group_name]"
+                      name="index_group_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[section_no]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[section_no]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[section_no]"
+                      name="section_no"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[section_name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[section_name]"
+                      length="60"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[section_name]"
+                      name="section_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[garment_group_no]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[garment_group_no]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[garment_group_no]"
+                      name="garment_group_no"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[garment_group_name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[garment_group_name]"
+                      length="50"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[garment_group_name]"
+                      name="garment_group_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[detail_desc]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[detail_desc]"
+                      length="1000"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[detail_desc]"
+                      name="detail_desc"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si la columna usa las rutinas de análisis más rápidas independientes de la configuración regional."
+                          name="FastParse">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indica si los datos están en formato binario."
+                          name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[article_id]"
+                      dataType="i4"
+                      name="article_id" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[product_code]"
+                      dataType="i4"
+                      name="product_code" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[prod_name]"
+                      dataType="wstr"
+                      length="100"
+                      name="prod_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[product_type_no]"
+                      dataType="i4"
+                      name="product_type_no" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[product_type_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="product_type_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[product_group_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="product_group_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[graphical_appearance_no]"
+                      dataType="i4"
+                      name="graphical_appearance_no" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[graphical_appearance_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="graphical_appearance_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[colour_group_code]"
+                      dataType="i4"
+                      name="colour_group_code" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[colour_group_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="colour_group_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[perceived_colour_value_id]"
+                      dataType="i4"
+                      name="perceived_colour_value_id" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[perceived_colour_value_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="perceived_colour_value_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[perceived_colour_master_id]"
+                      dataType="i4"
+                      name="perceived_colour_master_id" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[perceived_colour_master_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="perceived_colour_master_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[department_no]"
+                      dataType="i4"
+                      name="department_no" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[department_name]"
+                      dataType="wstr"
+                      length="60"
+                      name="department_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[index_code]"
+                      dataType="wstr"
+                      length="5"
+                      name="index_code" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[index_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="index_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[index_group_no]"
+                      dataType="i4"
+                      name="index_group_no" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[index_group_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="index_group_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[section_no]"
+                      dataType="i4"
+                      name="section_no" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[section_name]"
+                      dataType="wstr"
+                      length="60"
+                      name="section_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[garment_group_no]"
+                      dataType="i4"
+                      name="garment_group_no" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[garment_group_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="garment_group_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[detail_desc]"
+                      dataType="wstr"
+                      length="1000"
+                      name="detail_desc" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de error de origen de archivo plano]"
+                  isErrorOut="true"
+                  name="Salida de error de origen de archivo plano">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de error de origen de archivo plano].Columns[Columna de salida de error de origen de archivo plano]"
+                      codePage="65001"
+                      dataType="text"
+                      description="Columna de salida de error de origen de archivo plano"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de error de origen de archivo plano].Columns[Columna de salida de error de origen de archivo plano]"
+                      name="Columna de salida de error de origen de archivo plano" />
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de error de origen de archivo plano].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de error de origen de archivo plano].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de error de origen de archivo plano].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de error de origen de archivo plano].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DF StageArticles\StageArticles"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4"
+              description="Destino de OLE DB"
+              name="StageArticles"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Número de segundos antes de que se agote el tiempo de espera de un comando. Un valor de 0 indica un tiempo de espera infinito."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica el nombre del objeto de base de datos usado para abrir un conjunto de filas."
+                  name="OpenRowset">[HM].[StageArticles]</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica la variable que contiene el nombre del objeto de base de datos usado para abrir un conjunto de filas."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="Comando SQL para ejecutar."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica la página de códigos de columna para utilizar cuando la información de página de códigos no está disponible en el origen de datos."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Fuerza el uso del valor de la propiedad DefaultCodePage al describir datos de caracteres."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica el modo utilizado para obtener acceso a la base de datos."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indica si los valores proporcionados para columnas de identidad se van a copiar al destino. Si es False, los valores de las columnas de identidad se generan automáticamente en el destino. Sólo se aplica si está activada la carga rápida."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indica si las columnas que contienen NULL tendrán NULL insertado en el destino. Si es False, las columnas que contienen NULL tendrán sus valores predeterminados insertados en el destino. Sólo se aplica si está activada la carga rápida."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica opciones para usar con la carga rápida. Sólo se aplica si está activada la carga rápida."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica cuándo se emiten confirmaciones durante la inserción de datos. El valor 0 especifica que se emitirá una confirmación al final de la inserción de datos. Sólo se aplica si está activada la carga rápida."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DF StageArticles\StageArticles.Connections[OleDbConnection]"
+                  connectionManagerID="{8C7C07A6-87F9-4051-ADAA-5AE5E07EC012}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[OleDB STAGE_HM]"
+                  description="La conexión de tiempo de ejecución OLE DB usada para obtener acceso a la base de datos."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB]"
+                  errorOrTruncationOperation="Insertar"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[article_id]"
+                      cachedDataType="i4"
+                      cachedName="article_id"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[article_id]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[article_id]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[product_code]"
+                      cachedDataType="i4"
+                      cachedName="product_code"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[product_code]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[product_code]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[prod_name]"
+                      cachedDataType="wstr"
+                      cachedLength="100"
+                      cachedName="prod_name"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[prod_name]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[prod_name]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[product_type_no]"
+                      cachedDataType="i4"
+                      cachedName="product_type_no"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[product_type_no]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[product_type_no]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[product_type_name]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="product_type_name"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[product_type_name]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[product_type_name]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[product_group_name]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="product_group_name"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[product_group_name]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[product_group_name]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[graphical_appearance_no]"
+                      cachedDataType="i4"
+                      cachedName="graphical_appearance_no"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[graphical_appearance_no]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[graphical_appearance_no]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[graphical_appearance_name]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="graphical_appearance_name"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[graphical_appearance_name]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[graphical_appearance_name]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[colour_group_code]"
+                      cachedDataType="i4"
+                      cachedName="colour_group_code"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[colour_group_code]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[colour_group_code]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[colour_group_name]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="colour_group_name"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[colour_group_name]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[colour_group_name]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[perceived_colour_value_id]"
+                      cachedDataType="i4"
+                      cachedName="perceived_colour_value_id"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[perceived_colour_value_id]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[perceived_colour_value_id]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[perceived_colour_value_name]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="perceived_colour_value_name"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[perceived_colour_value_name]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[perceived_colour_value_name]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[perceived_colour_master_id]"
+                      cachedDataType="i4"
+                      cachedName="perceived_colour_master_id"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[perceived_colour_master_id]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[perceived_colour_master_id]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[perceived_colour_master_name]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="perceived_colour_master_name"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[perceived_colour_master_name]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[perceived_colour_master_name]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[department_no]"
+                      cachedDataType="i4"
+                      cachedName="department_no"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[department_no]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[department_no]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[department_name]"
+                      cachedDataType="wstr"
+                      cachedLength="60"
+                      cachedName="department_name"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[department_name]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[department_name]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[index_code]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="index_code"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[index_code]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[index_code]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[index_name]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="index_name"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[index_name]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[index_name]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[index_group_no]"
+                      cachedDataType="i4"
+                      cachedName="index_group_no"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[index_group_no]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[index_group_no]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[index_group_name]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="index_group_name"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[index_group_name]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[index_group_name]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[section_no]"
+                      cachedDataType="i4"
+                      cachedName="section_no"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[section_no]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[section_no]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[section_name]"
+                      cachedDataType="wstr"
+                      cachedLength="60"
+                      cachedName="section_name"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[section_name]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[section_name]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[garment_group_no]"
+                      cachedDataType="i4"
+                      cachedName="garment_group_no"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[garment_group_no]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[garment_group_no]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[garment_group_name]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="garment_group_name"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[garment_group_name]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[garment_group_name]" />
+                    <inputColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].Columns[detail_desc]"
+                      cachedDataType="wstr"
+                      cachedLength="1000"
+                      cachedName="detail_desc"
+                      externalMetadataColumnId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[detail_desc]"
+                      lineageId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[detail_desc]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[article_id]"
+                      dataType="i4"
+                      name="article_id" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[product_code]"
+                      dataType="i4"
+                      name="product_code" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[prod_name]"
+                      dataType="wstr"
+                      length="100"
+                      name="prod_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[product_type_no]"
+                      dataType="i4"
+                      name="product_type_no" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[product_type_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="product_type_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[product_group_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="product_group_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[graphical_appearance_no]"
+                      dataType="i4"
+                      name="graphical_appearance_no" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[graphical_appearance_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="graphical_appearance_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[colour_group_code]"
+                      dataType="i4"
+                      name="colour_group_code" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[colour_group_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="colour_group_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[perceived_colour_value_id]"
+                      dataType="i4"
+                      name="perceived_colour_value_id" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[perceived_colour_value_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="perceived_colour_value_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[perceived_colour_master_id]"
+                      dataType="i4"
+                      name="perceived_colour_master_id" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[perceived_colour_master_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="perceived_colour_master_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[department_no]"
+                      dataType="i4"
+                      name="department_no" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[department_name]"
+                      dataType="wstr"
+                      length="60"
+                      name="department_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[index_code]"
+                      dataType="wstr"
+                      length="5"
+                      name="index_code" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[index_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="index_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[index_group_no]"
+                      dataType="i4"
+                      name="index_group_no" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[index_group_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="index_group_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[section_no]"
+                      dataType="i4"
+                      name="section_no" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[section_name]"
+                      dataType="wstr"
+                      length="60"
+                      name="section_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[garment_group_no]"
+                      dataType="i4"
+                      name="garment_group_no" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[garment_group_name]"
+                      dataType="wstr"
+                      length="50"
+                      name="garment_group_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB].ExternalColumns[detail_desc]"
+                      dataType="wstr"
+                      length="1000"
+                      name="detail_desc" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DF StageArticles\StageArticles.Outputs[Salida de error de destino de OLE DB]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Salida de error de destino de OLE DB"
+                  synchronousInputId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DF StageArticles\StageArticles.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DF StageArticles\StageArticles.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DF StageArticles\StageArticles.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DF StageArticles\StageArticles.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\DF StageArticles.Paths[Salida de origen de archivo plano]"
+              endId="Package\DF StageArticles\StageArticles.Inputs[Entrada de destino de OLE DB]"
+              name="Salida de origen de archivo plano"
+              startId="Package\DF StageArticles\Origen de archivo plano.Outputs[Salida de origen de archivo plano]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Task Get AuditKey"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{FA01EEB0-3935-4995-944E-FC412CBD2147}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Task Get AuditKey"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{0C6E4564-200A-45CF-938F-1FDBC0DC7C42}"
+          SQLTask:SqlStatementSource="INSERT INTO [DIM_AUDIT]&#xA;           ([TableName]&#xA;           ,[PkgName]&#xA;           ,[PkgGUID]&#xA;           ,[ExecStartDT]&#xA;           ,[ExecStopDT]&#xA;           ,[ExecutionInstanceGUID]&#xA;           ,[ExtractRowCnt]&#xA;           ,[TableInitialRowCnt]&#xA;           ,[TableFinalRowCnt]&#xA;           ,[SuccessfulProcessingInd])&#xA;     VALUES&#xA;           (@TableName&#xA;           ,@PkgName&#xA;           ,@PkgGUID&#xA;           ,@StartTime&#xA;           ,NULL&#xA;           ,@PkgExecGUID&#xA;           ,NULL&#xA;           ,@RowCount&#xA;           ,NULL&#xA;           ,'N')&#xA;SELECT CAST(SCOPE_IDENTITY() AS INT) AS AuditKey"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::AuditKey" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="StartTime"
+            SQLTask:DtsVariableName="System::StartTime"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="26"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="PkgName"
+            SQLTask:DtsVariableName="System::PackageName"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="16"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="PkgGUID"
+            SQLTask:DtsVariableName="System::PackageID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="9"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="PkgExecGUID"
+            SQLTask:DtsVariableName="System::ExecutionInstanceGUID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="9"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="TableName"
+            SQLTask:DtsVariableName="User::TableName"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="16"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="RowCount"
+            SQLTask:DtsVariableName="User::RowCount"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="11"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Task Post RowCnt"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{0C12BFFD-D78B-444A-8B84-84CA61846CD4}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Task Post RowCnt"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{6BE669DC-F545-498B-B148-714CD4C30B75}"
+          SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [HM].[StageArticles]"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::RowCount" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Task Prior RowCnt"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{65EE42CC-8F6B-4511-868F-158227F29A54}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Task Prior RowCnt"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{6BE669DC-F545-498B-B148-714CD4C30B75}"
+          SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [HM].[StageArticles]"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::RowCount" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\TRUNCATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{6447E12A-FB52-4451-9B52-B7AF27C591B7}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="TRUNCATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{6BE669DC-F545-498B-B148-714CD4C30B75}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [HM].[StageArticles];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update AuditDim"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{5E22F7A1-FD6E-41E4-A845-C15AA32AE861}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update AuditDim"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{0C6E4564-200A-45CF-938F-1FDBC0DC7C42}"
+          SQLTask:SqlStatementSource="UPDATE [DIM_AUDIT]&#xA;SET ExecStopDT = SYSDATETIME()&#xA; , ExtractRowCnt = @RowCount&#xA; ,TableFinalRowCnt = @RowCount&#xA; ,SuccessfulProcessingInd='Y'&#xA;WHERE AuditKey = @AuditKey;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="RowCount"
+            SQLTask:DtsVariableName="User::RowCount"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="11"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="AuditKey"
+            SQLTask:DtsVariableName="User::AuditKey"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="11"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{0EC640F6-0D13-489F-A2DE-E2F1DDADCDDC\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{0EC640F6-0D13-489F-A2DE-E2F1DDADCDDC}"
+      DTS:From="Package\Task Prior RowCnt"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{0EC640F6-0D13-489F-A2DE-E2F1DDADCDDC}"
+      DTS:To="Package\Task Get AuditKey" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{80AF3CF8-0A6D-4783-B7D5-7D32F1C455EB\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{80AF3CF8-0A6D-4783-B7D5-7D32F1C455EB}"
+      DTS:From="Package\TRUNCATE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{80AF3CF8-0A6D-4783-B7D5-7D32F1C455EB}"
+      DTS:To="Package\DF StageArticles" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{C4E792AD-5345-4ACC-8A02-765AC342BCD8\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{C4E792AD-5345-4ACC-8A02-765AC342BCD8}"
+      DTS:From="Package\DF StageArticles"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{C4E792AD-5345-4ACC-8A02-765AC342BCD8}"
+      DTS:To="Package\Task Post RowCnt" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{D4BE1D3B-D20E-4DBC-9EEB-265C898EFBFE\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{D4BE1D3B-D20E-4DBC-9EEB-265C898EFBFE}"
+      DTS:From="Package\Task Get AuditKey"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{D4BE1D3B-D20E-4DBC-9EEB-265C898EFBFE}"
+      DTS:To="Package\TRUNCATE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{EEF3B2F6-66AF-4463-AF47-B85C94DB6B15\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{EEF3B2F6-66AF-4463-AF47-B85C94DB6B15}"
+      DTS:From="Package\Task Post RowCnt"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{EEF3B2F6-66AF-4463-AF47-B85C94DB6B15}"
+      DTS:To="Package\Update AuditDim" />
+  </DTS:PrecedenceConstraints>
+</DTS:Executable>

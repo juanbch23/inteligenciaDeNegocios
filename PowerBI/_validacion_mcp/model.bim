@@ -1,0 +1,804 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1200,
+  "model": {
+    "culture": "es-ES",
+    "dataSources": [
+      {
+        "name": "DWH_HM",
+        "connectionString": "Provider=MSOLEDBSQL.1;Data Source=LAPTOP-IO596P6A\\DEV;Initial Catalog=DWH_HM;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateServiceAccount",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "name": "DimFecha",
+        "columns": [
+          {
+            "name": "FechaKey",
+            "dataType": "int64",
+            "sourceColumn": "FechaKey",
+            "isHidden": true
+          },
+          {
+            "name": "Fecha",
+            "dataType": "dateTime",
+            "sourceColumn": "Fecha",
+            "formatString": "dd/MM/yyyy",
+            "isKey": true
+          },
+          {
+            "name": "Dia_Semana",
+            "dataType": "int64",
+            "sourceColumn": "Dia_Semana",
+            "isHidden": true
+          },
+          {
+            "name": "Nombre_Dia_Semana",
+            "dataType": "string",
+            "sourceColumn": "Nombre_Dia_Semana",
+            "sortByColumn": "Dia_Semana"
+          },
+          {
+            "name": "Dia_Mes",
+            "dataType": "int64",
+            "sourceColumn": "Dia_Mes"
+          },
+          {
+            "name": "Dia_Anio",
+            "dataType": "int64",
+            "sourceColumn": "Dia_Anio"
+          },
+          {
+            "name": "Nombre_Mes",
+            "dataType": "string",
+            "sourceColumn": "Nombre_Mes",
+            "sortByColumn": "Mes_Anio"
+          },
+          {
+            "name": "Mes_Anio",
+            "dataType": "int64",
+            "sourceColumn": "Mes_Anio"
+          },
+          {
+            "name": "Semana_Anio",
+            "dataType": "int64",
+            "sourceColumn": "Semana_Anio"
+          },
+          {
+            "name": "Anio",
+            "dataType": "int64",
+            "sourceColumn": "Anio",
+            "formatString": "0"
+          },
+          {
+            "name": "Bimestre",
+            "dataType": "int64",
+            "sourceColumn": "Bimestre"
+          },
+          {
+            "name": "Trimestre",
+            "dataType": "int64",
+            "sourceColumn": "Trimestre"
+          },
+          {
+            "name": "Cuatrimestre",
+            "dataType": "int64",
+            "sourceColumn": "Cuatrimestre"
+          },
+          {
+            "name": "Semestre",
+            "dataType": "int64",
+            "sourceColumn": "Semestre"
+          },
+          {
+            "name": "Fin_Semana",
+            "dataType": "int64",
+            "sourceColumn": "Fin_Semana",
+            "description": "1 = sábado o domingo"
+          },
+          {
+            "name": "AnioMes",
+            "dataType": "int64",
+            "sourceColumn": "AnioMes",
+            "isHidden": true,
+            "formatString": "0"
+          },
+          {
+            "name": "Periodo",
+            "dataType": "string",
+            "sourceColumn": "Periodo",
+            "sortByColumn": "AnioMes",
+            "description": "Mes-Año (Sep-2018); se ordena cronológicamente"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DimFecha",
+            "dataView": "full",
+            "source": {
+              "query": "SELECT [FechaKey], CAST([Fecha] AS DATETIME) AS [Fecha], [Dia_Semana], CASE [Dia_Semana] WHEN 1 THEN 'Domingo' WHEN 2 THEN 'Lunes' WHEN 3 THEN 'Martes' WHEN 4 THEN 'Miércoles' WHEN 5 THEN 'Jueves' WHEN 6 THEN 'Viernes' ELSE 'Sábado' END AS [Nombre_Dia_Semana],\n       [Dia_Mes], [Dia_Anio], CASE [Mes_Anio] WHEN 1 THEN 'Enero' WHEN 2 THEN 'Febrero' WHEN 3 THEN 'Marzo' WHEN 4 THEN 'Abril' WHEN 5 THEN 'Mayo' WHEN 6 THEN 'Junio' WHEN 7 THEN 'Julio' WHEN 8 THEN 'Agosto' WHEN 9 THEN 'Septiembre' WHEN 10 THEN 'Octubre' WHEN 11 THEN 'Noviembre' ELSE 'Diciembre' END AS [Nombre_Mes], [Mes_Anio], [Semana_Anio], [Anio], [Bimestre],\n       [Trimestre], [Cuatrimestre], [Semestre], [Fin_Semana], [AnioMes],\n       LEFT(CASE [Mes_Anio] WHEN 1 THEN 'Enero' WHEN 2 THEN 'Febrero' WHEN 3 THEN 'Marzo' WHEN 4 THEN 'Abril' WHEN 5 THEN 'Mayo' WHEN 6 THEN 'Junio' WHEN 7 THEN 'Julio' WHEN 8 THEN 'Agosto' WHEN 9 THEN 'Septiembre' WHEN 10 THEN 'Octubre' WHEN 11 THEN 'Noviembre' ELSE 'Diciembre' END, 3) + '-' + CAST([Anio] AS VARCHAR(4)) AS [Periodo]\n  FROM [GENERICO].[DimFecha] WHERE [FechaKey] > 0",
+              "dataSource": "DWH_HM"
+            }
+          }
+        ],
+        "dataCategory": "Time",
+        "measures": [
+          {
+            "name": ".Anio_Actual",
+            "expression": "MAX(DimFecha[Anio])",
+            "formatString": "0",
+            "displayFolder": "2. Tiempo"
+          }
+        ]
+      },
+      {
+        "name": "DimTemporada",
+        "columns": [
+          {
+            "name": "TemporadaKey",
+            "dataType": "int64",
+            "sourceColumn": "TemporadaKey",
+            "isHidden": true
+          },
+          {
+            "name": "TemporadaID",
+            "dataType": "int64",
+            "sourceColumn": "TemporadaID",
+            "isHidden": true
+          },
+          {
+            "name": "Temporada",
+            "dataType": "string",
+            "sourceColumn": "Temporada",
+            "sortByColumn": "TemporadaID"
+          },
+          {
+            "name": "Estacion",
+            "dataType": "string",
+            "sourceColumn": "Estacion"
+          },
+          {
+            "name": "Anio",
+            "dataType": "int64",
+            "sourceColumn": "Anio",
+            "formatString": "0"
+          },
+          {
+            "name": "FechaInicio",
+            "dataType": "dateTime",
+            "sourceColumn": "FechaInicio",
+            "formatString": "dd/MM/yyyy"
+          },
+          {
+            "name": "FechaFin",
+            "dataType": "dateTime",
+            "sourceColumn": "FechaFin",
+            "formatString": "dd/MM/yyyy"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DimTemporada",
+            "dataView": "full",
+            "source": {
+              "query": "SELECT [TemporadaKey], [TemporadaID], [Temporada], [Estacion], [Anio], CAST([FechaInicio] AS DATETIME) AS [FechaInicio],\n       CAST([FechaFin] AS DATETIME) AS [FechaFin]\n  FROM [Ventas].[DimTemporada] WHERE [TemporadaKey] > 0",
+              "dataSource": "DWH_HM"
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimCanal",
+        "columns": [
+          {
+            "name": "CanalKey",
+            "dataType": "int64",
+            "sourceColumn": "CanalKey",
+            "isHidden": true
+          },
+          {
+            "name": "CanalID",
+            "dataType": "int64",
+            "sourceColumn": "CanalID",
+            "isHidden": true
+          },
+          {
+            "name": "NombreCanal",
+            "dataType": "string",
+            "sourceColumn": "NombreCanal"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DimCanal",
+            "dataView": "full",
+            "source": {
+              "query": "SELECT [CanalKey], [CanalID], [NombreCanal] FROM [Ventas].[DimCanal] WHERE [CanalKey] > 0",
+              "dataSource": "DWH_HM"
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimDepartamento",
+        "columns": [
+          {
+            "name": "DepartamentoKey",
+            "dataType": "int64",
+            "sourceColumn": "DepartamentoKey",
+            "isHidden": true
+          },
+          {
+            "name": "Departamento",
+            "dataType": "string",
+            "sourceColumn": "Departamento"
+          },
+          {
+            "name": "Seccion",
+            "dataType": "string",
+            "sourceColumn": "Seccion"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DimDepartamento",
+            "dataView": "full",
+            "source": {
+              "query": "SELECT [DepartamentoKey], [department_name] AS [Departamento], [section_name] AS [Seccion]\n  FROM [Ventas].[DimDepartamento] WHERE [DepartamentoKey] > 0",
+              "dataSource": "DWH_HM"
+            }
+          }
+        ]
+      },
+      {
+        "name": "DimArticulo",
+        "columns": [
+          {
+            "name": "ArticuloKey",
+            "dataType": "int64",
+            "sourceColumn": "ArticuloKey",
+            "isHidden": true
+          },
+          {
+            "name": "ArticleID",
+            "dataType": "int64",
+            "sourceColumn": "ArticleID",
+            "formatString": "0"
+          },
+          {
+            "name": "Producto",
+            "dataType": "string",
+            "sourceColumn": "Producto"
+          },
+          {
+            "name": "TipoProducto",
+            "dataType": "string",
+            "sourceColumn": "TipoProducto"
+          },
+          {
+            "name": "GrupoProducto",
+            "dataType": "string",
+            "sourceColumn": "GrupoProducto"
+          },
+          {
+            "name": "Apariencia",
+            "dataType": "string",
+            "sourceColumn": "Apariencia"
+          },
+          {
+            "name": "Color",
+            "dataType": "string",
+            "sourceColumn": "Color"
+          },
+          {
+            "name": "ColorMaestro",
+            "dataType": "string",
+            "sourceColumn": "ColorMaestro"
+          },
+          {
+            "name": "Indice",
+            "dataType": "string",
+            "sourceColumn": "Indice"
+          },
+          {
+            "name": "GrupoIndice",
+            "dataType": "string",
+            "sourceColumn": "GrupoIndice"
+          },
+          {
+            "name": "GrupoPrenda",
+            "dataType": "string",
+            "sourceColumn": "GrupoPrenda"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DimArticulo",
+            "dataView": "full",
+            "source": {
+              "query": "SELECT [ArticuloKey], [ArticleID], [ProdName] AS [Producto], [ProductTypeName] AS [TipoProducto],\n       [ProductGroupName] AS [GrupoProducto], [GraphicalAppearanceName] AS [Apariencia],\n       [ColourGroupName] AS [Color], [PerceivedColourMasterName] AS [ColorMaestro],\n       [IndexName] AS [Indice], [IndexGroupName] AS [GrupoIndice], [GarmentGroupName] AS [GrupoPrenda]\n  FROM [Ventas].[DimArticulo] WHERE [ArticuloKey] > 0",
+              "dataSource": "DWH_HM"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": ".Titulo_Dinamico_GrupoIndice",
+            "expression": "VAR grupo = DISTINCT(DimArticulo[GrupoIndice])\nVAR grupo_S = CONCATENATEX(grupo, DimArticulo[GrupoIndice], \" - \")\nVAR CANTIDAD = COUNTROWS(grupo)\nVAR TITULO = IF(CANTIDAD > 4, \"Pareto de ventas por sección (todos los grupos)\", \"Pareto de ventas por sección: \" & grupo_S)\nRETURN\n    TITULO",
+            "displayFolder": "3. Pareto"
+          }
+        ]
+      },
+      {
+        "name": "DimCliente",
+        "columns": [
+          {
+            "name": "ClienteKey",
+            "dataType": "int64",
+            "sourceColumn": "ClienteKey",
+            "isHidden": true
+          },
+          {
+            "name": "FN",
+            "dataType": "boolean",
+            "sourceColumn": "FN"
+          },
+          {
+            "name": "Active",
+            "dataType": "boolean",
+            "sourceColumn": "Active"
+          },
+          {
+            "name": "EstadoClub",
+            "dataType": "string",
+            "sourceColumn": "EstadoClub"
+          },
+          {
+            "name": "FrecuenciaNoticias",
+            "dataType": "string",
+            "sourceColumn": "FrecuenciaNoticias"
+          },
+          {
+            "name": "Edad",
+            "dataType": "int64",
+            "sourceColumn": "Edad"
+          },
+          {
+            "name": "RangoEdad",
+            "dataType": "string",
+            "sourceColumn": "RangoEdad"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DimCliente",
+            "dataView": "full",
+            "source": {
+              "query": "SELECT [ClienteKey], [FN], [Active], [ClubMemberStatus] AS [EstadoClub],\n       [FashionNewsFrequency] AS [FrecuenciaNoticias], [Edad], [RangoEdad]\n  FROM [Ventas].[DimCliente] WHERE [ClienteKey] > 0",
+              "dataSource": "DWH_HM"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": ".Clientes_Registrados",
+            "expression": "COUNTROWS(DimCliente)",
+            "formatString": "#,0",
+            "displayFolder": "5. Clientes"
+          },
+          {
+            "name": ".Edad_Promedio_Compradores",
+            "expression": "CALCULATE(AVERAGE(DimCliente[Edad]), CROSSFILTER(FactVentas[ClienteKey], DimCliente[ClienteKey], BOTH))",
+            "formatString": "0.0",
+            "displayFolder": "5. Clientes",
+            "description": "Edad promedio de los clientes que compraron en el contexto"
+          },
+          {
+            "name": ".%Clientes_Compradores",
+            "expression": "DIVIDE([.Clientes_Unicos], [.Clientes_Registrados])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "5. Clientes"
+          }
+        ]
+      },
+      {
+        "name": "FactVentas",
+        "columns": [
+          {
+            "name": "FechaKey",
+            "dataType": "int64",
+            "sourceColumn": "FechaKey",
+            "isHidden": true
+          },
+          {
+            "name": "ClienteKey",
+            "dataType": "int64",
+            "sourceColumn": "ClienteKey",
+            "isHidden": true
+          },
+          {
+            "name": "ArticuloKey",
+            "dataType": "int64",
+            "sourceColumn": "ArticuloKey",
+            "isHidden": true
+          },
+          {
+            "name": "DepartamentoKey",
+            "dataType": "int64",
+            "sourceColumn": "DepartamentoKey",
+            "isHidden": true
+          },
+          {
+            "name": "CanalKey",
+            "dataType": "int64",
+            "sourceColumn": "CanalKey",
+            "isHidden": true
+          },
+          {
+            "name": "TemporadaKey",
+            "dataType": "int64",
+            "sourceColumn": "TemporadaKey",
+            "isHidden": true
+          },
+          {
+            "name": "Precio",
+            "dataType": "decimal",
+            "sourceColumn": "Precio",
+            "isHidden": true,
+            "formatString": "#,0.00"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "FactVentas",
+            "dataView": "full",
+            "source": {
+              "query": "SELECT [FechaKey], [ClienteKey], [ArticuloKey], [DepartamentoKey], [CanalKey], [TemporadaKey], [Precio]\n  FROM [Ventas].[FactVentas]",
+              "dataSource": "DWH_HM"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": ".Ventas",
+            "expression": "SUM(FactVentas[Precio])",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Ventas",
+            "description": "Suma del precio de cada artículo vendido"
+          },
+          {
+            "name": ".Ticket_Promedio",
+            "expression": "AVERAGE(FactVentas[Precio])",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Ventas",
+            "description": "Precio promedio por artículo vendido"
+          },
+          {
+            "name": ".Transacciones",
+            "expression": "COUNTROWS(FactVentas)",
+            "formatString": "#,0",
+            "displayFolder": "1. Ventas",
+            "description": "Artículos vendidos (una fila por artículo)"
+          },
+          {
+            "name": ".Clientes_Unicos",
+            "expression": "DISTINCTCOUNT(FactVentas[ClienteKey])",
+            "formatString": "#,0",
+            "displayFolder": "1. Ventas"
+          },
+          {
+            "name": ".Articulos_Distintos",
+            "expression": "DISTINCTCOUNT(FactVentas[ArticuloKey])",
+            "formatString": "#,0",
+            "displayFolder": "1. Ventas"
+          },
+          {
+            "name": ".Ventas_por_Cliente",
+            "expression": "DIVIDE([.Ventas], [.Clientes_Unicos])",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Ventas"
+          },
+          {
+            "name": ".Articulos_por_Cliente",
+            "expression": "DIVIDE([.Transacciones], [.Clientes_Unicos])",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Ventas"
+          },
+          {
+            "name": ".Ventas_Online",
+            "expression": "CALCULATE([.Ventas], DimCanal[NombreCanal] = \"Online\")",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Ventas"
+          },
+          {
+            "name": ".Ventas_Tienda",
+            "expression": "CALCULATE([.Ventas], DimCanal[NombreCanal] = \"Tienda fisica\")",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Ventas"
+          },
+          {
+            "name": ".%Ventas_Online",
+            "expression": "DIVIDE([.Ventas_Online], [.Ventas])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "1. Ventas"
+          },
+          {
+            "name": ".%Participacion",
+            "expression": "DIVIDE([.Ventas], CALCULATE([.Ventas], ALLSELECTED()))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "1. Ventas",
+            "description": "Participación sobre el total visible"
+          },
+          {
+            "name": ".Acumulado_Anual",
+            "expression": "TOTALYTD([.Ventas], DimFecha[Fecha])",
+            "formatString": "#,0.00",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".Ventas_Ultimos_Dias_7",
+            "expression": "CALCULATE ( [.Ventas], DATESINPERIOD ( DimFecha[Fecha], MAX ( DimFecha[Fecha] ), -7, DAY ) )",
+            "formatString": "#,0.00",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".Ventas_Ultimos_Dias_7_avg",
+            "expression": "AVERAGEX ( DATESINPERIOD ( DimFecha[Fecha], MAX ( DimFecha[Fecha] ), -7, DAY ), [.Ventas] )",
+            "formatString": "#,0.00",
+            "displayFolder": "2. Tiempo",
+            "description": "Promedio diario de ventas de los últimos 7 días (media móvil)"
+          },
+          {
+            "name": ".Ventas_Mismo_Periodo_AA",
+            "expression": "CALCULATE([.Ventas], SAMEPERIODLASTYEAR(DimFecha[Fecha]))",
+            "formatString": "#,0.00",
+            "displayFolder": "2. Tiempo",
+            "description": "Ventas del mismo periodo del año anterior"
+          },
+          {
+            "name": ".%Crecimiento_Interanual",
+            "expression": "DIVIDE([.Ventas] - [.Ventas_Mismo_Periodo_AA], [.Ventas_Mismo_Periodo_AA])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".Ventas_Anio_Actual",
+            "expression": "VAR anio = [.Anio_Actual]\nRETURN\n    CALCULATE([.Ventas], ALL(DimFecha[Anio]), DimFecha[Anio] = anio)",
+            "formatString": "#,0.00",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".Ventas_Anio_prev-1",
+            "expression": "VAR anio = [.Anio_Actual] - 1\nRETURN\n    CALCULATE([.Ventas], ALL(DimFecha[Anio]), DimFecha[Anio] = anio)",
+            "formatString": "#,0.00",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".Ventas_Anio_prev-2",
+            "expression": "VAR anio = [.Anio_Actual] - 2\nRETURN\n    CALCULATE([.Ventas], ALL(DimFecha[Anio]), DimFecha[Anio] = anio)",
+            "formatString": "#,0.00",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".%var_Ventas",
+            "expression": "DIVIDE([.Ventas_Anio_Actual] - [.Ventas_Anio_prev-1], [.Ventas_Anio_prev-1])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".%Var_Ventas_I",
+            "expression": "VAR si = IF([.%var_Ventas] < 0, \"▼\", \"▲\")\nRETURN\n    IF(ISBLANK([.%var_Ventas]), BLANK(), FORMAT([.%var_Ventas], \"0.00 %\") & \"  \" & si)",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".Titulo_Varianza",
+            "expression": "\"Año \" & [.Anio_Actual] & \" vs \" & ([.Anio_Actual] - 1)",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".%var_Ventas1",
+            "expression": "DIVIDE([.Ventas_Anio_Actual] - [.Ventas_Anio_prev-2], [.Ventas_Anio_prev-2])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".%Var_Ventas1_I",
+            "expression": "VAR si = IF([.%var_Ventas1] < 0, \"▼\", \"▲\")\nRETURN\n    IF(ISBLANK([.%var_Ventas1]), BLANK(), FORMAT([.%var_Ventas1], \"0.00 %\") & \"  \" & si)",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".Titulo_Varianza1",
+            "expression": "\"Año \" & [.Anio_Actual] & \" vs \" & ([.Anio_Actual] - 2)",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".Titulo_Comparacion_anual",
+            "expression": "\"Comparación anual \" & [.Anio_Actual] & \" - \" & ([.Anio_Actual] - 1) & \" - \" & ([.Anio_Actual] - 2)",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".%Pareto_Ventas_Departamento",
+            "expression": "VAR A = [.Ventas]\nVAR B = CALCULATE([.Ventas], ALLSELECTED(DimDepartamento[Departamento]))\nVAR TOTAL =\n    DIVIDE(\n        SUMX(\n            FILTER(\n                SUMMARIZE(ALLSELECTED(DimDepartamento[Departamento]), DimDepartamento[Departamento], \"PORC\", [.Ventas]),\n                [PORC] >= A),\n            [PORC]),\n        B)\nRETURN\n    TOTAL",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "3. Pareto",
+            "description": "Porcentaje acumulado de ventas (departamentos ordenados de mayor a menor)"
+          },
+          {
+            "name": ".%Pareto_Ventas_Seccion",
+            "expression": "VAR A = [.Ventas]\nVAR B = CALCULATE([.Ventas], ALLSELECTED(DimDepartamento[Seccion]))\nVAR TOTAL =\n    DIVIDE(\n        SUMX(\n            FILTER(\n                SUMMARIZE(ALLSELECTED(DimDepartamento[Seccion]), DimDepartamento[Seccion], \"PORC\", [.Ventas]),\n                [PORC] >= A),\n            [PORC]),\n        B)\nRETURN\n    TOTAL",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "3. Pareto",
+            "description": "Porcentaje acumulado de ventas (secciones ordenadas de mayor a menor)"
+          }
+        ]
+      },
+      {
+        "name": "FactMetas",
+        "columns": [
+          {
+            "name": "Escenario",
+            "dataType": "string",
+            "sourceColumn": "Escenario"
+          },
+          {
+            "name": "FechaKey",
+            "dataType": "int64",
+            "sourceColumn": "FechaKey",
+            "isHidden": true
+          },
+          {
+            "name": "DepartamentoKey",
+            "dataType": "int64",
+            "sourceColumn": "DepartamentoKey",
+            "isHidden": true
+          },
+          {
+            "name": "TemporadaKey",
+            "dataType": "int64",
+            "sourceColumn": "TemporadaKey",
+            "isHidden": true
+          },
+          {
+            "name": "MetaDiaria",
+            "dataType": "decimal",
+            "sourceColumn": "MetaDiaria",
+            "isHidden": true,
+            "formatString": "#,0.00",
+            "description": "Meta diaria de GoalsHyM.xlsx (Monto), expandida a cada dia de su mes y temporada"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "FactMetas",
+            "dataView": "full",
+            "source": {
+              "query": "SELECT [Escenario], [FechaKey], [DepartamentoKey], [TemporadaKey], [MetaDiaria]\n  FROM [Ventas].[vw_FactMetasDiaria]",
+              "dataSource": "DWH_HM"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": ".Escenario_Activo",
+            "expression": "SELECTEDVALUE(FactMetas[Escenario], \"Escenario 1\")",
+            "displayFolder": "4. Metas",
+            "description": "Escenario elegido en el segmentador; si no hay uno solo, se usa Escenario 1"
+          },
+          {
+            "name": ".Meta",
+            "expression": "VAR esc = [.Escenario_Activo]\nRETURN\n    CALCULATE(SUM(FactMetas[MetaDiaria]), FactMetas[Escenario] = esc)",
+            "formatString": "#,0.00",
+            "displayFolder": "4. Metas"
+          },
+          {
+            "name": ".%Cumplimiento_Meta",
+            "expression": "DIVIDE([.Ventas], [.Meta])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "4. Metas"
+          },
+          {
+            "name": ".Brecha_Meta",
+            "expression": "IF(ISBLANK([.Meta]), BLANK(), [.Ventas] - [.Meta])",
+            "formatString": "#,0.00",
+            "displayFolder": "4. Metas"
+          },
+          {
+            "name": ".Cumplimiento_I",
+            "expression": "VAR c = [.%Cumplimiento_Meta]\nRETURN\n    IF(ISBLANK(c), BLANK(), FORMAT(c, \"0.0 %\") & IF(c >= 1, \"  ▲\", \"  ▼\"))",
+            "displayFolder": "4. Metas"
+          },
+          {
+            "name": ".Color_Cumplimiento",
+            "expression": "VAR c = [.%Cumplimiento_Meta]\nRETURN\n    SWITCH(TRUE(), ISBLANK(c), BLANK(), c >= 1, \"#2E7D32\", c >= 0.9, \"#F9A825\", \"#C62828\")",
+            "displayFolder": "4. Metas",
+            "description": "Verde >= 100 %, ámbar >= 90 %, rojo < 90 % (formato condicional por valor de campo)"
+          },
+          {
+            "name": ".Titulo_Ventas_vs_Meta",
+            "expression": "\"Ventas vs meta diaria acumulada - \" & [.Escenario_Activo]",
+            "displayFolder": "4. Metas"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "FV_Fecha",
+        "fromTable": "FactVentas",
+        "fromColumn": "FechaKey",
+        "toTable": "DimFecha",
+        "toColumn": "FechaKey"
+      },
+      {
+        "name": "FV_Cliente",
+        "fromTable": "FactVentas",
+        "fromColumn": "ClienteKey",
+        "toTable": "DimCliente",
+        "toColumn": "ClienteKey"
+      },
+      {
+        "name": "FV_Articulo",
+        "fromTable": "FactVentas",
+        "fromColumn": "ArticuloKey",
+        "toTable": "DimArticulo",
+        "toColumn": "ArticuloKey"
+      },
+      {
+        "name": "FV_Departamento",
+        "fromTable": "FactVentas",
+        "fromColumn": "DepartamentoKey",
+        "toTable": "DimDepartamento",
+        "toColumn": "DepartamentoKey"
+      },
+      {
+        "name": "FV_Canal",
+        "fromTable": "FactVentas",
+        "fromColumn": "CanalKey",
+        "toTable": "DimCanal",
+        "toColumn": "CanalKey"
+      },
+      {
+        "name": "FV_Temporada",
+        "fromTable": "FactVentas",
+        "fromColumn": "TemporadaKey",
+        "toTable": "DimTemporada",
+        "toColumn": "TemporadaKey"
+      },
+      {
+        "name": "FM_Fecha",
+        "fromTable": "FactMetas",
+        "fromColumn": "FechaKey",
+        "toTable": "DimFecha",
+        "toColumn": "FechaKey"
+      },
+      {
+        "name": "FM_Departamento",
+        "fromTable": "FactMetas",
+        "fromColumn": "DepartamentoKey",
+        "toTable": "DimDepartamento",
+        "toColumn": "DepartamentoKey"
+      },
+      {
+        "name": "FM_Temporada",
+        "fromTable": "FactMetas",
+        "fromColumn": "TemporadaKey",
+        "toTable": "DimTemporada",
+        "toColumn": "TemporadaKey"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "400"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}

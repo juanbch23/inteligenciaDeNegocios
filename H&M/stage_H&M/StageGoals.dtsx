@@ -1,0 +1,631 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="10/21/2026 12:07:53 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="LAPTOP-IO596P6A"
+  DTS:CreatorName="LAPTOP-IO596P6A\Juan"
+  DTS:DTSID="{FBD7E2A2-858E-4278-BBAB-B3B51BE3504F}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1000.7"
+  DTS:LocaleID="3082"
+  DTS:ObjectName="StageGoals"
+  DTS:ProtectionLevel="0"
+  DTS:VersionGUID="{928167E4-DA18-43F3-B087-AFDF43ED4D02}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A09F24BE-627A-4C9C-86DD-C8D2FF29D730}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="AuditKey">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{D2F69BC9-B4A5-44C3-AA54-9F42E4AE0626}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="RowCount">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{CE1C5360-79AC-4AE3-BFE6-9AC2185CA2CD}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="TableName">
+      <DTS:VariableValue
+        DTS:DataType="8">[HM].[StageGoals]</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\DF StageGoals"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Tarea Flujo de datos"
+      DTS:DTSID="{97793A3B-BEC5-4062-B03C-7964CE80EBAA}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DF StageGoals"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          autoAdjustBufferSize="true"
+          version="1">
+          <components>
+            <component
+              refId="Package\DF StageGoals\Origen de Excel"
+              componentClassID="Microsoft.ExcelSource"
+              contactInfo="Origen de Excel;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;1"
+              description="Origen de Excel"
+              name="Origen de Excel"
+              usesDispositions="true"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Número de segundos antes de que se agote el tiempo de espera de un comando. Un valor de 0 indica un tiempo de espera infinito."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica el nombre del objeto de base de datos usado para abrir un conjunto de filas."
+                  name="OpenRowset">Hoja1$</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica la variable que contiene el nombre del objeto de base de datos usado para abrir un conjunto de filas."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="Comando SQL para ejecutar."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="Variable que contiene el comando SQL para ejecutar."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica el modo utilizado para obtener acceso a la base de datos."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="La asignación de parámetros del comando SQL a variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DF StageGoals\Origen de Excel.Connections[OleDbConnection]"
+                  connectionManagerID="{A32BD50C-86C5-4403-AB89-B322CFF18C19}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[Excel GoalsHyM]"
+                  description="La conexión de tiempo de ejecución OLE DB usada para obtener acceso a la base de datos."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel]"
+                  name="Salida de origen de Excel">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[Escenario]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].ExternalColumns[Escenario]"
+                      length="255"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[Escenario]"
+                      name="Escenario"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[Monto]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].ExternalColumns[Monto]"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[Monto]"
+                      name="Monto"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[department_name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].ExternalColumns[department_name]"
+                      length="255"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[department_name]"
+                      name="department_name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[section_name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].ExternalColumns[section_name]"
+                      length="255"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[section_name]"
+                      name="section_name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[TemporadaID]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].ExternalColumns[TemporadaID]"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[TemporadaID]"
+                      name="TemporadaID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[AÑO MES]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].ExternalColumns[AÑO MES]"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[AÑO MES]"
+                      name="AÑO MES"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].ExternalColumns[Escenario]"
+                      dataType="wstr"
+                      length="255"
+                      name="Escenario" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].ExternalColumns[Monto]"
+                      dataType="r8"
+                      name="Monto" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].ExternalColumns[department_name]"
+                      dataType="wstr"
+                      length="255"
+                      name="department_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].ExternalColumns[section_name]"
+                      dataType="wstr"
+                      length="255"
+                      name="section_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].ExternalColumns[TemporadaID]"
+                      dataType="r8"
+                      name="TemporadaID" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].ExternalColumns[AÑO MES]"
+                      dataType="r8"
+                      name="AÑO MES" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel]"
+                  isErrorOut="true"
+                  name="Salida de error de origen de Excel">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[Escenario]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[Escenario]"
+                      name="Escenario" />
+                    <outputColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[Monto]"
+                      dataType="r8"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[Monto]"
+                      name="Monto" />
+                    <outputColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[department_name]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[department_name]"
+                      name="department_name" />
+                    <outputColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[section_name]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[section_name]"
+                      name="section_name" />
+                    <outputColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[TemporadaID]"
+                      dataType="r8"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[TemporadaID]"
+                      name="TemporadaID" />
+                    <outputColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[AÑO MES]"
+                      dataType="r8"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[AÑO MES]"
+                      name="AÑO MES" />
+                    <outputColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de error de origen de Excel].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DF StageGoals\StageGoals"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4"
+              description="Destino de OLE DB"
+              name="StageGoals"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Número de segundos antes de que se agote el tiempo de espera de un comando. Un valor de 0 indica un tiempo de espera infinito."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica el nombre del objeto de base de datos usado para abrir un conjunto de filas."
+                  name="OpenRowset">[HM].[StageGoals]</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica la variable que contiene el nombre del objeto de base de datos usado para abrir un conjunto de filas."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="Comando SQL para ejecutar."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica la página de códigos de columna para utilizar cuando la información de página de códigos no está disponible en el origen de datos."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Fuerza el uso del valor de la propiedad DefaultCodePage al describir datos de caracteres."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica el modo utilizado para obtener acceso a la base de datos."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indica si los valores proporcionados para columnas de identidad se van a copiar al destino. Si es False, los valores de las columnas de identidad se generan automáticamente en el destino. Sólo se aplica si está activada la carga rápida."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indica si las columnas que contienen NULL tendrán NULL insertado en el destino. Si es False, las columnas que contienen NULL tendrán sus valores predeterminados insertados en el destino. Sólo se aplica si está activada la carga rápida."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica opciones para usar con la carga rápida. Sólo se aplica si está activada la carga rápida."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica cuándo se emiten confirmaciones durante la inserción de datos. El valor 0 especifica que se emitirá una confirmación al final de la inserción de datos. Sólo se aplica si está activada la carga rápida."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DF StageGoals\StageGoals.Connections[OleDbConnection]"
+                  connectionManagerID="{8C7C07A6-87F9-4051-ADAA-5AE5E07EC012}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[OleDB STAGE_HM]"
+                  description="La conexión de tiempo de ejecución OLE DB usada para obtener acceso a la base de datos."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB]"
+                  errorOrTruncationOperation="Insertar"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].Columns[Escenario]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Escenario"
+                      externalMetadataColumnId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].ExternalColumns[Escenario]"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[Escenario]" />
+                    <inputColumn
+                      refId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].Columns[Monto]"
+                      cachedDataType="r8"
+                      cachedName="Monto"
+                      externalMetadataColumnId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].ExternalColumns[Monto]"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[Monto]" />
+                    <inputColumn
+                      refId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].Columns[department_name]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="department_name"
+                      externalMetadataColumnId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].ExternalColumns[department_name]"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[department_name]" />
+                    <inputColumn
+                      refId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].Columns[section_name]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="section_name"
+                      externalMetadataColumnId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].ExternalColumns[section_name]"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[section_name]" />
+                    <inputColumn
+                      refId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].Columns[TemporadaID]"
+                      cachedDataType="r8"
+                      cachedName="TemporadaID"
+                      externalMetadataColumnId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].ExternalColumns[TemporadaID]"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[TemporadaID]" />
+                    <inputColumn
+                      refId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].Columns[AÑO MES]"
+                      cachedDataType="r8"
+                      cachedName="AÑO MES"
+                      externalMetadataColumnId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].ExternalColumns[AnioMes]"
+                      lineageId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel].Columns[AÑO MES]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].ExternalColumns[Escenario]"
+                      dataType="wstr"
+                      length="255"
+                      name="Escenario" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].ExternalColumns[Monto]"
+                      dataType="r8"
+                      name="Monto" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].ExternalColumns[department_name]"
+                      dataType="wstr"
+                      length="255"
+                      name="department_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].ExternalColumns[section_name]"
+                      dataType="wstr"
+                      length="255"
+                      name="section_name" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].ExternalColumns[TemporadaID]"
+                      dataType="r8"
+                      name="TemporadaID" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB].ExternalColumns[AnioMes]"
+                      dataType="r8"
+                      name="AnioMes" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DF StageGoals\StageGoals.Outputs[Salida de error de destino de OLE DB]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Salida de error de destino de OLE DB"
+                  synchronousInputId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DF StageGoals\StageGoals.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DF StageGoals\StageGoals.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DF StageGoals\StageGoals.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DF StageGoals\StageGoals.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\DF StageGoals.Paths[Salida de origen de Excel]"
+              endId="Package\DF StageGoals\StageGoals.Inputs[Entrada de destino de OLE DB]"
+              name="Salida de origen de Excel"
+              startId="Package\DF StageGoals\Origen de Excel.Outputs[Salida de origen de Excel]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Task Get AuditKey"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{21038C54-09C8-4CC1-8277-444CFA97AFEF}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Task Get AuditKey"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{0C6E4564-200A-45CF-938F-1FDBC0DC7C42}"
+          SQLTask:SqlStatementSource="INSERT INTO [DIM_AUDIT]&#xA;           ([TableName]&#xA;           ,[PkgName]&#xA;           ,[PkgGUID]&#xA;           ,[ExecStartDT]&#xA;           ,[ExecStopDT]&#xA;           ,[ExecutionInstanceGUID]&#xA;           ,[ExtractRowCnt]&#xA;           ,[TableInitialRowCnt]&#xA;           ,[TableFinalRowCnt]&#xA;           ,[SuccessfulProcessingInd])&#xA;     VALUES&#xA;           (@TableName&#xA;           ,@PkgName&#xA;           ,@PkgGUID&#xA;           ,@StartTime&#xA;           ,NULL&#xA;           ,@PkgExecGUID&#xA;           ,NULL&#xA;           ,@RowCount&#xA;           ,NULL&#xA;           ,'N')&#xA;SELECT CAST(SCOPE_IDENTITY() AS INT) AS AuditKey"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::AuditKey" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="StartTime"
+            SQLTask:DtsVariableName="System::StartTime"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="26"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="PkgName"
+            SQLTask:DtsVariableName="System::PackageName"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="16"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="PkgGUID"
+            SQLTask:DtsVariableName="System::PackageID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="9"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="PkgExecGUID"
+            SQLTask:DtsVariableName="System::ExecutionInstanceGUID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="9"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="TableName"
+            SQLTask:DtsVariableName="User::TableName"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="16"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="RowCount"
+            SQLTask:DtsVariableName="User::RowCount"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="11"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Task Post RowCnt"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{D1BC7045-C276-4CE9-8F20-C06A723F8F4F}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Task Post RowCnt"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{6BE669DC-F545-498B-B148-714CD4C30B75}"
+          SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [HM].[StageGoals]"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::RowCount" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Task Prior RowCnt"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{6DCF078A-BB08-4021-915A-036495B28789}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Task Prior RowCnt"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{6BE669DC-F545-498B-B148-714CD4C30B75}"
+          SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [HM].[StageGoals]"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::RowCount" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\TRUNCATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{3FA00DBF-27F1-43F6-A4CE-72DB4306AD64}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="TRUNCATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{6BE669DC-F545-498B-B148-714CD4C30B75}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [HM].[StageGoals];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update AuditDim"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{935EC64B-A97A-42D7-B196-1F6F4791141C}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update AuditDim"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{0C6E4564-200A-45CF-938F-1FDBC0DC7C42}"
+          SQLTask:SqlStatementSource="UPDATE [DIM_AUDIT]&#xA;SET ExecStopDT = SYSDATETIME()&#xA; , ExtractRowCnt = @RowCount&#xA; ,TableFinalRowCnt = @RowCount&#xA; ,SuccessfulProcessingInd='Y'&#xA;WHERE AuditKey = @AuditKey;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="RowCount"
+            SQLTask:DtsVariableName="User::RowCount"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="11"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="AuditKey"
+            SQLTask:DtsVariableName="User::AuditKey"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="11"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{0DAF11F2-E970-4A0B-8578-EAA07851D912\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{0DAF11F2-E970-4A0B-8578-EAA07851D912}"
+      DTS:From="Package\Task Prior RowCnt"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{0DAF11F2-E970-4A0B-8578-EAA07851D912}"
+      DTS:To="Package\Task Get AuditKey" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{15BE7D75-F868-42D7-9901-1D43974868D3\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{15BE7D75-F868-42D7-9901-1D43974868D3}"
+      DTS:From="Package\DF StageGoals"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{15BE7D75-F868-42D7-9901-1D43974868D3}"
+      DTS:To="Package\Task Post RowCnt" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{2E81A4AE-BC30-4DFB-81CB-84FED4A0C723\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{2E81A4AE-BC30-4DFB-81CB-84FED4A0C723}"
+      DTS:From="Package\Task Post RowCnt"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{2E81A4AE-BC30-4DFB-81CB-84FED4A0C723}"
+      DTS:To="Package\Update AuditDim" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{67727848-DA8C-4DA3-B8EE-52338DBC09FF\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{67727848-DA8C-4DA3-B8EE-52338DBC09FF}"
+      DTS:From="Package\TRUNCATE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{67727848-DA8C-4DA3-B8EE-52338DBC09FF}"
+      DTS:To="Package\DF StageGoals" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{A30269D9-ABBB-4EE8-82D0-D4CF65E8DDFB\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{A30269D9-ABBB-4EE8-82D0-D4CF65E8DDFB}"
+      DTS:From="Package\Task Get AuditKey"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{A30269D9-ABBB-4EE8-82D0-D4CF65E8DDFB}"
+      DTS:To="Package\TRUNCATE" />
+  </DTS:PrecedenceConstraints>
+</DTS:Executable>

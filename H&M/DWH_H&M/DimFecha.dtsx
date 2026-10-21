@@ -1,0 +1,1090 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="10/21/2026 12:08:11 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="LAPTOP-IO596P6A"
+  DTS:CreatorName="LAPTOP-IO596P6A\Juan"
+  DTS:DTSID="{B567D50E-96E2-4D3B-9D6E-0A2C9640BF89}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1000.7"
+  DTS:LocaleID="3082"
+  DTS:ObjectName="DimFecha"
+  DTS:ProtectionLevel="0"
+  DTS:VersionGUID="{563A3C99-0C07-47E2-9A13-FEAB4D01CF3D}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{3A297717-229F-44CF-B859-6C7F854F483B}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="AuditKey">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{EECBA7E4-1E56-4790-9CB1-D38DA6D1B15C}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="RowCount">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{963775E3-61F7-4196-A7C3-88CE8E1F1671}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="TableName">
+      <DTS:VariableValue
+        DTS:DataType="8">[GENERICO].[DimFecha]</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\DIM FECHA"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Tarea Flujo de datos"
+      DTS:DTSID="{72DF45B1-686F-44F3-A5BF-4EFC14B32FE6}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DIM FECHA"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          autoAdjustBufferSize="true"
+          version="1">
+          <components>
+            <component
+              refId="Package\DIM FECHA\Columna derivada Fin_Semana"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Columna derivada;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;0"
+              description="Crea nuevos valores de columna aplicando expresiones a las columnas de entrada de la transformación. Crea nuevas columnas o sobrescribe las columnas existentes. Por ejemplo, se concatenan los valores de las columnas 'nombre' y 'apellidos' para crear una columna 'nombre completo'."
+              name="Columna derivada Fin_Semana"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DIM FECHA\Columna derivada Fin_Semana.Inputs[Entrada de columna derivada]"
+                  description="Entrada en la transformación Columna derivada"
+                  name="Entrada de columna derivada">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DIM FECHA\Columna derivada Fin_Semana.Inputs[Entrada de columna derivada].Columns[Dia_Semana]"
+                      cachedDataType="ui1"
+                      cachedName="Dia_Semana"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Dia_Semana]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DIM FECHA\Columna derivada Fin_Semana.Outputs[Salida de columna derivada]"
+                  description="Salida predeterminada de la transformación Columna derivada"
+                  exclusionGroup="1"
+                  name="Salida de columna derivada"
+                  synchronousInputId="Package\DIM FECHA\Columna derivada Fin_Semana.Inputs[Entrada de columna derivada]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DIM FECHA\Columna derivada Fin_Semana.Outputs[Salida de columna derivada].Columns[Fin_Semana]"
+                      dataType="ui1"
+                      description="1 = sabado o domingo"
+                      errorOrTruncationOperation="Cálculo"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\DIM FECHA\Columna derivada Fin_Semana.Outputs[Salida de columna derivada].Columns[Fin_Semana]"
+                      name="Fin_Semana"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expresión de columna derivada"
+                          name="Expression">(#{Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Dia_Semana]} == 1 || #{Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Dia_Semana]} == 7) ? (DT_UI1)1 : (DT_UI1)0</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expresión descriptiva de columna derivada"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(Dia_Semana == 1 || Dia_Semana == 7) ? (DT_UI1)1 : (DT_UI1)0</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DIM FECHA\Columna derivada Fin_Semana.Outputs[Salida de error de columna derivada]"
+                  description="Salida de error de la transformación Columna derivada"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Salida de error de columna derivada"
+                  synchronousInputId="Package\DIM FECHA\Columna derivada Fin_Semana.Inputs[Entrada de columna derivada]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DIM FECHA\Columna derivada Fin_Semana.Outputs[Salida de error de columna derivada].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DIM FECHA\Columna derivada Fin_Semana.Outputs[Salida de error de columna derivada].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Columna derivada Fin_Semana.Outputs[Salida de error de columna derivada].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DIM FECHA\Columna derivada Fin_Semana.Outputs[Salida de error de columna derivada].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DIM FECHA\DimFecha"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="Destino de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4"
+              description="Destino de OLE DB"
+              name="DimFecha"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Número de segundos antes de que se agote el tiempo de espera de un comando. Un valor de 0 indica un tiempo de espera infinito."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica el nombre del objeto de base de datos usado para abrir un conjunto de filas."
+                  name="OpenRowset">[GENERICO].[DimFecha]</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica la variable que contiene el nombre del objeto de base de datos usado para abrir un conjunto de filas."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="Comando SQL para ejecutar."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica la página de códigos de columna para utilizar cuando la información de página de códigos no está disponible en el origen de datos."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Fuerza el uso del valor de la propiedad DefaultCodePage al describir datos de caracteres."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica el modo utilizado para obtener acceso a la base de datos."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indica si los valores proporcionados para columnas de identidad se van a copiar al destino. Si es False, los valores de las columnas de identidad se generan automáticamente en el destino. Sólo se aplica si está activada la carga rápida."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indica si las columnas que contienen NULL tendrán NULL insertado en el destino. Si es False, las columnas que contienen NULL tendrán sus valores predeterminados insertados en el destino. Sólo se aplica si está activada la carga rápida."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica opciones para usar con la carga rápida. Sólo se aplica si está activada la carga rápida."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica cuándo se emiten confirmaciones durante la inserción de datos. El valor 0 especifica que se emitirá una confirmación al final de la inserción de datos. Sólo se aplica si está activada la carga rápida."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DIM FECHA\DimFecha.Connections[OleDbConnection]"
+                  connectionManagerID="{4DF34612-2498-4854-A81E-1FA2BAFB57B2}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[OleDB DWH_HM]"
+                  description="La conexión de tiempo de ejecución OLE DB usada para obtener acceso a la base de datos."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB]"
+                  errorOrTruncationOperation="Insertar"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Entrada de destino de OLE DB">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[FechaKey]"
+                      cachedDataType="i4"
+                      cachedName="FechaKey"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[FechaKey]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[FechaKey]" />
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[Fecha]"
+                      cachedDataType="dbDate"
+                      cachedName="Fecha"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Fecha]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Fecha]" />
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[Dia_Semana]"
+                      cachedDataType="ui1"
+                      cachedName="Dia_Semana"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Dia_Semana]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Dia_Semana]" />
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[Nombre_Dia_Semana]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="15"
+                      cachedName="Nombre_Dia_Semana"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Nombre_Dia_Semana]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Nombre_Dia_Semana]" />
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[Dia_Mes]"
+                      cachedDataType="ui1"
+                      cachedName="Dia_Mes"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Dia_Mes]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Dia_Mes]" />
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[Dia_Anio]"
+                      cachedDataType="i2"
+                      cachedName="Dia_Anio"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Dia_Anio]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Dia_Anio]" />
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[Nombre_Mes]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="15"
+                      cachedName="Nombre_Mes"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Nombre_Mes]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Nombre_Mes]" />
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[Mes_Anio]"
+                      cachedDataType="ui1"
+                      cachedName="Mes_Anio"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Mes_Anio]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Mes_Anio]" />
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[Semana_Anio]"
+                      cachedDataType="ui1"
+                      cachedName="Semana_Anio"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Semana_Anio]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Semana_Anio]" />
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[Anio]"
+                      cachedDataType="i2"
+                      cachedName="Anio"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Anio]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Anio]" />
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[Bimestre]"
+                      cachedDataType="ui1"
+                      cachedName="Bimestre"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Bimestre]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Bimestre]" />
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[Trimestre]"
+                      cachedDataType="ui1"
+                      cachedName="Trimestre"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Trimestre]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Trimestre]" />
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[Cuatrimestre]"
+                      cachedDataType="ui1"
+                      cachedName="Cuatrimestre"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Cuatrimestre]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Cuatrimestre]" />
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[Semestre]"
+                      cachedDataType="ui1"
+                      cachedName="Semestre"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Semestre]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Semestre]" />
+                    <inputColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].Columns[Fin_Semana]"
+                      cachedDataType="ui1"
+                      cachedName="Fin_Semana"
+                      externalMetadataColumnId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Fin_Semana]"
+                      lineageId="Package\DIM FECHA\Columna derivada Fin_Semana.Outputs[Salida de columna derivada].Columns[Fin_Semana]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[FechaKey]"
+                      dataType="i4"
+                      name="FechaKey" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Fecha]"
+                      dataType="dbDate"
+                      name="Fecha" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Dia_Semana]"
+                      dataType="ui1"
+                      name="Dia_Semana" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Nombre_Dia_Semana]"
+                      codePage="1252"
+                      dataType="str"
+                      length="15"
+                      name="Nombre_Dia_Semana" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Dia_Mes]"
+                      dataType="ui1"
+                      name="Dia_Mes" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Dia_Anio]"
+                      dataType="i2"
+                      name="Dia_Anio" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Nombre_Mes]"
+                      codePage="1252"
+                      dataType="str"
+                      length="15"
+                      name="Nombre_Mes" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Mes_Anio]"
+                      dataType="ui1"
+                      name="Mes_Anio" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Semana_Anio]"
+                      dataType="ui1"
+                      name="Semana_Anio" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Anio]"
+                      dataType="i2"
+                      name="Anio" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Bimestre]"
+                      dataType="ui1"
+                      name="Bimestre" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Trimestre]"
+                      dataType="ui1"
+                      name="Trimestre" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Cuatrimestre]"
+                      dataType="ui1"
+                      name="Cuatrimestre" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Semestre]"
+                      dataType="ui1"
+                      name="Semestre" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Fin_Semana]"
+                      dataType="ui1"
+                      name="Fin_Semana" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[AnioMes]"
+                      dataType="i4"
+                      name="AnioMes" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DIM FECHA\DimFecha.Outputs[Salida de error de destino de OLE DB]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Salida de error de destino de OLE DB"
+                  synchronousInputId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DIM FECHA\DimFecha.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DIM FECHA\DimFecha.Outputs[Salida de error de destino de OLE DB].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\DimFecha.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DIM FECHA\DimFecha.Outputs[Salida de error de destino de OLE DB].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DIM FECHA\Existe en DimFecha"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Búsqueda;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;6"
+              description="Combina columnas adicionales con el flujo de datos mediante la búsqueda de valores en una tabla. Por ejemplo, se combina la columna 'id. de empleado' con la tabla de empleados para obtener la 'fecha de contratación' y 'el nombre de empleado'. Se recomienda esta transformación cuando hay suficiente espacio en memoria para la tabla de búsqueda."
+              name="Existe en DimFecha"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Especifica la instrucción SQL que genera la tabla de búsqueda."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [FechaKey] FROM [GENERICO].[DimFecha]</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica una instrucción SQL que usa parámetros para generar la tabla de búsqueda."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica el tipo de conexión utilizado para tener acceso al conjunto de datos de referencia."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica el tipo de caché de la tabla de búsqueda."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica cómo la transformación de búsquedas trata las filas sin entradas coincidentes en el conjunto de datos de referencia."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica el porcentaje de la caché asignado a las filas sin entradas coincidentes en el conjunto de datos de referencia."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Uso de memoria máximo para la caché de referencia en una plataforma de 32 bits."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Uso de memoria máximo para la caché de referencia en una plataforma de 64 bits."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indica si se debe hacer referencia a metadatos en formato XML."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="FechaKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Especifica la lista de identificadores de linaje que están asignados a los parámetros que usa la instrucción SQL de la propiedad SQLCommand. Las entradas de la lista están separadas por puntos y comas."
+                  name="ParameterMap"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica la página de códigos de columna para utilizar cuando la información de página de códigos no está disponible en el origen de datos."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determina si las claves duplicadas de los datos de referencia se deben tratar como errores cuando se usa el modo de caché."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DIM FECHA\Existe en DimFecha.Connections[OleDbConnection]"
+                  connectionManagerID="{4DF34612-2498-4854-A81E-1FA2BAFB57B2}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[OleDB DWH_HM]"
+                  description="Administrador de conexiones utilizado para obtener acceso a los datos de búsqueda."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DIM FECHA\Existe en DimFecha.Inputs[Entrada de búsqueda]"
+                  name="Entrada de búsqueda">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DIM FECHA\Existe en DimFecha.Inputs[Entrada de búsqueda].Columns[FechaKey]"
+                      cachedDataType="i4"
+                      cachedName="FechaKey"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[FechaKey]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Especifica la columna de la tabla de referencia con la que se combina una columna."
+                          name="JoinToReferenceColumn">FechaKey</property>
+                        <property
+                          dataType="System.Null"
+                          description="Especifica la columna de la tabla de referencia de la que se copia una columna."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DIM FECHA\Existe en DimFecha.Outputs[Salida de entradas coincidentes de búsqueda]"
+                  errorOrTruncationOperation="Búsqueda"
+                  exclusionGroup="1"
+                  name="Salida de entradas coincidentes de búsqueda"
+                  synchronousInputId="Package\DIM FECHA\Existe en DimFecha.Inputs[Entrada de búsqueda]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DIM FECHA\Existe en DimFecha.Outputs[Salida de entradas no coincidentes de búsqueda]"
+                  description="Salida de búsqueda que trata las filas sin entradas coincidentes en el conjunto de datos de referencia. Utilice esta salida cuando la propiedad NoMatchBehavior esté establecida en &quot;Enviar las filas sin entradas coincidentes a la salida de entradas no coincidentes&quot;."
+                  exclusionGroup="1"
+                  name="Salida de entradas no coincidentes de búsqueda"
+                  synchronousInputId="Package\DIM FECHA\Existe en DimFecha.Inputs[Entrada de búsqueda]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DIM FECHA\Existe en DimFecha.Outputs[Salida de error de búsqueda]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Salida de error de búsqueda"
+                  synchronousInputId="Package\DIM FECHA\Existe en DimFecha.Inputs[Entrada de búsqueda]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DIM FECHA\Existe en DimFecha.Outputs[Salida de error de búsqueda].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DIM FECHA\Existe en DimFecha.Outputs[Salida de error de búsqueda].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Existe en DimFecha.Outputs[Salida de error de búsqueda].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DIM FECHA\Existe en DimFecha.Outputs[Salida de error de búsqueda].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DIM FECHA\Origen de OLE DB"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="Origen de OLE DB;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;7"
+              description="Origen de OLE DB"
+              name="Origen de OLE DB"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Número de segundos antes de que se agote el tiempo de espera de un comando. Un valor de 0 indica un tiempo de espera infinito."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Especifica el nombre del objeto de base de datos usado para abrir un conjunto de filas."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Especifica la variable que contiene el nombre del objeto de base de datos usado para abrir un conjunto de filas."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="Comando SQL para ejecutar."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [FechaKey], [Fecha], [Dia_Semana], [Nombre_Dia_Semana], [Dia_Mes], [Dia_Anio], [Nombre_Mes],
+       [Mes_Anio], [Semana_Anio], [Anio], [Bimestre], [Trimestre], [Cuatrimestre], [Semestre]
+  FROM [HM].[StageFecha]</property>
+                <property
+                  dataType="System.String"
+                  description="Variable que contiene el comando SQL para ejecutar."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica la página de códigos de columna para utilizar cuando la información de página de códigos no está disponible en el origen de datos."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Fuerza el uso del valor de la propiedad DefaultCodePage al describir datos de caracteres."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifica el modo utilizado para obtener acceso a la base de datos."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="Asignaciones entre los parámetros del comando SQL y las variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DIM FECHA\Origen de OLE DB.Connections[OleDbConnection]"
+                  connectionManagerID="{88DD4EE8-77DE-4968-85B0-94F2D5243896}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[OleDB STAGE_HM]"
+                  description="La conexión de tiempo de ejecución OLE DB usada para obtener acceso a la base de datos."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB]"
+                  name="Salida de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[FechaKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[FechaKey]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[FechaKey]"
+                      name="FechaKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Fecha]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Fecha]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Fecha]"
+                      name="Fecha"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Dia_Semana]"
+                      dataType="ui1"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Dia_Semana]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Dia_Semana]"
+                      name="Dia_Semana"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Nombre_Dia_Semana]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Nombre_Dia_Semana]"
+                      length="15"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Nombre_Dia_Semana]"
+                      name="Nombre_Dia_Semana"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Dia_Mes]"
+                      dataType="ui1"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Dia_Mes]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Dia_Mes]"
+                      name="Dia_Mes"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Dia_Anio]"
+                      dataType="i2"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Dia_Anio]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Dia_Anio]"
+                      name="Dia_Anio"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Nombre_Mes]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Nombre_Mes]"
+                      length="15"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Nombre_Mes]"
+                      name="Nombre_Mes"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Mes_Anio]"
+                      dataType="ui1"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Mes_Anio]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Mes_Anio]"
+                      name="Mes_Anio"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Semana_Anio]"
+                      dataType="ui1"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Semana_Anio]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Semana_Anio]"
+                      name="Semana_Anio"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Anio]"
+                      dataType="i2"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Anio]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Anio]"
+                      name="Anio"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Bimestre]"
+                      dataType="ui1"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Bimestre]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Bimestre]"
+                      name="Bimestre"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Trimestre]"
+                      dataType="ui1"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Trimestre]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Trimestre]"
+                      name="Trimestre"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Cuatrimestre]"
+                      dataType="ui1"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Cuatrimestre]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Cuatrimestre]"
+                      name="Cuatrimestre"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Semestre]"
+                      dataType="ui1"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Semestre]"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Semestre]"
+                      name="Semestre"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[FechaKey]"
+                      dataType="i4"
+                      name="FechaKey" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Fecha]"
+                      dataType="dbDate"
+                      name="Fecha" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Dia_Semana]"
+                      dataType="ui1"
+                      name="Dia_Semana" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Nombre_Dia_Semana]"
+                      codePage="1252"
+                      dataType="str"
+                      length="15"
+                      name="Nombre_Dia_Semana" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Dia_Mes]"
+                      dataType="ui1"
+                      name="Dia_Mes" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Dia_Anio]"
+                      dataType="i2"
+                      name="Dia_Anio" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Nombre_Mes]"
+                      codePage="1252"
+                      dataType="str"
+                      length="15"
+                      name="Nombre_Mes" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Mes_Anio]"
+                      dataType="ui1"
+                      name="Mes_Anio" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Semana_Anio]"
+                      dataType="ui1"
+                      name="Semana_Anio" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Anio]"
+                      dataType="i2"
+                      name="Anio" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Bimestre]"
+                      dataType="ui1"
+                      name="Bimestre" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Trimestre]"
+                      dataType="ui1"
+                      name="Trimestre" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Cuatrimestre]"
+                      dataType="ui1"
+                      name="Cuatrimestre" />
+                    <externalMetadataColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Semestre]"
+                      dataType="ui1"
+                      name="Semestre" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB]"
+                  isErrorOut="true"
+                  name="Salida de error de origen de OLE DB">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[FechaKey]"
+                      dataType="i4"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[FechaKey]"
+                      name="FechaKey" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Fecha]"
+                      dataType="dbDate"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Fecha]"
+                      name="Fecha" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Dia_Semana]"
+                      dataType="ui1"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Dia_Semana]"
+                      name="Dia_Semana" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Nombre_Dia_Semana]"
+                      codePage="1252"
+                      dataType="str"
+                      length="15"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Nombre_Dia_Semana]"
+                      name="Nombre_Dia_Semana" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Dia_Mes]"
+                      dataType="ui1"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Dia_Mes]"
+                      name="Dia_Mes" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Dia_Anio]"
+                      dataType="i2"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Dia_Anio]"
+                      name="Dia_Anio" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Nombre_Mes]"
+                      codePage="1252"
+                      dataType="str"
+                      length="15"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Nombre_Mes]"
+                      name="Nombre_Mes" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Mes_Anio]"
+                      dataType="ui1"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Mes_Anio]"
+                      name="Mes_Anio" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Semana_Anio]"
+                      dataType="ui1"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Semana_Anio]"
+                      name="Semana_Anio" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Anio]"
+                      dataType="i2"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Anio]"
+                      name="Anio" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Bimestre]"
+                      dataType="ui1"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Bimestre]"
+                      name="Bimestre" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Trimestre]"
+                      dataType="ui1"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Trimestre]"
+                      name="Trimestre" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Cuatrimestre]"
+                      dataType="ui1"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Cuatrimestre]"
+                      name="Cuatrimestre" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Semestre]"
+                      dataType="ui1"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Semestre]"
+                      name="Semestre" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\DIM FECHA.Paths[Salida de columna derivada]"
+              endId="Package\DIM FECHA\Existe en DimFecha.Inputs[Entrada de búsqueda]"
+              name="Salida de columna derivada"
+              startId="Package\DIM FECHA\Columna derivada Fin_Semana.Outputs[Salida de columna derivada]" />
+            <path
+              refId="Package\DIM FECHA.Paths[Salida de entradas no coincidentes de búsqueda]"
+              endId="Package\DIM FECHA\DimFecha.Inputs[Entrada de destino de OLE DB]"
+              name="Salida de entradas no coincidentes de búsqueda"
+              startId="Package\DIM FECHA\Existe en DimFecha.Outputs[Salida de entradas no coincidentes de búsqueda]" />
+            <path
+              refId="Package\DIM FECHA.Paths[Salida de origen de OLE DB]"
+              endId="Package\DIM FECHA\Columna derivada Fin_Semana.Inputs[Entrada de columna derivada]"
+              name="Salida de origen de OLE DB"
+              startId="Package\DIM FECHA\Origen de OLE DB.Outputs[Salida de origen de OLE DB]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Task Get AuditKey"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{C831C0DB-E6CD-405E-A7D0-21AE37D3B1E0}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Task Get AuditKey"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:SqlStatementSource="INSERT INTO [DIM_AUDIT]&#xA;           ([TableName]&#xA;           ,[PkgName]&#xA;           ,[PkgGUID]&#xA;           ,[ExecStartDT]&#xA;           ,[ExecStopDT]&#xA;           ,[ExecutionInstanceGUID]&#xA;           ,[ExtractRowCnt]&#xA;           ,[TableInitialRowCnt]&#xA;           ,[TableFinalRowCnt]&#xA;           ,[SuccessfulProcessingInd])&#xA;     VALUES&#xA;           (@TableName&#xA;           ,@PkgName&#xA;           ,@PkgGUID&#xA;           ,@StartTime&#xA;           ,NULL&#xA;           ,@PkgExecGUID&#xA;           ,NULL&#xA;           ,@RowCount&#xA;           ,NULL&#xA;           ,'N')&#xA;SELECT CAST(SCOPE_IDENTITY() AS INT) AS AuditKey"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::AuditKey" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="StartTime"
+            SQLTask:DtsVariableName="System::StartTime"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="26"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="PkgName"
+            SQLTask:DtsVariableName="System::PackageName"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="16"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="PkgGUID"
+            SQLTask:DtsVariableName="System::PackageID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="9"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="PkgExecGUID"
+            SQLTask:DtsVariableName="System::ExecutionInstanceGUID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="9"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="TableName"
+            SQLTask:DtsVariableName="User::TableName"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="16"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="RowCount"
+            SQLTask:DtsVariableName="User::RowCount"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="11"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Task Post RowCnt"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{061AFE04-01B5-4F94-9578-DE683598E928}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Task Post RowCnt"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [GENERICO].[DimFecha]"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::RowCount" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Task Prior RowCnt"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{EB8AA487-9694-4B7E-AAB4-68732449FEA0}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Task Prior RowCnt"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [GENERICO].[DimFecha]"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::RowCount" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update AuditDim"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{B283DF44-CB70-4633-AFED-C3DDD10B1D4B}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update AuditDim"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:SqlStatementSource="UPDATE [DIM_AUDIT]&#xA;SET ExecStopDT = SYSDATETIME()&#xA; , ExtractRowCnt = @RowCount&#xA; ,TableFinalRowCnt = @RowCount&#xA; ,SuccessfulProcessingInd='Y'&#xA;WHERE AuditKey = @AuditKey;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="RowCount"
+            SQLTask:DtsVariableName="User::RowCount"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="11"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="AuditKey"
+            SQLTask:DtsVariableName="User::AuditKey"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="11"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{15AD6865-03D5-4FE2-823A-0E3820B53302\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{15AD6865-03D5-4FE2-823A-0E3820B53302}"
+      DTS:From="Package\Task Prior RowCnt"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{15AD6865-03D5-4FE2-823A-0E3820B53302}"
+      DTS:To="Package\Task Get AuditKey" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{D7732CBE-69A9-4055-875C-F05E39717B59\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{D7732CBE-69A9-4055-875C-F05E39717B59}"
+      DTS:From="Package\DIM FECHA"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{D7732CBE-69A9-4055-875C-F05E39717B59}"
+      DTS:To="Package\Task Post RowCnt" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{DE8CD06E-2896-4ECD-832E-47AA2DAF7FBA\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{DE8CD06E-2896-4ECD-832E-47AA2DAF7FBA}"
+      DTS:From="Package\Task Get AuditKey"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{DE8CD06E-2896-4ECD-832E-47AA2DAF7FBA}"
+      DTS:To="Package\DIM FECHA" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{FA625B5A-B7AD-477C-8188-9CA9367FBC13\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{FA625B5A-B7AD-477C-8188-9CA9367FBC13}"
+      DTS:From="Package\Task Post RowCnt"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{FA625B5A-B7AD-477C-8188-9CA9367FBC13}"
+      DTS:To="Package\Update AuditDim" />
+  </DTS:PrecedenceConstraints>
+</DTS:Executable>

@@ -1,0 +1,6 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/semanticModel/modelReference/2.0.0/schema.json",
+  "connectionString": "Data Source=localhost\\TABULAR;Initial Catalog=Tabular_HM;Cube=Modelo",
+  "isMultiDimentional": false,
+  "connectionType": "analysisServicesDatabaseLive"
+}

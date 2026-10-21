@@ -1,0 +1,15 @@
+# Datos de origen: demasiado pesados para el repositorio (ver README)
+*.csv
+
+# Visual Studio / SSIS / SSAS
+.vs/
+bin/
+obj/
+*.user
+*.dtproj.user
+*.settings
+
+# Power BI Desktop (cache local)
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+*.abf

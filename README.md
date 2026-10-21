@@ -5,6 +5,8 @@ Solución BI completa sobre el dataset de ventas de H&M:
 Sigue las guías del curso incluidas en el repositorio: `proceso_bi_parte 1 y  2.pdf` (SSIS) y
 `Cubos Tabulares y Pbi.pdf` (SSAS + Power BI).
 
+> **¿Quieres replicarlo desde cero?** Sigue la guía paso a paso [INSTALACION.md](INSTALACION.md): instalación, bases de datos, usuarios y permisos, carga de datos, cubo y Power BI.
+
 ## Estructura
 
 | Carpeta | Contenido |

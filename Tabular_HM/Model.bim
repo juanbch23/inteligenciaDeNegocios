@@ -135,6 +135,36 @@
             "expression": "MAX(DimFecha[Anio])",
             "formatString": "0",
             "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".Anio_Elegido",
+            "expression": "IF(HASONEVALUE(DimFecha[Anio]), VALUES(DimFecha[Anio]))",
+            "formatString": "0",
+            "displayFolder": "2. Tiempo",
+            "description": "Año elegido en el filtro (vacío si se ven todos los años)"
+          },
+          {
+            "name": ".Anio_Comparacion",
+            "expression": "VAR a = [.Anio_Elegido]\nVAR c = SELECTEDVALUE(AnioComparacion[Comparar con])\nRETURN\n    IF(ISBLANK(a), BLANK(), IF(ISBLANK(c), a - 1, c))",
+            "formatString": "0",
+            "displayFolder": "2. Tiempo",
+            "description": "Año contra el que se compara: el del filtro Comparar con, o el anterior al elegido"
+          },
+          {
+            "name": ".Desfase_Meses",
+            "expression": "IF(ISBLANK([.Anio_Elegido]), BLANK(), 12 * ([.Anio_Elegido] - [.Anio_Comparacion]))",
+            "formatString": "0",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".Txt_Comparacion",
+            "expression": "IF(ISBLANK([.Anio_Comparacion]), BLANK(),\n   \"vs \" & [.Anio_Comparacion] & IF([.Comparacion_Incompleta], \" (año con datos incompletos)\"))",
+            "displayFolder": "2. Tiempo"
+          },
+          {
+            "name": ".Txt_Comparacion_Tarjeta",
+            "expression": "IF(ISBLANK([.Txt_Comparacion]), \"Elige un año para ver la variación\", [.Txt_Comparacion])",
+            "displayFolder": "7. Dashboards"
           }
         ]
       },
@@ -162,7 +192,14 @@
           {
             "name": "Estacion",
             "dataType": "string",
-            "sourceColumn": "Estacion"
+            "sourceColumn": "Estacion",
+            "sortByColumn": "OrdenEstacion"
+          },
+          {
+            "name": "OrdenEstacion",
+            "dataType": "int64",
+            "sourceColumn": "OrdenEstacion",
+            "isHidden": true
           },
           {
             "name": "Anio",
@@ -188,7 +225,7 @@
             "name": "DimTemporada",
             "dataView": "full",
             "source": {
-              "query": "SELECT [TemporadaKey], [TemporadaID], [Temporada], [Estacion], [Anio], CAST([FechaInicio] AS DATETIME) AS [FechaInicio],\n       CAST([FechaFin] AS DATETIME) AS [FechaFin]\n  FROM [Ventas].[DimTemporada] WHERE [TemporadaKey] > 0",
+              "query": "SELECT [TemporadaKey], [TemporadaID], [Temporada], [Estacion], [Anio], CAST([FechaInicio] AS DATETIME) AS [FechaInicio],\n       CAST([FechaFin] AS DATETIME) AS [FechaFin],\n       CASE [Estacion] WHEN 'verano' THEN 1 WHEN 'otoño' THEN 2 WHEN 'invierno' THEN 3 WHEN 'primavera' THEN 4 ELSE 9 END\n           AS [OrdenEstacion]   -- orden del año comercial (hemisferio sur): verano, otoño, invierno, primavera\n  FROM [Ventas].[DimTemporada] WHERE [TemporadaKey] > 0",
               "dataSource": "DWH_HM"
             }
           }
@@ -469,9 +506,38 @@
           },
           {
             "name": ".Color_Retencion",
-            "expression": "VAR x = [.%Retencion_2019_2020]\nRETURN\n    SWITCH(TRUE(), ISBLANK(x), BLANK(), x >= 0.65, \"#2E7D32\", x >= 0.65 - 0.05, \"#F9A825\", \"#C62828\")",
+            "expression": "VAR x = [.%Retencion_2019_2020]\nRETURN\n    SWITCH(TRUE(), ISBLANK(x), BLANK(), x >= 0.65, \"#1E8449\", x >= 0.65 - 0.05, \"#B9770E\", \"#B03A2E\")",
             "displayFolder": "6. Indicadores del caso\\Clientes",
             "description": "Meta propuesta >= 65 %"
+          },
+          {
+            "name": ".Clientes_Nuevos_AA",
+            "expression": "VAR k = [.Desfase_Meses]\nVAR d1 = EDATE(MIN(DimFecha[Fecha]), -k)\nVAR d2 = EDATE(MAX(DimFecha[Fecha]), -k)\nRETURN\n    IF(NOT ISBLANK(k) && k <> 0,\n       CALCULATE(COUNTROWS(DimCliente), DimCliente[FechaPrimeraCompra] >= d1, DimCliente[FechaPrimeraCompra] <= d2))",
+            "formatString": "#,0",
+            "displayFolder": "7. Dashboards",
+            "description": "Clientes nuevos de los mismos días del año de comparación"
+          },
+          {
+            "name": ".Det_Nuevos",
+            "expression": "IF(ISBLANK([.Clientes_Nuevos_AA]) || [.Clientes_Nuevos_AA] = 0, \"Elige un año para compararlo\", FORMAT(DIVIDE([.Clientes_Nuevos], [.Clientes_Nuevos_AA]) - 1, \"+0.0 %;-0.0 %\") & \" \" & [.Txt_Comparacion] & \" (\" & FORMAT([.Clientes_Nuevos_AA], \"#,0\") & \")\")",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Nuevos",
+            "expression": "VAR r = DIVIDE([.Clientes_Nuevos], [.Clientes_Nuevos_AA])\nRETURN IF(ISBLANK(r), BLANK(), MAX(0, MIN(r, 1)))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Nuevos_Resto",
+            "expression": "IF(ISBLANK([.Anillo_Nuevos]), BLANK(), 1 - [.Anillo_Nuevos])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Color_Anillo_Nuevos",
+            "expression": "VAR r = DIVIDE([.Clientes_Nuevos], [.Clientes_Nuevos_AA])\nRETURN SWITCH(TRUE(), ISBLANK(r), BLANK(), r >= 1, \"#1E8449\", r >= 0.9, \"#B9770E\", \"#B03A2E\")",
+            "displayFolder": "7. Dashboards"
           }
         ]
       },
@@ -516,14 +582,14 @@
           },
           {
             "name": "Precio",
-            "dataType": "decimal",
+            "dataType": "double",
             "sourceColumn": "Precio",
             "isHidden": true,
             "formatString": "#,0.00"
           },
           {
             "name": "PrecioLista",
-            "dataType": "decimal",
+            "dataType": "double",
             "sourceColumn": "PrecioLista",
             "isHidden": true,
             "formatString": "#,0.00",
@@ -637,11 +703,17 @@
             "description": "Promedio diario de ventas de los últimos 7 días (media móvil)"
           },
           {
+            "name": ".Comparacion_Incompleta",
+            "expression": "VAR k = [.Desfase_Meses]\nVAR fechas = SELECTCOLUMNS(VALUES(DimFecha[Fecha]), \"F\", EDATE(DimFecha[Fecha], -k))\nVAR dias = DISTINCTCOUNT(FactVentas[FechaKey])\nVAR dias_comp = CALCULATE(DISTINCTCOUNT(FactVentas[FechaKey]), ALL(DimFecha), TREATAS(fechas, DimFecha[Fecha]))\nRETURN\n    IF(NOT ISBLANK(k) && k <> 0, dias_comp < dias * 0.9)",
+            "displayFolder": "2. Tiempo",
+            "description": "Verdadero si el año de comparación tiene menos de 90 % de los días con venta (datos incompletos)"
+          },
+          {
             "name": ".Ventas_Mismo_Periodo_AA",
-            "expression": "VAR fechas = SELECTCOLUMNS(VALUES(DimFecha[Fecha]), \"F\", EDATE(DimFecha[Fecha], -12))\nRETURN\n    IF(HASONEVALUE(DimFecha[Anio]),                       -- solo tiene sentido dentro de un año\n       CALCULATE([.Ventas], ALL(DimFecha), TREATAS(fechas, DimFecha[Fecha])))",
+            "expression": "VAR k = [.Desfase_Meses]\nVAR fechas = SELECTCOLUMNS(VALUES(DimFecha[Fecha]), \"F\", EDATE(DimFecha[Fecha], -k))\nRETURN\n    IF(NOT ISBLANK(k) && k <> 0,                        -- solo cuando se elige un año para comparar\n       CALCULATE([.Ventas], ALL(DimFecha), TREATAS(fechas, DimFecha[Fecha])))",
             "formatString": "#,0.00",
             "displayFolder": "2. Tiempo",
-            "description": "Ventas de exactamente los mismos días del año anterior (SAMEPERIODLASTYEAR completaba septiembre 2019)"
+            "description": "Ventas de exactamente los mismos días (y meses filtrados) del año de comparación"
           },
           {
             "name": ".%Crecimiento_Interanual",
@@ -761,7 +833,7 @@
           },
           {
             "name": ".Color_Descuento",
-            "expression": "VAR x = [.%Descuento_Implicito]\nRETURN\n    SWITCH(TRUE(), ISBLANK(x), BLANK(), x <= 0.17, \"#2E7D32\", x <= 0.17 + 0.02, \"#F9A825\", \"#C62828\")",
+            "expression": "VAR x = [.%Descuento_Implicito]\nRETURN\n    SWITCH(TRUE(), ISBLANK(x), BLANK(), x <= 0.17, \"#1E8449\", x <= 0.17 + 0.02, \"#B9770E\", \"#B03A2E\")",
             "displayFolder": "6. Indicadores del caso\\Precio",
             "description": "Meta propuesta <= 17 %"
           },
@@ -791,7 +863,7 @@
           },
           {
             "name": ".Color_Interanual",
-            "expression": "VAR x = [.%Crecimiento_Interanual]\nRETURN\n    SWITCH(TRUE(), ISBLANK(x), BLANK(), x >= 0, \"#2E7D32\", x >= 0 - 0.05, \"#F9A825\", \"#C62828\")",
+            "expression": "VAR x = [.%Crecimiento_Interanual]\nRETURN\n    SWITCH(TRUE(), ISBLANK(x), BLANK(), x >= 0, \"#1E8449\", x >= 0 - 0.05, \"#B9770E\", \"#B03A2E\")",
             "displayFolder": "6. Indicadores del caso\\Crecimiento",
             "description": "Meta propuesta >= 0 %"
           },
@@ -847,14 +919,333 @@
           },
           {
             "name": ".Narrativa_Estrategica",
-            "expression": "VAR y = [.%Crecimiento_Interanual]\nRETURN\n    \"Cumplimos el \" & FORMAT([.%Cumplimiento_Meta], \"0 %\") & \" de la meta, pero vendemos \" & FORMAT(y, \"+0.0 %;-0.0 %\")\n        & \" vs. el año anterior (tienda \" & FORMAT([.%Interanual_Tienda], \"+0.0 %;-0.0 %\") & \", online \"\n        & FORMAT([.%Interanual_Online], \"+0.0 %;-0.0 %\") & \"). El cliente omnicanal compra \"\n        & FORMAT([.Multiplicador_Omnicanal], \"0.0\") & \" veces más.\"",
+            "expression": "VAR y = [.%Crecimiento_Interanual]\nRETURN\n    IF(ISBLANK(y),\n       \"Todo el periodo: \" & FORMAT([.Ventas] / 1E9, \"#,0\") & \" MM vendidos y \" & FORMAT([.%Cumplimiento_Meta], \"0.0 %\")\n           & \" de la meta. Elige un año (y con cuál compararlo) para ver si crecemos.\",\n       \"En \" & [.Anio_Elegido] & \" llegamos al \" & FORMAT([.%Cumplimiento_Meta], \"0.0 %\") & \" de la meta y vendemos \"\n           & FORMAT(y, \"+0.0 %;-0.0 %\") & \" \" & [.Txt_Comparacion] & \" (tienda \"\n           & FORMAT([.%Interanual_Tienda], \"+0.0 %;-0.0 %\") & \", online \" & FORMAT([.%Interanual_Online], \"+0.0 %;-0.0 %\") & \").\")",
             "displayFolder": "6. Indicadores del caso\\Narrativa",
-            "description": "Elige un año para ver la comparación interanual"
+            "description": "Cambia con los filtros de año y Comparar con"
           },
           {
             "name": ".Narrativa_Cliente",
             "expression": "\"El cliente omnicanal compra \" & FORMAT([.Multiplicador_Omnicanal], \"0.0\") & \" veces más y el de club activo \"\n    & FORMAT([.%Plus_Club], \"+0 %\") & \"; el top 20 % genera el \" & FORMAT([.%Ventas_Top20_Clientes], \"0 %\")\n    & \" de la venta. Descuento implícito: \" & FORMAT([.%Descuento_Implicito], \"0.0 %\") & \".\"",
             "displayFolder": "6. Indicadores del caso\\Narrativa"
+          },
+          {
+            "name": ".Ventas_MM",
+            "expression": "DIVIDE([.Ventas], 1E9)",
+            "formatString": "#,0",
+            "displayFolder": "7. Dashboards",
+            "description": "Ventas en miles de millones"
+          },
+          {
+            "name": ".Ventas_AA_MM",
+            "expression": "DIVIDE([.Ventas_Mismo_Periodo_AA], 1E9)",
+            "formatString": "#,0",
+            "displayFolder": "7. Dashboards",
+            "description": "Año de comparación, mismos días, en MM"
+          },
+          {
+            "name": ".Ventas_Online_AA",
+            "expression": "VAR k = [.Desfase_Meses]\nVAR fechas = SELECTCOLUMNS(VALUES(DimFecha[Fecha]), \"F\", EDATE(DimFecha[Fecha], -k))\nRETURN\n    IF(NOT ISBLANK(k) && k <> 0, CALCULATE([.Ventas_Online], ALL(DimFecha), TREATAS(fechas, DimFecha[Fecha])))",
+            "formatString": "#,0.00",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".%Ventas_Online_AA",
+            "expression": "DIVIDE([.Ventas_Online_AA], [.Ventas_Mismo_Periodo_AA])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Det_Online",
+            "expression": "IF(ISBLANK([.%Ventas_Online_AA]), \"Elige un año para compararlo\", [.Txt_Comparacion] & \": \" & FORMAT([.%Ventas_Online_AA], \"0.0 %\"))",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Det_Ventas",
+            "expression": "IF(ISBLANK([.Interanual_I]), \"Elige un año para compararlo\", [.Interanual_I] & \" \" & [.Txt_Comparacion])",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Interanual_Tienda_I",
+            "expression": "IF(ISBLANK([.%Interanual_Tienda]), \"—\", FORMAT([.%Interanual_Tienda], \"+0.0 %;-0.0 %\"))",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Interanual_Total_I",
+            "expression": "IF(ISBLANK([.%Crecimiento_Interanual]), \"—\", FORMAT([.%Crecimiento_Interanual], \"+0.0 %;-0.0 %\"))",
+            "displayFolder": "7. Dashboards",
+            "description": "Crecimiento contra el año de comparacion; sin año elegido muestra un guion"
+          },
+          {
+            "name": ".Ventas_AA_MM_Txt",
+            "expression": "IF(ISBLANK([.Ventas_AA_MM]), \"Elige un año\", FORMAT([.Ventas_AA_MM], \"#,0\"))",
+            "displayFolder": "7. Dashboards",
+            "description": "Venta del mismo periodo del año de comparacion (MM); sin año elegido pide elegirlo"
+          },
+          {
+            "name": ".Retencion_I",
+            "expression": "IF(ISBLANK([.%Retencion]), \"Elige un año\", FORMAT([.%Retencion], \"0.0 %\"))",
+            "displayFolder": "7. Dashboards",
+            "description": "Retencion del año elegido; sin año elegido pide elegirlo"
+          },
+          {
+            "name": ".Interanual_Online_I",
+            "expression": "IF(ISBLANK([.%Interanual_Online]), \"—\", FORMAT([.%Interanual_Online], \"+0.0 %;-0.0 %\"))",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Ventas_por_Cliente_M",
+            "expression": "DIVIDE([.Ventas_por_Cliente], 1E6)",
+            "formatString": "#,0",
+            "displayFolder": "7. Dashboards",
+            "description": "Venta por cliente en millones"
+          },
+          {
+            "name": ".Color_Interanual_Tienda",
+            "expression": "VAR x = [.%Interanual_Tienda]\nRETURN\n    SWITCH(TRUE(), ISBLANK(x), BLANK(), x >= 0, \"#1E8449\", x >= 0 - 0.1, \"#B9770E\", \"#B03A2E\")",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Color_Interanual_Online",
+            "expression": "VAR x = [.%Interanual_Online]\nRETURN\n    SWITCH(TRUE(), ISBLANK(x), BLANK(), x >= 0, \"#1E8449\", x >= 0 - 0.1, \"#B9770E\", \"#B03A2E\")",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Online",
+            "expression": "VAR r = [.%Ventas_Online]\nRETURN IF(ISBLANK(r), BLANK(), MAX(0, MIN(r, 1)))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Online_Resto",
+            "expression": "IF(ISBLANK([.Anillo_Online]), BLANK(), 1 - [.Anillo_Online])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Color_Anillo_Online",
+            "expression": "\"#2E6DA4\"",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Retencion_Anio",
+            "expression": "IF(ISBLANK([.Anio_Elegido]), CALCULATE(MAX(DimFecha[Anio]), ALL(DimFecha)), [.Anio_Elegido])",
+            "formatString": "0",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Retencion_Base",
+            "expression": "IF(ISBLANK([.Anio_Elegido]), [.Retencion_Anio] - 1, [.Anio_Comparacion])",
+            "formatString": "0",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".%Retencion",
+            "expression": "VAR a = [.Retencion_Anio]\nVAR c = [.Retencion_Base]\nVAR antes = CALCULATETABLE(VALUES(FactVentas[ClienteKey]), ALL(DimFecha), DimFecha[Anio] = c)\nVAR despues = CALCULATETABLE(VALUES(FactVentas[ClienteKey]), ALL(DimFecha), DimFecha[Anio] = a)\nRETURN\n    IF(c < a, DIVIDE(COUNTROWS(INTERSECT(antes, despues)), COUNTROWS(antes)))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards",
+            "description": "Clientes que compraron en el año base y vuelven a comprar en el año elegido"
+          },
+          {
+            "name": ".Anillo_Retencion",
+            "expression": "VAR r = DIVIDE([.%Retencion], 0.65)\nRETURN IF(ISBLANK(r), BLANK(), MAX(0, MIN(r, 1)))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Retencion_Resto",
+            "expression": "IF(ISBLANK([.Anillo_Retencion]), BLANK(), 1 - [.Anillo_Retencion])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Color_Anillo_Retencion",
+            "expression": "VAR r = DIVIDE([.%Retencion], 0.65)\nRETURN SWITCH(TRUE(), ISBLANK(r), BLANK(), r >= 1, \"#1E8449\", r >= 0.9, \"#B9770E\", \"#B03A2E\")",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Det_Retencion",
+            "expression": "\"Meta ≥ 65 % · clientes de \" & [.Retencion_Base] & \" que vuelven en \" & [.Retencion_Anio]",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".%Descuento_Tienda",
+            "expression": "CALCULATE([.%Descuento_Implicito], DimCanal[NombreCanal] = \"Tienda fisica\")",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".%Descuento_Tienda_AA",
+            "expression": "VAR k = [.Desfase_Meses]\nVAR fechas = SELECTCOLUMNS(VALUES(DimFecha[Fecha]), \"F\", EDATE(DimFecha[Fecha], -k))\nRETURN\n    IF(NOT ISBLANK(k) && k <> 0, CALCULATE([.%Descuento_Tienda], ALL(DimFecha), TREATAS(fechas, DimFecha[Fecha])))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Det_Descuento",
+            "expression": "IF(ISBLANK([.%Descuento_Tienda_AA]), \"Meta ≤ 17 %\", \"Meta ≤ 17 % · \" & [.Txt_Comparacion] & \": \" & FORMAT([.%Descuento_Tienda_AA], \"0.0 %\"))",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Descuento",
+            "expression": "VAR r = DIVIDE(0.17, [.%Descuento_Tienda])\nRETURN IF(ISBLANK(r), BLANK(), MAX(0, MIN(r, 1)))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Descuento_Resto",
+            "expression": "IF(ISBLANK([.Anillo_Descuento]), BLANK(), 1 - [.Anillo_Descuento])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Color_Anillo_Descuento",
+            "expression": "VAR r = DIVIDE(0.17, [.%Descuento_Tienda])\nRETURN SWITCH(TRUE(), ISBLANK(r), BLANK(), r >= 1, \"#1E8449\", r >= 0.9, \"#B9770E\", \"#B03A2E\")",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Ticket_Cesta_Online",
+            "expression": "CALCULATE([.Ticket_Cesta], DimCanal[NombreCanal] = \"Online\")",
+            "formatString": "#,0.00",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Ticket_Cesta_Online_M",
+            "expression": "DIVIDE([.Ticket_Cesta_Online], 1E6)",
+            "formatString": "#,0.0",
+            "displayFolder": "7. Dashboards",
+            "description": "Ticket por cesta online en millones"
+          },
+          {
+            "name": ".Ticket_Cesta_Online_AA",
+            "expression": "VAR k = [.Desfase_Meses]\nVAR fechas = SELECTCOLUMNS(VALUES(DimFecha[Fecha]), \"F\", EDATE(DimFecha[Fecha], -k))\nRETURN\n    IF(NOT ISBLANK(k) && k <> 0, CALCULATE([.Ticket_Cesta_Online], ALL(DimFecha), TREATAS(fechas, DimFecha[Fecha])))",
+            "formatString": "#,0.00",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Det_Ticket",
+            "expression": "IF(ISBLANK([.Ticket_Cesta_Online_AA]), \"Elige un año para compararlo\", FORMAT(DIVIDE([.Ticket_Cesta_Online], [.Ticket_Cesta_Online_AA]) - 1, \"+0.0 %;-0.0 %\") & \" \" & [.Txt_Comparacion] & \" (\" & FORMAT([.Ticket_Cesta_Online_AA] / 1E6, \"#,0.0\") & \" M)\")",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Ticket",
+            "expression": "VAR r = DIVIDE([.Ticket_Cesta_Online], [.Ticket_Cesta_Online_AA])\nRETURN IF(ISBLANK(r), BLANK(), MAX(0, MIN(r, 1)))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Ticket_Resto",
+            "expression": "IF(ISBLANK([.Anillo_Ticket]), BLANK(), 1 - [.Anillo_Ticket])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Color_Anillo_Ticket",
+            "expression": "VAR r = DIVIDE([.Ticket_Cesta_Online], [.Ticket_Cesta_Online_AA])\nRETURN SWITCH(TRUE(), ISBLANK(r), BLANK(), r >= 1, \"#1E8449\", r >= 0.9, \"#B9770E\", \"#B03A2E\")",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Articulos_Cesta_Online",
+            "expression": "CALCULATE([.Articulos_por_Cesta], DimCanal[NombreCanal] = \"Online\")",
+            "formatString": "#,0.00",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Det_Articulos",
+            "expression": "\"Meta propuesta ≥ 3,7\"",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Articulos",
+            "expression": "VAR r = DIVIDE([.Articulos_Cesta_Online], 3.7)\nRETURN IF(ISBLANK(r), BLANK(), MAX(0, MIN(r, 1)))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Articulos_Resto",
+            "expression": "IF(ISBLANK([.Anillo_Articulos]), BLANK(), 1 - [.Anillo_Articulos])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Color_Anillo_Articulos",
+            "expression": "VAR r = DIVIDE([.Articulos_Cesta_Online], 3.7)\nRETURN SWITCH(TRUE(), ISBLANK(r), BLANK(), r >= 1, \"#1E8449\", r >= 0.9, \"#B9770E\", \"#B03A2E\")",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Omnicanal",
+            "expression": "VAR r = DIVIDE([.%Clientes_Omnicanal], 0.40)\nRETURN IF(ISBLANK(r), BLANK(), MAX(0, MIN(r, 1)))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Omnicanal_Resto",
+            "expression": "IF(ISBLANK([.Anillo_Omnicanal]), BLANK(), 1 - [.Anillo_Omnicanal])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Color_Anillo_Omnicanal",
+            "expression": "VAR r = DIVIDE([.%Clientes_Omnicanal], 0.40)\nRETURN SWITCH(TRUE(), ISBLANK(r), BLANK(), r >= 1, \"#1E8449\", r >= 0.9, \"#B9770E\", \"#B03A2E\")",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Det_Omnicanal",
+            "expression": "\"Meta ≥ 40 % · valen \" & FORMAT([.Multiplicador_Omnicanal], \"0.0\") & \" veces más\"",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Club",
+            "expression": "VAR r = DIVIDE([.%Penetracion_Club], 0.40)\nRETURN IF(ISBLANK(r), BLANK(), MAX(0, MIN(r, 1)))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Club_Resto",
+            "expression": "IF(ISBLANK([.Anillo_Club]), BLANK(), 1 - [.Anillo_Club])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Color_Anillo_Club",
+            "expression": "VAR r = DIVIDE([.%Penetracion_Club], 0.40)\nRETURN SWITCH(TRUE(), ISBLANK(r), BLANK(), r >= 1, \"#1E8449\", r >= 0.9, \"#B9770E\", \"#B03A2E\")",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Det_Club",
+            "expression": "\"Meta ≥ 40 % · compran \" & FORMAT([.%Plus_Club], \"+0 %\") & \" más\"",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".VPC_Omnicanal_M",
+            "expression": "DIVIDE(CALCULATE([.Ventas_por_Cliente], DimCliente[TipoCanal] = \"Omnicanal\"), 1E6)",
+            "formatString": "#,0",
+            "displayFolder": "7. Dashboards",
+            "description": "Venta por cliente en millones"
+          },
+          {
+            "name": ".VPC_UnCanal_M",
+            "expression": "DIVIDE(CALCULATE([.Ventas_por_Cliente], DimCliente[TipoCanal] IN {\"Solo online\", \"Solo tienda\"}), 1E6)",
+            "formatString": "#,0",
+            "displayFolder": "7. Dashboards",
+            "description": "Venta por cliente en millones"
+          },
+          {
+            "name": ".VPC_Club_M",
+            "expression": "DIVIDE(CALCULATE([.Ventas_por_Cliente], DimCliente[ClubActivo] = \"Club activo\"), 1E6)",
+            "formatString": "#,0",
+            "displayFolder": "7. Dashboards",
+            "description": "Venta por cliente en millones"
+          },
+          {
+            "name": ".VPC_NoClub_M",
+            "expression": "DIVIDE(CALCULATE([.Ventas_por_Cliente], DimCliente[ClubActivo] = \"No activo\"), 1E6)",
+            "formatString": "#,0",
+            "displayFolder": "7. Dashboards",
+            "description": "Venta por cliente en millones"
+          },
+          {
+            "name": ".Multiplicador_Omnicanal_I",
+            "expression": "\"× \" & FORMAT([.Multiplicador_Omnicanal], \"0.0\")",
+            "displayFolder": "7. Dashboards"
           }
         ]
       },
@@ -885,12 +1276,12 @@
             "isHidden": true
           },
           {
-            "name": "MetaDiaria",
-            "dataType": "decimal",
-            "sourceColumn": "MetaDiaria",
+            "name": "Meta",
+            "dataType": "double",
+            "sourceColumn": "Meta",
             "isHidden": true,
             "formatString": "#,0.00",
-            "description": "Meta diaria de GoalsHyM.xlsx (Monto), expandida a cada dia de su mes y temporada"
+            "description": "Monto de GoalsHyM.xlsx tal como viene: meta por escenario, seccion, temporada y mes"
           }
         ],
         "partitions": [
@@ -898,7 +1289,7 @@
             "name": "FactMetas",
             "dataView": "full",
             "source": {
-              "query": "SELECT [Escenario], [FechaKey], [DepartamentoKey], [TemporadaKey], [MetaDiaria]\n  FROM [Ventas].[vw_FactMetasDiaria]",
+              "query": "SELECT [Escenario], [FechaKey], [DepartamentoKey], [TemporadaKey], [Monto] AS [Meta]\n  FROM [Ventas].[FactMetas]",
               "dataSource": "DWH_HM"
             }
           }
@@ -912,7 +1303,7 @@
           },
           {
             "name": ".Meta",
-            "expression": "VAR esc = [.Escenario_Activo]\nRETURN\n    CALCULATE(SUM(FactMetas[MetaDiaria]), FactMetas[Escenario] = esc)",
+            "expression": "VAR esc = [.Escenario_Activo]\nRETURN\n    CALCULATE(SUM(FactMetas[Meta]), FactMetas[Escenario] = esc)",
             "formatString": "#,0.00",
             "displayFolder": "4. Metas"
           },
@@ -935,13 +1326,13 @@
           },
           {
             "name": ".Color_Cumplimiento",
-            "expression": "VAR c = [.%Cumplimiento_Meta]\nRETURN\n    SWITCH(TRUE(), ISBLANK(c), BLANK(), c >= 1, \"#2E7D32\", c >= 0.9, \"#F9A825\", \"#C62828\")",
+            "expression": "VAR c = [.%Cumplimiento_Meta]\nRETURN\n    SWITCH(TRUE(), ISBLANK(c), BLANK(), c >= 1, \"#1E8449\", c >= 0.9, \"#B9770E\", \"#B03A2E\")",
             "displayFolder": "4. Metas",
             "description": "Verde >= 100 %, ámbar >= 90 %, rojo < 90 % (formato condicional por valor de campo)"
           },
           {
             "name": ".Titulo_Ventas_vs_Meta",
-            "expression": "\"Ventas vs meta diaria acumulada - \" & [.Escenario_Activo]",
+            "expression": "\"Ventas vs meta - \" & [.Escenario_Activo]",
             "displayFolder": "4. Metas"
           },
           {
@@ -984,6 +1375,169 @@
             "name": ".Narrativa_Metas",
             "expression": "\"Llegamos al \" & FORMAT([.%Cumplimiento_Meta], \"0 %\") & \" de la meta, pero solo \" & [.Secciones_Cumplen] & \" de \"\n    & [.Secciones_con_Meta] & \" secciones cumplen y \" & [.Secciones_Bajo_50] & \" no llegan al 50 %: metas mal repartidas.\"",
             "displayFolder": "6. Indicadores del caso\\Narrativa"
+          },
+          {
+            "name": ".Meta_AA",
+            "expression": "VAR k = [.Desfase_Meses]\nVAR fechas = SELECTCOLUMNS(VALUES(DimFecha[Fecha]), \"F\", EDATE(DimFecha[Fecha], -k))\nRETURN\n    IF(NOT ISBLANK(k) && k <> 0, CALCULATE([.Meta], ALL(DimFecha), TREATAS(fechas, DimFecha[Fecha])))",
+            "formatString": "#,0.00",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".%Cumplimiento_AA",
+            "expression": "DIVIDE([.Ventas_Mismo_Periodo_AA], [.Meta_AA])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Det_Cumplimiento",
+            "expression": "IF(ISBLANK([.%Cumplimiento_AA]), \"Meta ≥ 100 %\", \"Meta ≥ 100 % · \" & [.Txt_Comparacion] & \": \" & FORMAT([.%Cumplimiento_AA], \"0.0 %\"))",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Cumplimiento",
+            "expression": "VAR r = [.%Cumplimiento_Meta]\nRETURN IF(ISBLANK(r), BLANK(), MAX(0, MIN(r, 1)))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Cumplimiento_Resto",
+            "expression": "IF(ISBLANK([.Anillo_Cumplimiento]), BLANK(), 1 - [.Anillo_Cumplimiento])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Color_Anillo_Cumplimiento",
+            "expression": "VAR r = [.%Cumplimiento_Meta]\nRETURN SWITCH(TRUE(), ISBLANK(r), BLANK(), r >= 1, \"#1E8449\", r >= 0.9, \"#B9770E\", \"#B03A2E\")",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Cumpl_Peor_Temporada",
+            "expression": "MINX(FILTER(VALUES(DimTemporada[Temporada]), NOT ISBLANK([.Meta])), [.%Cumplimiento_Meta])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Peor_Temporada",
+            "expression": "VAR t = TOPN(1, FILTER(VALUES(DimTemporada[Temporada]), NOT ISBLANK([.Meta])), [.%Cumplimiento_Meta], ASC)\nRETURN CONCATENATEX(t, DimTemporada[Temporada], \", \")",
+            "displayFolder": "7. Dashboards",
+            "description": "Temporada con menor cumplimiento en el filtro"
+          },
+          {
+            "name": ".Anillo_Peor_Temporada",
+            "expression": "VAR r = [.Cumpl_Peor_Temporada]\nRETURN IF(ISBLANK(r), BLANK(), MAX(0, MIN(r, 1)))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Peor_Temporada_Resto",
+            "expression": "IF(ISBLANK([.Anillo_Peor_Temporada]), BLANK(), 1 - [.Anillo_Peor_Temporada])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Color_Anillo_Peor_Temporada",
+            "expression": "VAR r = [.Cumpl_Peor_Temporada]\nRETURN SWITCH(TRUE(), ISBLANK(r), BLANK(), r >= 1, \"#1E8449\", r >= 0.9, \"#B9770E\", \"#B03A2E\")",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Secciones_Cumplen_Txt",
+            "expression": "(0 + [.Secciones_Cumplen]) & \" de \" & (0 + [.Secciones_con_Meta])",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Secciones_Bajo_50_Txt",
+            "expression": "(0 + [.Secciones_Bajo_50]) & \" de \" & (0 + [.Secciones_con_Meta])",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Det_Secciones",
+            "expression": "FORMAT(DIVIDE([.Secciones_Cumplen], [.Secciones_con_Meta]), \"0 %\") & \" de las secciones con meta\"",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Det_Bajo_50",
+            "expression": "\"No llegan a la mitad de su meta\"",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Secciones",
+            "expression": "VAR r = DIVIDE([.Secciones_Cumplen], [.Secciones_con_Meta])\nRETURN IF(ISBLANK(r), BLANK(), MAX(0, MIN(r, 1)))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Secciones_Resto",
+            "expression": "IF(ISBLANK([.Anillo_Secciones]), BLANK(), 1 - [.Anillo_Secciones])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Color_Anillo_Secciones",
+            "expression": "VAR r = DIVIDE([.Secciones_Cumplen], [.Secciones_con_Meta])\nRETURN SWITCH(TRUE(), ISBLANK(r), BLANK(), r >= 1, \"#1E8449\", r >= 0.9, \"#B9770E\", \"#B03A2E\")",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Bajo_50",
+            "expression": "VAR r = DIVIDE([.Secciones_Bajo_50], [.Secciones_con_Meta])\nRETURN IF(ISBLANK(r), BLANK(), MAX(0, MIN(r, 1)))",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Anillo_Bajo_50_Resto",
+            "expression": "IF(ISBLANK([.Anillo_Bajo_50]), BLANK(), 1 - [.Anillo_Bajo_50])",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Color_Anillo_Bajo_50",
+            "expression": "\"#B03A2E\"",
+            "displayFolder": "7. Dashboards"
+          },
+          {
+            "name": ".Gauge_Max",
+            "expression": "1.5",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards",
+            "description": "Escala del velocímetro (0 a 150 %)"
+          },
+          {
+            "name": ".Gauge_Meta",
+            "expression": "1",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards",
+            "description": "Meta del velocímetro (100 %)"
+          },
+          {
+            "name": ".Gauge_Uno",
+            "expression": "1",
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "7. Dashboards",
+            "description": "Escala de los anillos de los KPI (0 a 100 %)"
+          }
+        ]
+      },
+      {
+        "name": "AnioComparacion",
+        "description": "Años disponibles para el filtro Comparar con (sale de DimFecha: crece solo con los datos)",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Comparar con",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Comparar con]",
+            "formatString": "0",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "AnioComparacion",
+            "source": {
+              "type": "calculated",
+              "expression": "DISTINCT(SELECTCOLUMNS(DimFecha, \"Comparar con\", DimFecha[Anio]))"
+            }
           }
         ]
       }
@@ -1051,6 +1605,18 @@
         "fromColumn": "TemporadaKey",
         "toTable": "DimTemporada",
         "toColumn": "TemporadaKey"
+      }
+    ],
+    "roles": [
+      {
+        "name": "ProcesoETL",
+        "modelPermission": "refresh",
+        "description": "Permite al job Job_HM (SQL Server Agent) procesar el cubo",
+        "members": [
+          {
+            "memberName": "NT Service\\SQLAgent$DEV"
+          }
+        ]
       }
     ],
     "annotations": [

@@ -1,9 +1,9 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
   "name": "29f3171285671fc539e1",
-  "displayName": "3 · Analítico: Cliente y precio",
+  "displayName": "3 · Transacciones",
   "displayOption": "FitToPage",
-  "height": 920,
+  "height": 720,
   "width": 1280,
   "objects": {
     "background": [
@@ -14,7 +14,7 @@
               "color": {
                 "expr": {
                   "Literal": {
-                    "Value": "'#F3F4F6'"
+                    "Value": "'#F2F4F7'"
                   }
                 }
               }

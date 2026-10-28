@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="10/21/2026 12:08:13 AM"
+  DTS:CreationDate="10/28/2026 12:35:29 AM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="LAPTOP-IO596P6A"
   DTS:CreatorName="LAPTOP-IO596P6A\Juan"
-  DTS:DTSID="{EFABB310-D863-4FF7-8071-33BEED9C05A3}"
+  DTS:DTSID="{91DE5E3A-1267-43C2-B3C2-1A71431D83B5}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="17.0.1000.7"
   DTS:LocaleID="3082"
   DTS:ObjectName="FactVentas"
   DTS:ProtectionLevel="0"
-  DTS:VersionGUID="{77B1C58E-0D3D-4F37-AEEB-635913AAF9EB}">
+  DTS:VersionGUID="{806465AA-9F7F-49F7-A839-FADB60310B14}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{814E1F46-FE6E-41DC-8EEE-57048CACD0C7}"
+      DTS:DTSID="{9B4974C0-E783-41CB-BAD0-0735F2AA6C9A}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
       DTS:ObjectName="AuditKey">
@@ -26,7 +26,7 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{14406E55-2A81-4DD5-AC20-E3BDCA461260}"
+      DTS:DTSID="{6172D93D-AB24-4909-8D9F-0F338B13058F}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
       DTS:ObjectName="RowCount">
@@ -35,7 +35,7 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{4DEC81DC-34D6-47E8-98AA-612CFE10DABB}"
+      DTS:DTSID="{3C877E80-C6A8-40EA-A15E-7CD39F999C90}"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="TableName">
@@ -48,7 +48,7 @@
       DTS:refId="Package\FACT VENTAS"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Tarea Flujo de datos"
-      DTS:DTSID="{E2BB8FA9-A85A-4D86-9608-D660ABCAD956}"
+      DTS:DTSID="{03F460F2-1E95-45D5-A769-7A3D2B7EDFCF}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
       DTS:ObjectName="FACT VENTAS"
@@ -59,6 +59,114 @@
           autoAdjustBufferSize="true"
           version="1">
           <components>
+            <component
+              refId="Package\FACT VENTAS\Columna derivada Motivo"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Columna derivada;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;0"
+              description="Crea nuevos valores de columna aplicando expresiones a las columnas de entrada de la transformación. Crea nuevas columnas o sobrescribe las columnas existentes. Por ejemplo, se concatenan los valores de las columnas 'nombre' y 'apellidos' para crear una columna 'nombre completo'."
+              name="Columna derivada Motivo"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\FACT VENTAS\Columna derivada Motivo.Inputs[Entrada de columna derivada]"
+                  description="Entrada en la transformación Columna derivada"
+                  name="Entrada de columna derivada">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\FACT VENTAS\Columna derivada Motivo.Inputs[Entrada de columna derivada].Columns[MotivoDescarte]"
+                      cachedDataType="wstr"
+                      cachedLength="200"
+                      cachedName="MotivoDescarte"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MotivoDescarte]" />
+                    <inputColumn
+                      refId="Package\FACT VENTAS\Columna derivada Motivo.Inputs[Entrada de columna derivada].Columns[FechaKey]"
+                      cachedDataType="i4"
+                      cachedName="FechaKey"
+                      lineageId="Package\FACT VENTAS\DimFecha.Outputs[Salida de entradas coincidentes de búsqueda].Columns[FechaKey]" />
+                    <inputColumn
+                      refId="Package\FACT VENTAS\Columna derivada Motivo.Inputs[Entrada de columna derivada].Columns[ClienteKey]"
+                      cachedDataType="i4"
+                      cachedName="ClienteKey"
+                      lineageId="Package\FACT VENTAS\DimCliente.Outputs[Salida de entradas coincidentes de búsqueda].Columns[ClienteKey]" />
+                    <inputColumn
+                      refId="Package\FACT VENTAS\Columna derivada Motivo.Inputs[Entrada de columna derivada].Columns[ArticuloKey]"
+                      cachedDataType="i4"
+                      cachedName="ArticuloKey"
+                      lineageId="Package\FACT VENTAS\DimArticulo.Outputs[Salida de entradas coincidentes de búsqueda].Columns[ArticuloKey]" />
+                    <inputColumn
+                      refId="Package\FACT VENTAS\Columna derivada Motivo.Inputs[Entrada de columna derivada].Columns[CanalKey]"
+                      cachedDataType="i4"
+                      cachedName="CanalKey"
+                      lineageId="Package\FACT VENTAS\DimCanal.Outputs[Salida de entradas coincidentes de búsqueda].Columns[CanalKey]" />
+                    <inputColumn
+                      refId="Package\FACT VENTAS\Columna derivada Motivo.Inputs[Entrada de columna derivada].Columns[TemporadaKey]"
+                      cachedDataType="i4"
+                      cachedName="TemporadaKey"
+                      lineageId="Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\FACT VENTAS\Columna derivada Motivo.Outputs[Salida de columna derivada]"
+                  description="Salida predeterminada de la transformación Columna derivada"
+                  exclusionGroup="1"
+                  name="Salida de columna derivada"
+                  synchronousInputId="Package\FACT VENTAS\Columna derivada Motivo.Inputs[Entrada de columna derivada]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Columna derivada Motivo.Outputs[Salida de columna derivada].Columns[Motivo]"
+                      dataType="wstr"
+                      description="Motivo del descarte"
+                      errorOrTruncationOperation="Cálculo"
+                      errorRowDisposition="FailComponent"
+                      length="200"
+                      lineageId="Package\FACT VENTAS\Columna derivada Motivo.Outputs[Salida de columna derivada].Columns[Motivo]"
+                      name="Motivo"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expresión de columna derivada"
+                          name="Expression">[ISNULL](#{Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MotivoDescarte]}) ? ([ISNULL](#{Package\FACT VENTAS\DimFecha.Outputs[Salida de entradas coincidentes de búsqueda].Columns[FechaKey]}) ? (DT_WSTR,200)"Fecha fuera del calendario (no existe en DimFecha)" : ([ISNULL](#{Package\FACT VENTAS\DimCliente.Outputs[Salida de entradas coincidentes de búsqueda].Columns[ClienteKey]}) ? (DT_WSTR,200)"Cliente inexistente en DimCliente" : ([ISNULL](#{Package\FACT VENTAS\DimArticulo.Outputs[Salida de entradas coincidentes de búsqueda].Columns[ArticuloKey]}) ? (DT_WSTR,200)"Artículo inexistente en DimArticulo" : ([ISNULL](#{Package\FACT VENTAS\DimCanal.Outputs[Salida de entradas coincidentes de búsqueda].Columns[CanalKey]}) ? (DT_WSTR,200)"Canal inexistente en DimCanal" : ([ISNULL](#{Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]}) ? (DT_WSTR,200)"La fecha no cae en ninguna temporada de DimTemporada" : (DT_WSTR,200)"Llave sin coincidencia en una dimensión"))))) : #{Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MotivoDescarte]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expresión descriptiva de columna derivada"
+                          expressionType="Notify"
+                          name="FriendlyExpression">ISNULL(MotivoDescarte) ? (ISNULL(FechaKey) ? (DT_WSTR,200)"Fecha fuera del calendario (no existe en DimFecha)" : (ISNULL(ClienteKey) ? (DT_WSTR,200)"Cliente inexistente en DimCliente" : (ISNULL(ArticuloKey) ? (DT_WSTR,200)"Artículo inexistente en DimArticulo" : (ISNULL(CanalKey) ? (DT_WSTR,200)"Canal inexistente en DimCanal" : (ISNULL(TemporadaKey) ? (DT_WSTR,200)"La fecha no cae en ninguna temporada de DimTemporada" : (DT_WSTR,200)"Llave sin coincidencia en una dimensión"))))) : MotivoDescarte</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\FACT VENTAS\Columna derivada Motivo.Outputs[Salida de error de columna derivada]"
+                  description="Salida de error de la transformación Columna derivada"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Salida de error de columna derivada"
+                  synchronousInputId="Package\FACT VENTAS\Columna derivada Motivo.Inputs[Entrada de columna derivada]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Columna derivada Motivo.Outputs[Salida de error de columna derivada].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\FACT VENTAS\Columna derivada Motivo.Outputs[Salida de error de columna derivada].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Columna derivada Motivo.Outputs[Salida de error de columna derivada].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\FACT VENTAS\Columna derivada Motivo.Outputs[Salida de error de columna derivada].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
             <component
               refId="Package\FACT VENTAS\DimArticulo"
               componentClassID="Microsoft.Lookup"
@@ -73,7 +181,7 @@
                   description="Especifica la instrucción SQL que genera la tabla de búsqueda."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [ArticuloKey], [DepartamentoKey], [ArticleID] FROM [Ventas].[DimArticulo]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [ArticuloKey], [DepartamentoKey], [ArticleID] FROM [Ventas].[DimArticulo] WHERE [ArticuloKey] &gt; 0</property>
                 <property
                   dataType="System.String"
                   description="Especifica una instrucción SQL que usa parámetros para generar la tabla de búsqueda."
@@ -128,7 +236,7 @@
               <connections>
                 <connection
                   refId="Package\FACT VENTAS\DimArticulo.Connections[OleDbConnection]"
-                  connectionManagerID="{4DF34612-2498-4854-A81E-1FA2BAFB57B2}:external"
+                  connectionManagerID="{A2EB6CD2-DDDE-484A-8BD1-35E289523D39}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB DWH_HM]"
                   description="Administrador de conexiones utilizado para obtener acceso a los datos de búsqueda."
                   name="OleDbConnection" />
@@ -139,10 +247,10 @@
                   name="Entrada de búsqueda">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\FACT VENTAS\DimArticulo.Inputs[Entrada de búsqueda].Columns[article_id]"
+                      refId="Package\FACT VENTAS\DimArticulo.Inputs[Entrada de búsqueda].Columns[ArticleID]"
                       cachedDataType="i4"
-                      cachedName="article_id"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[article_id]">
+                      cachedName="ArticleID"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[ArticleID]">
                       <properties>
                         <property
                           dataType="System.String"
@@ -244,7 +352,7 @@
                   description="Especifica la instrucción SQL que genera la tabla de búsqueda."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [CanalKey], [CanalID] FROM [Ventas].[DimCanal]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [CanalKey], [CanalID] FROM [Ventas].[DimCanal] WHERE [CanalKey] &gt; 0</property>
                 <property
                   dataType="System.String"
                   description="Especifica una instrucción SQL que usa parámetros para generar la tabla de búsqueda."
@@ -299,7 +407,7 @@
               <connections>
                 <connection
                   refId="Package\FACT VENTAS\DimCanal.Connections[OleDbConnection]"
-                  connectionManagerID="{4DF34612-2498-4854-A81E-1FA2BAFB57B2}:external"
+                  connectionManagerID="{A2EB6CD2-DDDE-484A-8BD1-35E289523D39}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB DWH_HM]"
                   description="Administrador de conexiones utilizado para obtener acceso a los datos de búsqueda."
                   name="OleDbConnection" />
@@ -310,10 +418,10 @@
                   name="Entrada de búsqueda">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\FACT VENTAS\DimCanal.Inputs[Entrada de búsqueda].Columns[sales_channel_id]"
+                      refId="Package\FACT VENTAS\DimCanal.Inputs[Entrada de búsqueda].Columns[CanalID]"
                       cachedDataType="ui1"
-                      cachedName="sales_channel_id"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[sales_channel_id]">
+                      cachedName="CanalID"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[CanalID]">
                       <properties>
                         <property
                           dataType="System.String"
@@ -401,7 +509,7 @@
                   description="Especifica la instrucción SQL que genera la tabla de búsqueda."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [ClienteKey], [CustomerID] FROM [Ventas].[DimCliente]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [ClienteKey], [CustomerID] FROM [Ventas].[DimCliente] WHERE [ClienteKey] &gt; 0</property>
                 <property
                   dataType="System.String"
                   description="Especifica una instrucción SQL que usa parámetros para generar la tabla de búsqueda."
@@ -456,7 +564,7 @@
               <connections>
                 <connection
                   refId="Package\FACT VENTAS\DimCliente.Connections[OleDbConnection]"
-                  connectionManagerID="{4DF34612-2498-4854-A81E-1FA2BAFB57B2}:external"
+                  connectionManagerID="{A2EB6CD2-DDDE-484A-8BD1-35E289523D39}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB DWH_HM]"
                   description="Administrador de conexiones utilizado para obtener acceso a los datos de búsqueda."
                   name="OleDbConnection" />
@@ -467,12 +575,12 @@
                   name="Entrada de búsqueda">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\FACT VENTAS\DimCliente.Inputs[Entrada de búsqueda].Columns[customer_id]"
+                      refId="Package\FACT VENTAS\DimCliente.Inputs[Entrada de búsqueda].Columns[CustomerID]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="64"
-                      cachedName="customer_id"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[customer_id]">
+                      cachedName="CustomerID"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[CustomerID]">
                       <properties>
                         <property
                           dataType="System.String"
@@ -560,7 +668,7 @@
                   description="Especifica la instrucción SQL que genera la tabla de búsqueda."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [FechaKey] FROM [GENERICO].[DimFecha]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [FechaKey] FROM [GENERICO].[DimFecha] WHERE [FechaKey] &gt; 0</property>
                 <property
                   dataType="System.String"
                   description="Especifica una instrucción SQL que usa parámetros para generar la tabla de búsqueda."
@@ -615,7 +723,7 @@
               <connections>
                 <connection
                   refId="Package\FACT VENTAS\DimFecha.Connections[OleDbConnection]"
-                  connectionManagerID="{4DF34612-2498-4854-A81E-1FA2BAFB57B2}:external"
+                  connectionManagerID="{A2EB6CD2-DDDE-484A-8BD1-35E289523D39}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB DWH_HM]"
                   description="Administrador de conexiones utilizado para obtener acceso a los datos de búsqueda."
                   name="OleDbConnection" />
@@ -626,10 +734,10 @@
                   name="Entrada de búsqueda">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\FACT VENTAS\DimFecha.Inputs[Entrada de búsqueda].Columns[t_dat]"
+                      refId="Package\FACT VENTAS\DimFecha.Inputs[Entrada de búsqueda].Columns[FechaNum]"
                       cachedDataType="i4"
-                      cachedName="t_dat"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[t_dat]">
+                      cachedName="FechaNum"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[FechaNum]">
                       <properties>
                         <property
                           dataType="System.String"
@@ -704,11 +812,11 @@
               </outputs>
             </component>
             <component
-              refId="Package\FACT VENTAS\DimTemporada"
+              refId="Package\FACT VENTAS\DimTemporada (por fecha)"
               componentClassID="Microsoft.Lookup"
               contactInfo="Búsqueda;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;6"
               description="Combina columnas adicionales con el flujo de datos mediante la búsqueda de valores en una tabla. Por ejemplo, se combina la columna 'id. de empleado' con la tabla de empleados para obtener la 'fecha de contratación' y 'el nombre de empleado'. Se recomienda esta transformación cuando hay suficiente espacio en memoria para la tabla de búsqueda."
-              name="DimTemporada"
+              name="DimTemporada (por fecha)"
               usesDispositions="true"
               version="6">
               <properties>
@@ -717,7 +825,12 @@
                   description="Especifica la instrucción SQL que genera la tabla de búsqueda."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [TemporadaKey], [TemporadaID] FROM [Ventas].[DimTemporada]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT f.[FechaKey], t.[TemporadaKey]
+  FROM [GENERICO].[DimFecha] f
+ CROSS APPLY (SELECT TOP (1) d.[TemporadaKey] FROM [Ventas].[DimTemporada] d
+               WHERE d.[TemporadaKey] &gt; 0 AND f.[Fecha] BETWEEN d.[FechaInicio] AND d.[FechaFin]
+               ORDER BY d.[FechaFin]) t
+ WHERE f.[FechaKey] &gt; 0</property>
                 <property
                   dataType="System.String"
                   description="Especifica una instrucción SQL que usa parámetros para generar la tabla de búsqueda."
@@ -754,7 +867,7 @@
                 <property
                   dataType="System.String"
                   description="Indica si se debe hacer referencia a metadatos en formato XML."
-                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="TemporadaKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="TemporadaID" dataType="DT_UI1" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="FechaKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="TemporadaKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
                 <property
                   containsID="true"
                   dataType="System.String"
@@ -771,27 +884,27 @@
               </properties>
               <connections>
                 <connection
-                  refId="Package\FACT VENTAS\DimTemporada.Connections[OleDbConnection]"
-                  connectionManagerID="{4DF34612-2498-4854-A81E-1FA2BAFB57B2}:external"
+                  refId="Package\FACT VENTAS\DimTemporada (por fecha).Connections[OleDbConnection]"
+                  connectionManagerID="{A2EB6CD2-DDDE-484A-8BD1-35E289523D39}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB DWH_HM]"
                   description="Administrador de conexiones utilizado para obtener acceso a los datos de búsqueda."
                   name="OleDbConnection" />
               </connections>
               <inputs>
                 <input
-                  refId="Package\FACT VENTAS\DimTemporada.Inputs[Entrada de búsqueda]"
+                  refId="Package\FACT VENTAS\DimTemporada (por fecha).Inputs[Entrada de búsqueda]"
                   name="Entrada de búsqueda">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\FACT VENTAS\DimTemporada.Inputs[Entrada de búsqueda].Columns[TemporadaID]"
-                      cachedDataType="ui1"
-                      cachedName="TemporadaID"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[TemporadaID]">
+                      refId="Package\FACT VENTAS\DimTemporada (por fecha).Inputs[Entrada de búsqueda].Columns[FechaKey]"
+                      cachedDataType="i4"
+                      cachedName="FechaKey"
+                      lineageId="Package\FACT VENTAS\DimFecha.Outputs[Salida de entradas coincidentes de búsqueda].Columns[FechaKey]">
                       <properties>
                         <property
                           dataType="System.String"
                           description="Especifica la columna de la tabla de referencia con la que se combina una columna."
-                          name="JoinToReferenceColumn">TemporadaID</property>
+                          name="JoinToReferenceColumn">FechaKey</property>
                         <property
                           dataType="System.Null"
                           description="Especifica la columna de la tabla de referencia de la que se copia una columna."
@@ -804,18 +917,18 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\FACT VENTAS\DimTemporada.Outputs[Salida de entradas coincidentes de búsqueda]"
+                  refId="Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de entradas coincidentes de búsqueda]"
                   errorOrTruncationOperation="Búsqueda"
                   errorRowDisposition="IgnoreFailure"
                   exclusionGroup="1"
                   name="Salida de entradas coincidentes de búsqueda"
-                  synchronousInputId="Package\FACT VENTAS\DimTemporada.Inputs[Entrada de búsqueda]">
+                  synchronousInputId="Package\FACT VENTAS\DimTemporada (por fecha).Inputs[Entrada de búsqueda]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\FACT VENTAS\DimTemporada.Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]"
+                      refId="Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]"
                       dataType="i4"
                       errorOrTruncationOperation="Copiar columna"
-                      lineageId="Package\FACT VENTAS\DimTemporada.Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]"
+                      lineageId="Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]"
                       name="TemporadaKey"
                       truncationRowDisposition="FailComponent">
                       <properties>
@@ -829,30 +942,30 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\FACT VENTAS\DimTemporada.Outputs[Salida de entradas no coincidentes de búsqueda]"
+                  refId="Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de entradas no coincidentes de búsqueda]"
                   description="Salida de búsqueda que trata las filas sin entradas coincidentes en el conjunto de datos de referencia. Utilice esta salida cuando la propiedad NoMatchBehavior esté establecida en &quot;Enviar las filas sin entradas coincidentes a la salida de entradas no coincidentes&quot;."
                   exclusionGroup="1"
                   name="Salida de entradas no coincidentes de búsqueda"
-                  synchronousInputId="Package\FACT VENTAS\DimTemporada.Inputs[Entrada de búsqueda]">
+                  synchronousInputId="Package\FACT VENTAS\DimTemporada (por fecha).Inputs[Entrada de búsqueda]">
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\FACT VENTAS\DimTemporada.Outputs[Salida de error de búsqueda]"
+                  refId="Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de error de búsqueda]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Salida de error de búsqueda"
-                  synchronousInputId="Package\FACT VENTAS\DimTemporada.Inputs[Entrada de búsqueda]">
+                  synchronousInputId="Package\FACT VENTAS\DimTemporada (por fecha).Inputs[Entrada de búsqueda]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\FACT VENTAS\DimTemporada.Outputs[Salida de error de búsqueda].Columns[ErrorCode]"
+                      refId="Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de error de búsqueda].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\FACT VENTAS\DimTemporada.Outputs[Salida de error de búsqueda].Columns[ErrorCode]"
+                      lineageId="Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de error de búsqueda].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\FACT VENTAS\DimTemporada.Outputs[Salida de error de búsqueda].Columns[ErrorColumn]"
+                      refId="Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de error de búsqueda].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\FACT VENTAS\DimTemporada.Outputs[Salida de error de búsqueda].Columns[ErrorColumn]"
+                      lineageId="Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de error de búsqueda].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -902,7 +1015,13 @@
                       refId="Package\FACT VENTAS\División condicional.Inputs[Entrada de división condicional].Columns[TemporadaKey]"
                       cachedDataType="i4"
                       cachedName="TemporadaKey"
-                      lineageId="Package\FACT VENTAS\DimTemporada.Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]" />
+                      lineageId="Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]" />
+                    <inputColumn
+                      refId="Package\FACT VENTAS\División condicional.Inputs[Entrada de división condicional].Columns[MotivoDescarte]"
+                      cachedDataType="wstr"
+                      cachedLength="200"
+                      cachedName="MotivoDescarte"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MotivoDescarte]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -910,7 +1029,7 @@
               <outputs>
                 <output
                   refId="Package\FACT VENTAS\División condicional.Outputs[bad]"
-                  description="Filas con alguna llave sin coincidencia"
+                  description="Filas con dato invalido o con alguna llave sin coincidencia"
                   errorOrTruncationOperation="Cálculo"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
@@ -922,13 +1041,13 @@
                       containsID="true"
                       dataType="System.String"
                       description="Especifica la expresión. Esta versión de expresión usa identificadores de linaje en lugar de nombres de columna."
-                      name="Expression">[ISNULL](#{Package\FACT VENTAS\DimFecha.Outputs[Salida de entradas coincidentes de búsqueda].Columns[FechaKey]}) || [ISNULL](#{Package\FACT VENTAS\DimCliente.Outputs[Salida de entradas coincidentes de búsqueda].Columns[ClienteKey]}) || [ISNULL](#{Package\FACT VENTAS\DimArticulo.Outputs[Salida de entradas coincidentes de búsqueda].Columns[ArticuloKey]}) || [ISNULL](#{Package\FACT VENTAS\DimArticulo.Outputs[Salida de entradas coincidentes de búsqueda].Columns[DepartamentoKey]}) || [ISNULL](#{Package\FACT VENTAS\DimCanal.Outputs[Salida de entradas coincidentes de búsqueda].Columns[CanalKey]}) || [ISNULL](#{Package\FACT VENTAS\DimTemporada.Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]})</property>
+                      name="Expression">![ISNULL](#{Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MotivoDescarte]}) || [ISNULL](#{Package\FACT VENTAS\DimFecha.Outputs[Salida de entradas coincidentes de búsqueda].Columns[FechaKey]}) || [ISNULL](#{Package\FACT VENTAS\DimCliente.Outputs[Salida de entradas coincidentes de búsqueda].Columns[ClienteKey]}) || [ISNULL](#{Package\FACT VENTAS\DimArticulo.Outputs[Salida de entradas coincidentes de búsqueda].Columns[ArticuloKey]}) || [ISNULL](#{Package\FACT VENTAS\DimArticulo.Outputs[Salida de entradas coincidentes de búsqueda].Columns[DepartamentoKey]}) || [ISNULL](#{Package\FACT VENTAS\DimCanal.Outputs[Salida de entradas coincidentes de búsqueda].Columns[CanalKey]}) || [ISNULL](#{Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Especifica la versión descriptiva de la expresión. Esta versión de expresión usa nombres de columna."
                       expressionType="Notify"
-                      name="FriendlyExpression">ISNULL(FechaKey) || ISNULL(ClienteKey) || ISNULL(ArticuloKey) || ISNULL(DepartamentoKey) || ISNULL(CanalKey) || ISNULL(TemporadaKey)</property>
+                      name="FriendlyExpression">!ISNULL(MotivoDescarte) || ISNULL(FechaKey) || ISNULL(ClienteKey) || ISNULL(ArticuloKey) || ISNULL(DepartamentoKey) || ISNULL(CanalKey) || ISNULL(TemporadaKey)</property>
                     <property
                       dataType="System.Int32"
                       description="Especifica la posición de la condición en la lista de condiciones que evalúa la transformación. El orden de evaluación es del menor al mayor valor."
@@ -1033,7 +1152,7 @@
               <connections>
                 <connection
                   refId="Package\FACT VENTAS\ErrorFactVentas.Connections[OleDbConnection]"
-                  connectionManagerID="{4DF34612-2498-4854-A81E-1FA2BAFB57B2}:external"
+                  connectionManagerID="{A2EB6CD2-DDDE-484A-8BD1-35E289523D39}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB DWH_HM]"
                   description="La conexión de tiempo de ejecución OLE DB usada para obtener acceso a la base de datos."
                   name="OleDbConnection" />
@@ -1047,43 +1166,59 @@
                   name="Entrada de destino de OLE DB">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[t_dat]"
-                      cachedDataType="i4"
-                      cachedName="t_dat"
-                      externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[t_dat]"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[t_dat]" />
-                    <inputColumn
-                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[customer_id]"
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[t_dat_origen]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="64"
-                      cachedName="customer_id"
-                      externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[customer_id]"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[customer_id]" />
+                      cachedLength="100"
+                      cachedName="t_dat_origen"
+                      externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[t_dat_origen]"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[t_dat_origen]" />
                     <inputColumn
-                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[article_id]"
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[customer_id_origen]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="customer_id_origen"
+                      externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[customer_id_origen]"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[customer_id_origen]" />
+                    <inputColumn
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[article_id_origen]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="article_id_origen"
+                      externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[article_id_origen]"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[article_id_origen]" />
+                    <inputColumn
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[price_origen]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="price_origen"
+                      externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[price_origen]"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[price_origen]" />
+                    <inputColumn
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[canal_origen]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="canal_origen"
+                      externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[canal_origen]"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[canal_origen]" />
+                    <inputColumn
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[temporada_origen]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="temporada_origen"
+                      externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[temporada_origen]"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[temporada_origen]" />
+                    <inputColumn
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[LineasOrigen]"
                       cachedDataType="i4"
-                      cachedName="article_id"
-                      externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[article_id]"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[article_id]" />
-                    <inputColumn
-                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[price]"
-                      cachedDataType="r8"
-                      cachedName="price"
-                      externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[price]"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[price]" />
-                    <inputColumn
-                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[sales_channel_id]"
-                      cachedDataType="ui1"
-                      cachedName="sales_channel_id"
-                      externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[sales_channel_id]"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[sales_channel_id]" />
-                    <inputColumn
-                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[TemporadaID]"
-                      cachedDataType="ui1"
-                      cachedName="TemporadaID"
-                      externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[TemporadaID]"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[TemporadaID]" />
+                      cachedName="LineasOrigen"
+                      externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[LineasOrigen]"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[LineasOrigen]" />
                     <inputColumn
                       refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[FechaKey]"
                       cachedDataType="i4"
@@ -1119,36 +1254,53 @@
                       cachedDataType="i4"
                       cachedName="TemporadaKey"
                       externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[TemporadaKey]"
-                      lineageId="Package\FACT VENTAS\DimTemporada.Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]" />
+                      lineageId="Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]" />
+                    <inputColumn
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].Columns[Motivo]"
+                      cachedDataType="wstr"
+                      cachedLength="200"
+                      cachedName="Motivo"
+                      externalMetadataColumnId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[Motivo]"
+                      lineageId="Package\FACT VENTAS\Columna derivada Motivo.Outputs[Salida de columna derivada].Columns[Motivo]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[t_dat]"
-                      dataType="i4"
-                      name="t_dat" />
-                    <externalMetadataColumn
-                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[customer_id]"
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[t_dat_origen]"
                       codePage="1252"
                       dataType="str"
-                      length="64"
-                      name="customer_id" />
+                      length="100"
+                      name="t_dat_origen" />
                     <externalMetadataColumn
-                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[article_id]"
-                      dataType="i4"
-                      name="article_id" />
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[customer_id_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="customer_id_origen" />
                     <externalMetadataColumn
-                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[price]"
-                      dataType="r8"
-                      name="price" />
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[article_id_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="article_id_origen" />
                     <externalMetadataColumn
-                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[sales_channel_id]"
-                      dataType="ui1"
-                      name="sales_channel_id" />
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[price_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="price_origen" />
                     <externalMetadataColumn
-                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[TemporadaID]"
-                      dataType="ui1"
-                      name="TemporadaID" />
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[canal_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="canal_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[temporada_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="temporada_origen" />
                     <externalMetadataColumn
                       refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[FechaKey]"
                       dataType="i4"
@@ -1173,6 +1325,15 @@
                       refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[TemporadaKey]"
                       dataType="i4"
                       name="TemporadaKey" />
+                    <externalMetadataColumn
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[LineasOrigen]"
+                      dataType="i4"
+                      name="LineasOrigen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[Motivo]"
+                      dataType="wstr"
+                      length="200"
+                      name="Motivo" />
                     <externalMetadataColumn
                       refId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[FechaRegistro]"
                       dataType="dbTimeStamp"
@@ -1264,7 +1425,7 @@
               <connections>
                 <connection
                   refId="Package\FACT VENTAS\FactVentas.Connections[OleDbConnection]"
-                  connectionManagerID="{4DF34612-2498-4854-A81E-1FA2BAFB57B2}:external"
+                  connectionManagerID="{A2EB6CD2-DDDE-484A-8BD1-35E289523D39}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB DWH_HM]"
                   description="La conexión de tiempo de ejecución OLE DB usada para obtener acceso a la base de datos."
                   name="OleDbConnection" />
@@ -1282,9 +1443,15 @@
                       cachedDataType="numeric"
                       cachedName="Precio"
                       cachedPrecision="19"
-                      cachedScale="6"
+                      cachedScale="4"
                       externalMetadataColumnId="Package\FACT VENTAS\FactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[Precio]"
                       lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Precio]" />
+                    <inputColumn
+                      refId="Package\FACT VENTAS\FactVentas.Inputs[Entrada de destino de OLE DB].Columns[LineasOrigen]"
+                      cachedDataType="i4"
+                      cachedName="LineasOrigen"
+                      externalMetadataColumnId="Package\FACT VENTAS\FactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[LineasOrigen]"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[LineasOrigen]" />
                     <inputColumn
                       refId="Package\FACT VENTAS\FactVentas.Inputs[Entrada de destino de OLE DB].Columns[FechaKey]"
                       cachedDataType="i4"
@@ -1320,7 +1487,7 @@
                       cachedDataType="i4"
                       cachedName="TemporadaKey"
                       externalMetadataColumnId="Package\FACT VENTAS\FactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[TemporadaKey]"
-                      lineageId="Package\FACT VENTAS\DimTemporada.Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]" />
+                      lineageId="Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1353,7 +1520,11 @@
                       dataType="numeric"
                       name="Precio"
                       precision="19"
-                      scale="6" />
+                      scale="4" />
+                    <externalMetadataColumn
+                      refId="Package\FACT VENTAS\FactVentas.Inputs[Entrada de destino de OLE DB].ExternalColumns[LineasOrigen]"
+                      dataType="i4"
+                      name="LineasOrigen" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -1407,9 +1578,43 @@
                   dataType="System.String"
                   description="Comando SQL para ejecutar."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [t_dat], [customer_id], [article_id], [price], [sales_channel_id], [TemporadaID],
-       CAST([price] AS DECIMAL(19,6)) AS [Precio]
-  FROM [HM].[StageTransactions]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">WITH G AS (   -- lineas identicas: se conserva una sola
+    SELECT [t_dat], [customer_id], [article_id], [price], [sales_channel_id], [TemporadaID], COUNT_BIG(*) AS [Lineas]
+      FROM [HM].[StageTransactions]
+     GROUP BY [t_dat], [customer_id], [article_id], [price], [sales_channel_id], [TemporadaID]),
+V AS (
+    SELECT G.*,
+           COALESCE(TRY_CONVERT(DATE, t.[Fec], 112), TRY_CONVERT(DATE, t.[Fec], 23),
+                    CASE WHEN t.[Fec] LIKE '%/%/%' THEN [DWH_HM].[dbo].[fn_LeerFecha](t.[Fec]) END) AS [FechaD],
+           NULLIF(LTRIM(RTRIM(G.[customer_id])), '')                           AS [Cli],
+           TRY_CONVERT(INT, LTRIM(RTRIM(G.[article_id])))                      AS [Art],
+           COALESCE(TRY_CONVERT(FLOAT, t.[Pre]),
+                    -- regla: la coma es separador decimal (si el valor trae una sola coma y ningun punto)
+                    CASE WHEN t.[Pre] NOT LIKE '%.%' AND t.[Pre] NOT LIKE '%,%,%'
+                         THEN TRY_CONVERT(FLOAT, REPLACE(t.[Pre], ',', '.')) END)  AS [P],
+           TRY_CONVERT(TINYINT, LTRIM(RTRIM(G.[sales_channel_id])))            AS [Canal]
+      FROM G
+     -- NULLIF: un texto vacio es sin dato (TRY_CONVERT lo convertiria en 0 o en 1900-01-01)
+     CROSS APPLY (SELECT NULLIF(LTRIM(RTRIM(G.[t_dat])), '') AS [Fec], NULLIF(LTRIM(RTRIM(G.[price])), '') AS [Pre]) t)
+SELECT [t_dat] AS [t_dat_origen], [customer_id] AS [customer_id_origen], [article_id] AS [article_id_origen],
+       [price] AS [price_origen], [sales_channel_id] AS [canal_origen], [TemporadaID] AS [temporada_origen],
+       CONVERT(INT, CONVERT(CHAR(8), [FechaD], 112))                     AS [FechaNum],
+       CAST(CASE WHEN LEN([Cli]) &lt;= 64 THEN [Cli] END AS VARCHAR(64))    AS [CustomerID],
+       [Art]                                                             AS [ArticleID],
+       [Canal]                                                           AS [CanalID],
+       CASE WHEN ABS([P]) &lt; 1000000000
+            THEN CAST(ROUND([P] * 40000, 4) AS DECIMAL(19,4)) END        AS [Precio],
+       CAST([Lineas] AS INT)                                             AS [LineasOrigen],
+       CAST(CASE WHEN [FechaD] IS NULL AND [t_dat] LIKE '%/%/%'
+                      THEN N'Fecha inválida: ' + LEFT([t_dat], 30)
+                 WHEN [FechaD] IS NULL THEN N'Fecha inválida: ' + ISNULL(LEFT([t_dat], 30), N'(vacía)')
+                 WHEN [Cli] IS NULL    THEN N'Cliente vacío'
+                 WHEN [Art] IS NULL    THEN N'Artículo inválido: ' + ISNULL(LEFT([article_id], 30), N'(vacío)')
+                 WHEN [Canal] IS NULL  THEN N'Canal inválido: ' + ISNULL(LEFT([sales_channel_id], 30), N'(vacío)')
+                 WHEN [P] IS NULL      THEN N'Precio vacío o no numérico: ' + ISNULL(LEFT([price], 30), N'(vacío)')
+                 WHEN ABS([P]) &gt;= 1000000000 THEN N'Precio fuera de rango: ' + LEFT([price], 30)
+            END AS NVARCHAR(200))                                        AS [MotivoDescarte]
+  FROM V</property>
                 <property
                   dataType="System.String"
                   description="Variable que contiene el comando SQL para ejecutar."
@@ -1435,7 +1640,7 @@
               <connections>
                 <connection
                   refId="Package\FACT VENTAS\Origen de OLE DB.Connections[OleDbConnection]"
-                  connectionManagerID="{88DD4EE8-77DE-4968-85B0-94F2D5243896}:external"
+                  connectionManagerID="{14B66C3C-74F6-4C8A-9859-876DE64EB424}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB STAGE_HM]"
                   description="La conexión de tiempo de ejecución OLE DB usada para obtener acceso a la base de datos."
                   name="OleDbConnection" />
@@ -1446,60 +1651,108 @@
                   name="Salida de origen de OLE DB">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[t_dat]"
-                      dataType="i4"
-                      errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[t_dat]"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[t_dat]"
-                      name="t_dat"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[customer_id]"
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[t_dat_origen]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Conversión"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[customer_id]"
-                      length="64"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[customer_id]"
-                      name="customer_id"
+                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[t_dat_origen]"
+                      length="100"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[t_dat_origen]"
+                      name="t_dat_origen"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[article_id]"
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[customer_id_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[customer_id_origen]"
+                      length="100"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[customer_id_origen]"
+                      name="customer_id_origen"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[article_id_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[article_id_origen]"
+                      length="100"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[article_id_origen]"
+                      name="article_id_origen"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[price_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[price_origen]"
+                      length="100"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[price_origen]"
+                      name="price_origen"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[canal_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[canal_origen]"
+                      length="100"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[canal_origen]"
+                      name="canal_origen"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[temporada_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[temporada_origen]"
+                      length="100"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[temporada_origen]"
+                      name="temporada_origen"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[FechaNum]"
                       dataType="i4"
                       errorOrTruncationOperation="Conversión"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[article_id]"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[article_id]"
-                      name="article_id"
+                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[FechaNum]"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[FechaNum]"
+                      name="FechaNum"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[price]"
-                      dataType="r8"
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[CustomerID]"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[price]"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[price]"
-                      name="price"
+                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[CustomerID]"
+                      length="64"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[CustomerID]"
+                      name="CustomerID"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[sales_channel_id]"
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[ArticleID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[ArticleID]"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[ArticleID]"
+                      name="ArticleID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[CanalID]"
                       dataType="ui1"
                       errorOrTruncationOperation="Conversión"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[sales_channel_id]"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[sales_channel_id]"
-                      name="sales_channel_id"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[TemporadaID]"
-                      dataType="ui1"
-                      errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[TemporadaID]"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[TemporadaID]"
-                      name="TemporadaID"
+                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[CanalID]"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[CanalID]"
+                      name="CanalID"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Precio]"
@@ -1510,43 +1763,99 @@
                       lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Precio]"
                       name="Precio"
                       precision="19"
-                      scale="6"
+                      scale="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[LineasOrigen]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[LineasOrigen]"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[LineasOrigen]"
+                      name="LineasOrigen"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MotivoDescarte]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[MotivoDescarte]"
+                      length="200"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MotivoDescarte]"
+                      name="MotivoDescarte"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[t_dat]"
-                      dataType="i4"
-                      name="t_dat" />
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[t_dat_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="t_dat_origen" />
                     <externalMetadataColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[customer_id]"
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[customer_id_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="customer_id_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[article_id_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="article_id_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[price_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="price_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[canal_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="canal_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[temporada_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="temporada_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[FechaNum]"
+                      dataType="i4"
+                      name="FechaNum" />
+                    <externalMetadataColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[CustomerID]"
                       codePage="1252"
                       dataType="str"
                       length="64"
-                      name="customer_id" />
+                      name="CustomerID" />
                     <externalMetadataColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[article_id]"
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[ArticleID]"
                       dataType="i4"
-                      name="article_id" />
+                      name="ArticleID" />
                     <externalMetadataColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[price]"
-                      dataType="r8"
-                      name="price" />
-                    <externalMetadataColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[sales_channel_id]"
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[CanalID]"
                       dataType="ui1"
-                      name="sales_channel_id" />
-                    <externalMetadataColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[TemporadaID]"
-                      dataType="ui1"
-                      name="TemporadaID" />
+                      name="CanalID" />
                     <externalMetadataColumn
                       refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Precio]"
                       dataType="numeric"
                       name="Precio"
                       precision="19"
-                      scale="6" />
+                      scale="4" />
+                    <externalMetadataColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[LineasOrigen]"
+                      dataType="i4"
+                      name="LineasOrigen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[MotivoDescarte]"
+                      dataType="wstr"
+                      length="200"
+                      name="MotivoDescarte" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -1555,44 +1864,87 @@
                   name="Salida de error de origen de OLE DB">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[t_dat]"
-                      dataType="i4"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[t_dat]"
-                      name="t_dat" />
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[t_dat_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[t_dat_origen]"
+                      name="t_dat_origen" />
                     <outputColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[customer_id]"
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[customer_id_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[customer_id_origen]"
+                      name="customer_id_origen" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[article_id_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[article_id_origen]"
+                      name="article_id_origen" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[price_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[price_origen]"
+                      name="price_origen" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[canal_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[canal_origen]"
+                      name="canal_origen" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[temporada_origen]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[temporada_origen]"
+                      name="temporada_origen" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[FechaNum]"
+                      dataType="i4"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[FechaNum]"
+                      name="FechaNum" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[CustomerID]"
                       codePage="1252"
                       dataType="str"
                       length="64"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[customer_id]"
-                      name="customer_id" />
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[CustomerID]"
+                      name="CustomerID" />
                     <outputColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[article_id]"
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[ArticleID]"
                       dataType="i4"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[article_id]"
-                      name="article_id" />
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[ArticleID]"
+                      name="ArticleID" />
                     <outputColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[price]"
-                      dataType="r8"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[price]"
-                      name="price" />
-                    <outputColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[sales_channel_id]"
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[CanalID]"
                       dataType="ui1"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[sales_channel_id]"
-                      name="sales_channel_id" />
-                    <outputColumn
-                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[TemporadaID]"
-                      dataType="ui1"
-                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[TemporadaID]"
-                      name="TemporadaID" />
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[CanalID]"
+                      name="CanalID" />
                     <outputColumn
                       refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Precio]"
                       dataType="numeric"
                       lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Precio]"
                       name="Precio"
                       precision="19"
-                      scale="6" />
+                      scale="4" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[LineasOrigen]"
+                      dataType="i4"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[LineasOrigen]"
+                      name="LineasOrigen" />
+                    <outputColumn
+                      refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[MotivoDescarte]"
+                      dataType="wstr"
+                      length="200"
+                      lineageId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[MotivoDescarte]"
+                      name="MotivoDescarte" />
                     <outputColumn
                       refId="Package\FACT VENTAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]"
                       dataType="i4"
@@ -1614,24 +1966,24 @@
           <paths>
             <path
               refId="Package\FACT VENTAS.Paths[bad]"
-              endId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB]"
+              endId="Package\FACT VENTAS\Columna derivada Motivo.Inputs[Entrada de columna derivada]"
               name="bad"
               startId="Package\FACT VENTAS\División condicional.Outputs[bad]" />
+            <path
+              refId="Package\FACT VENTAS.Paths[Salida de columna derivada]"
+              endId="Package\FACT VENTAS\ErrorFactVentas.Inputs[Entrada de destino de OLE DB]"
+              name="Salida de columna derivada"
+              startId="Package\FACT VENTAS\Columna derivada Motivo.Outputs[Salida de columna derivada]" />
+            <path
+              refId="Package\FACT VENTAS.Paths[Salida de entradas coincidentes de búsqueda3]"
+              endId="Package\FACT VENTAS\DimTemporada (por fecha).Inputs[Entrada de búsqueda]"
+              name="Salida de entradas coincidentes de búsqueda"
+              startId="Package\FACT VENTAS\DimCanal.Outputs[Salida de entradas coincidentes de búsqueda]" />
             <path
               refId="Package\FACT VENTAS.Paths[Salida de entradas coincidentes de búsqueda4]"
               endId="Package\FACT VENTAS\División condicional.Inputs[Entrada de división condicional]"
               name="Salida de entradas coincidentes de búsqueda"
-              startId="Package\FACT VENTAS\DimTemporada.Outputs[Salida de entradas coincidentes de búsqueda]" />
-            <path
-              refId="Package\FACT VENTAS.Paths[Salida de entradas coincidentes de búsqueda3]"
-              endId="Package\FACT VENTAS\DimTemporada.Inputs[Entrada de búsqueda]"
-              name="Salida de entradas coincidentes de búsqueda"
-              startId="Package\FACT VENTAS\DimCanal.Outputs[Salida de entradas coincidentes de búsqueda]" />
-            <path
-              refId="Package\FACT VENTAS.Paths[Salida de entradas coincidentes de búsqueda2]"
-              endId="Package\FACT VENTAS\DimCanal.Inputs[Entrada de búsqueda]"
-              name="Salida de entradas coincidentes de búsqueda"
-              startId="Package\FACT VENTAS\DimArticulo.Outputs[Salida de entradas coincidentes de búsqueda]" />
+              startId="Package\FACT VENTAS\DimTemporada (por fecha).Outputs[Salida de entradas coincidentes de búsqueda]" />
             <path
               refId="Package\FACT VENTAS.Paths[Salida de entradas coincidentes de búsqueda]"
               endId="Package\FACT VENTAS\DimCliente.Inputs[Entrada de búsqueda]"
@@ -1642,6 +1994,11 @@
               endId="Package\FACT VENTAS\DimArticulo.Inputs[Entrada de búsqueda]"
               name="Salida de entradas coincidentes de búsqueda"
               startId="Package\FACT VENTAS\DimCliente.Outputs[Salida de entradas coincidentes de búsqueda]" />
+            <path
+              refId="Package\FACT VENTAS.Paths[Salida de entradas coincidentes de búsqueda2]"
+              endId="Package\FACT VENTAS\DimCanal.Inputs[Entrada de búsqueda]"
+              name="Salida de entradas coincidentes de búsqueda"
+              startId="Package\FACT VENTAS\DimArticulo.Outputs[Salida de entradas coincidentes de búsqueda]" />
             <path
               refId="Package\FACT VENTAS.Paths[Salida de origen de OLE DB]"
               endId="Package\FACT VENTAS\DimFecha.Inputs[Entrada de búsqueda]"
@@ -1660,7 +2017,7 @@
       DTS:refId="Package\Task Get AuditKey"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{13783986-A8F3-4294-B5D2-799F28AD7C1D}"
+      DTS:DTSID="{2BBD7F50-3E35-465F-A6A8-03BB7F677C99}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Get AuditKey"
@@ -1669,7 +2026,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
           SQLTask:SqlStatementSource="INSERT INTO [DIM_AUDIT]&#xA;           ([TableName]&#xA;           ,[PkgName]&#xA;           ,[PkgGUID]&#xA;           ,[ExecStartDT]&#xA;           ,[ExecStopDT]&#xA;           ,[ExecutionInstanceGUID]&#xA;           ,[ExtractRowCnt]&#xA;           ,[TableInitialRowCnt]&#xA;           ,[TableFinalRowCnt]&#xA;           ,[SuccessfulProcessingInd])&#xA;     VALUES&#xA;           (@TableName&#xA;           ,@PkgName&#xA;           ,@PkgGUID&#xA;           ,@StartTime&#xA;           ,NULL&#xA;           ,@PkgExecGUID&#xA;           ,NULL&#xA;           ,@RowCount&#xA;           ,NULL&#xA;           ,'N')&#xA;SELECT CAST(SCOPE_IDENTITY() AS INT) AS AuditKey"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -1718,7 +2075,7 @@
       DTS:refId="Package\Task Post RowCnt"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{629973BD-37C8-450C-8094-8FDB5DAF4C12}"
+      DTS:DTSID="{BA020AAC-C33A-45AD-8B85-3F2E41962987}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Post RowCnt"
@@ -1727,7 +2084,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
           SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [Ventas].[FactVentas]"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -1740,7 +2097,7 @@
       DTS:refId="Package\Task Prior RowCnt"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{27876446-7D0C-41C3-8C4F-92ACAE338826}"
+      DTS:DTSID="{87CC09D0-78F2-49FF-8351-7EF58A5C3D8B}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Prior RowCnt"
@@ -1749,7 +2106,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
           SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [Ventas].[FactVentas]"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -1762,7 +2119,7 @@
       DTS:refId="Package\TRUNCATE"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{BE9E1AF8-0D24-4579-BDDC-6951DD059008}"
+      DTS:DTSID="{7E64343B-7AD9-4735-92DD-4C9E6723986C}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="TRUNCATE"
@@ -1771,7 +2128,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
           SQLTask:SqlStatementSource="TRUNCATE TABLE [Ventas].[FactVentas];&#xA;TRUNCATE TABLE [Ventas].[ErrorFactVentas];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -1779,7 +2136,7 @@
       DTS:refId="Package\Update AuditDim"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{4C7431B6-0782-4EA5-B94F-CD31CD25EE2D}"
+      DTS:DTSID="{109EFBCD-D9C8-4E5C-B8DB-9EEADF1E2A86}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Update AuditDim"
@@ -1788,8 +2145,8 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
-          SQLTask:SqlStatementSource="UPDATE [DIM_AUDIT]&#xA;SET ExecStopDT = SYSDATETIME()&#xA; , ExtractRowCnt = @RowCount&#xA; ,TableFinalRowCnt = @RowCount&#xA; ,SuccessfulProcessingInd='Y'&#xA;WHERE AuditKey = @AuditKey;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
+          SQLTask:SqlStatementSource="EXEC [dbo].[sp_CerrarAuditoria] @AuditKey = @AuditKey, @RowCount = @RowCount;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ParameterBinding
             SQLTask:ParameterName="RowCount"
             SQLTask:DtsVariableName="User::RowCount"
@@ -1808,44 +2165,98 @@
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{49A8CB16-8CBA-418D-973E-0BE17A39E613\}]"
+      DTS:refId="Package.PrecedenceConstraints[{1DD33D73-B9BE-42CE-B7D0-5D5330FEB00B\}]"
       DTS:CreationName=""
-      DTS:DTSID="{49A8CB16-8CBA-418D-973E-0BE17A39E613}"
-      DTS:From="Package\Task Post RowCnt"
-      DTS:LogicalAnd="True"
-      DTS:ObjectName="{49A8CB16-8CBA-418D-973E-0BE17A39E613}"
-      DTS:To="Package\Update AuditDim" />
-    <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{6EC8BB0E-B1B7-422F-A152-8933A5A73499\}]"
-      DTS:CreationName=""
-      DTS:DTSID="{6EC8BB0E-B1B7-422F-A152-8933A5A73499}"
-      DTS:From="Package\Task Get AuditKey"
-      DTS:LogicalAnd="True"
-      DTS:ObjectName="{6EC8BB0E-B1B7-422F-A152-8933A5A73499}"
-      DTS:To="Package\TRUNCATE" />
-    <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{93A108B1-F00C-49E5-8F32-DD575A153786\}]"
-      DTS:CreationName=""
-      DTS:DTSID="{93A108B1-F00C-49E5-8F32-DD575A153786}"
-      DTS:From="Package\TRUNCATE"
-      DTS:LogicalAnd="True"
-      DTS:ObjectName="{93A108B1-F00C-49E5-8F32-DD575A153786}"
-      DTS:To="Package\FACT VENTAS" />
-    <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{C14407D6-0869-42AF-ACEE-DBE9250AD47E\}]"
-      DTS:CreationName=""
-      DTS:DTSID="{C14407D6-0869-42AF-ACEE-DBE9250AD47E}"
-      DTS:From="Package\Task Prior RowCnt"
-      DTS:LogicalAnd="True"
-      DTS:ObjectName="{C14407D6-0869-42AF-ACEE-DBE9250AD47E}"
-      DTS:To="Package\Task Get AuditKey" />
-    <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{E15D9B42-7C42-4522-9901-3E3C9592C889\}]"
-      DTS:CreationName=""
-      DTS:DTSID="{E15D9B42-7C42-4522-9901-3E3C9592C889}"
+      DTS:DTSID="{1DD33D73-B9BE-42CE-B7D0-5D5330FEB00B}"
       DTS:From="Package\FACT VENTAS"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="{E15D9B42-7C42-4522-9901-3E3C9592C889}"
+      DTS:ObjectName="{1DD33D73-B9BE-42CE-B7D0-5D5330FEB00B}"
       DTS:To="Package\Task Post RowCnt" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{58F511F4-E3F1-4FAA-90E7-089228E1FAA6\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{58F511F4-E3F1-4FAA-90E7-089228E1FAA6}"
+      DTS:From="Package\Task Get AuditKey"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{58F511F4-E3F1-4FAA-90E7-089228E1FAA6}"
+      DTS:To="Package\TRUNCATE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{5E45828A-E920-47B9-A13D-8A741C80A232\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{5E45828A-E920-47B9-A13D-8A741C80A232}"
+      DTS:From="Package\Task Post RowCnt"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{5E45828A-E920-47B9-A13D-8A741C80A232}"
+      DTS:To="Package\Update AuditDim" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{89960542-42B0-47D4-8284-C57E1802AD23\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{89960542-42B0-47D4-8284-C57E1802AD23}"
+      DTS:From="Package\Task Prior RowCnt"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{89960542-42B0-47D4-8284-C57E1802AD23}"
+      DTS:To="Package\Task Get AuditKey" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{937D4ADC-B193-4F88-87FE-2E4DA54C933A\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{937D4ADC-B193-4F88-87FE-2E4DA54C933A}"
+      DTS:From="Package\TRUNCATE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{937D4ADC-B193-4F88-87FE-2E4DA54C933A}"
+      DTS:To="Package\FACT VENTAS" />
   </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{26AED1F8-7385-4C2F-8526-F70878314F4E}"
+      DTS:EventID="0"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="La propiedad de propagación del evento"
+          DTS:DTSID="{016E74EF-B240-4214-B0FE-8865F264A31E}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\Registrar error en DIM_AUDIT"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Tarea Ejecutar SQL"
+          DTS:DisableEventHandlers="True"
+          DTS:DTSID="{F752516A-F160-4D9F-A640-6E207E7511FF}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Registrar error en DIM_AUDIT"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
+              SQLTask:SqlStatementSource="UPDATE [DIM_AUDIT]&#xA;SET ExecStopDT = SYSDATETIME()&#xA; ,SuccessfulProcessingInd = 'N'&#xA; ,MensajeError = LEFT(ISNULL(MensajeError + N' | ', N'') + @Mensaje, 2000)&#xA;WHERE AuditKey = @AuditKey;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="Mensaje"
+                SQLTask:DtsVariableName="System::ErrorDescription"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="16"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="AuditKey"
+                SQLTask:DtsVariableName="User::AuditKey"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="11"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
 </DTS:Executable>

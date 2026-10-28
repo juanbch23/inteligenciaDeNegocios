@@ -14,14 +14,14 @@
     <Manifest>
       <SSIS:Project SSIS:ProtectionLevel="DontSaveSensitive" xmlns:SSIS="www.microsoft.com/SqlServer/SSIS">
         <SSIS:Properties>
-          <SSIS:Property SSIS:Name="ID">{e6ee08db-ddc5-4a04-ac14-d57d82703793}</SSIS:Property>
+          <SSIS:Property SSIS:Name="ID">{8a1b6552-fd56-4e78-9c4c-983d63353f4a}</SSIS:Property>
           <SSIS:Property SSIS:Name="Name">stage_H&amp;M</SSIS:Property>
           <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
           <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
           <SSIS:Property SSIS:Name="VersionBuild">0</SSIS:Property>
           <SSIS:Property SSIS:Name="VersionComments">
           </SSIS:Property>
-          <SSIS:Property SSIS:Name="CreationDate">2026-10-21T00:07:47.466413-05:00</SSIS:Property>
+          <SSIS:Property SSIS:Name="CreationDate">2026-10-28T00:35:03.0039227-05:00</SSIS:Property>
           <SSIS:Property SSIS:Name="CreatorName">LAPTOP-IO596P6A\Juan</SSIS:Property>
           <SSIS:Property SSIS:Name="CreatorComputerName">LAPTOP-IO596P6A</SSIS:Property>
           <SSIS:Property SSIS:Name="Description">
@@ -1455,14 +1455,14 @@
           <SSIS:PackageInfo>
             <SSIS:PackageMetaData SSIS:Name="StageArticles.dtsx">
               <SSIS:Properties>
-                <SSIS:Property SSIS:Name="ID">{4E4F19E0-7292-404E-90B1-E5602BA86F6B}</SSIS:Property>
+                <SSIS:Property SSIS:Name="ID">{5FDBD929-FB47-4387-AFC5-8182AC14FFE4}</SSIS:Property>
                 <SSIS:Property SSIS:Name="Name">StageArticles</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{19C9F941-9426-4480-831E-6137C333A4F9}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{0B0B97EC-BC44-48EF-ACAD-210923B00F14}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -1472,14 +1472,14 @@
             </SSIS:PackageMetaData>
             <SSIS:PackageMetaData SSIS:Name="StageCustomers.dtsx">
               <SSIS:Properties>
-                <SSIS:Property SSIS:Name="ID">{2E481980-CEA2-4877-A98F-23787486C82D}</SSIS:Property>
+                <SSIS:Property SSIS:Name="ID">{F062E82B-3766-4FD8-B8F7-C9EEE636660F}</SSIS:Property>
                 <SSIS:Property SSIS:Name="Name">StageCustomers</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{C4989FA5-126F-4372-B4AE-FC193C685B04}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{FF32FC0F-DE9F-4719-B38F-7595BFCAC963}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -1489,14 +1489,14 @@
             </SSIS:PackageMetaData>
             <SSIS:PackageMetaData SSIS:Name="StageTransactions.dtsx">
               <SSIS:Properties>
-                <SSIS:Property SSIS:Name="ID">{DF40A72B-A504-4886-A578-B66BD9CDCB3F}</SSIS:Property>
+                <SSIS:Property SSIS:Name="ID">{F78162F7-E959-4813-B920-7212D2114359}</SSIS:Property>
                 <SSIS:Property SSIS:Name="Name">StageTransactions</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{EA081508-FB52-4606-B1D0-962CBEB9F4B1}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{D07AB887-7BC7-45A6-938A-95C334BF5B31}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -1506,14 +1506,14 @@
             </SSIS:PackageMetaData>
             <SSIS:PackageMetaData SSIS:Name="StageFecha.dtsx">
               <SSIS:Properties>
-                <SSIS:Property SSIS:Name="ID">{CCEF775D-9E68-4BAF-BBFF-6DC926043230}</SSIS:Property>
+                <SSIS:Property SSIS:Name="ID">{8861D49E-8432-434E-8923-B9F000379A83}</SSIS:Property>
                 <SSIS:Property SSIS:Name="Name">StageFecha</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{E0AC58A8-288F-4044-B275-88571A53AA6E}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{53718153-D91C-4E0D-9362-4142F102EB1F}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -1523,14 +1523,14 @@
             </SSIS:PackageMetaData>
             <SSIS:PackageMetaData SSIS:Name="StageTemporada.dtsx">
               <SSIS:Properties>
-                <SSIS:Property SSIS:Name="ID">{007EB37D-4C63-4408-B943-8B46B987B783}</SSIS:Property>
+                <SSIS:Property SSIS:Name="ID">{783083F9-F1E9-4E3F-BD03-DABBC3A170F8}</SSIS:Property>
                 <SSIS:Property SSIS:Name="Name">StageTemporada</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{E428D5C7-56E5-4A97-B3F2-211EEB6809C0}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{922B8C4D-8513-412F-ABF4-AFFC57AFBB30}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -1540,14 +1540,14 @@
             </SSIS:PackageMetaData>
             <SSIS:PackageMetaData SSIS:Name="StageGoals.dtsx">
               <SSIS:Properties>
-                <SSIS:Property SSIS:Name="ID">{FBD7E2A2-858E-4278-BBAB-B3B51BE3504F}</SSIS:Property>
+                <SSIS:Property SSIS:Name="ID">{06B5BFC6-7ABC-4C55-887C-594C617DBA9C}</SSIS:Property>
                 <SSIS:Property SSIS:Name="Name">StageGoals</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{928167E4-DA18-43F3-B087-AFDF43ED4D02}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{F181AE87-71AE-4E55-AC93-E18773EDBCBA}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -1557,14 +1557,14 @@
             </SSIS:PackageMetaData>
             <SSIS:PackageMetaData SSIS:Name="MasterExecuteStage.dtsx">
               <SSIS:Properties>
-                <SSIS:Property SSIS:Name="ID">{BF15B075-2F7C-4922-B3F5-24BB8F646E6D}</SSIS:Property>
+                <SSIS:Property SSIS:Name="ID">{8B1D4D5C-3E5C-405A-BCAC-F75CD77B49E8}</SSIS:Property>
                 <SSIS:Property SSIS:Name="Name">MasterExecuteStage</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{53DF2CE7-EC94-450F-9786-A281DF7E2C24}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{F98AC5D3-7BC5-4FA0-B02F-3ED6B7FC258C}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -1595,7 +1595,13 @@
         <LinkedAzureSSISIR />
         <LinkedAzureStorage />
         <RemoteExecutionFolder />
-        <ParameterConfigurationValues />
+        <ParameterConfigurationValues>
+          <ConfigurationSetting>
+            <Id>LastModifiedTime</Id>
+            <Name>LastModifiedTime</Name>
+            <Value xsi:type="xsd:dateTime">2026-10-27T01:59:13.5189789Z</Value>
+          </ConfigurationSetting>
+        </ParameterConfigurationValues>
       </Options>
     </Configuration>
   </Configurations>

@@ -1,4 +1,4 @@
-"""Genera Model.bim (compatibilidad 1200, como pide 'Cubos Tabulares y Pbi.pdf') del cubo H&M.
+﻿"""Genera Model.bim (compatibilidad 1200, como pide 'Cubos Tabulares y Pbi.pdf') del cubo H&M.
 
 Origen : LAPTOP-IO596P6A\\DEV -> DWH_HM (modelo estrella cargado por SSIS)
 Uso    : python gen_bim_hm.py Model.bim
@@ -46,10 +46,13 @@ TABLES = [
       col("Periodo", "string", sort="AnioMes", desc="Mes-Año (Sep-2018); se ordena cronológicamente")]),
     ("DimTemporada",
      """SELECT [TemporadaKey], [TemporadaID], [Temporada], [Estacion], [Anio], CAST([FechaInicio] AS DATETIME) AS [FechaInicio],
-       CAST([FechaFin] AS DATETIME) AS [FechaFin]
+       CAST([FechaFin] AS DATETIME) AS [FechaFin],
+       CASE [Estacion] WHEN 'verano' THEN 1 WHEN 'otoño' THEN 2 WHEN 'invierno' THEN 3 WHEN 'primavera' THEN 4 ELSE 9 END
+           AS [OrdenEstacion]   -- orden del año comercial (hemisferio sur): verano, otoño, invierno, primavera
   FROM [Ventas].[DimTemporada] WHERE [TemporadaKey] > 0""",
      [col("TemporadaKey", "int64", hidden=True), col("TemporadaID", "int64", hidden=True),
-      col("Temporada", "string", sort="TemporadaID"), col("Estacion", "string"), col("Anio", "int64", fmt="0"),
+      col("Temporada", "string", sort="TemporadaID"), col("Estacion", "string", sort="OrdenEstacion"),
+      col("OrdenEstacion", "int64", hidden=True), col("Anio", "int64", fmt="0"),
       col("FechaInicio", "dateTime", fmt="dd/MM/yyyy"), col("FechaFin", "dateTime", fmt="dd/MM/yyyy")]),
     ("DimCanal",
      "SELECT [CanalKey], [CanalID], [NombreCanal] FROM [Ventas].[DimCanal] WHERE [CanalKey] > 0",
@@ -87,16 +90,18 @@ TABLES = [
      [col("FechaKey", "int64", hidden=True), col("ClienteKey", "int64", hidden=True),
       col("ArticuloKey", "int64", hidden=True), col("DepartamentoKey", "int64", hidden=True),
       col("CanalKey", "int64", hidden=True), col("TemporadaKey", "int64", hidden=True),
-      col("Precio", "decimal", fmt=MONEY, hidden=True),
-      col("PrecioLista", "decimal", fmt=MONEY, hidden=True, desc="Precio máximo observado del artículo"),
+      col("Precio", "double", fmt=MONEY, hidden=True),
+      col("PrecioLista", "double", fmt=MONEY, hidden=True, desc="Precio máximo observado del artículo"),
       col("BandaDescuento", "string", desc="Descuento de la línea frente al precio de lista")]),
     ("FactMetas",
-     """SELECT [Escenario], [FechaKey], [DepartamentoKey], [TemporadaKey], [MetaDiaria]
-  FROM [Ventas].[vw_FactMetasDiaria]""",
+     # la meta TAL COMO VIENE en GoalsHyM.xlsx: una fila por escenario, seccion, temporada y mes (sin repartirla
+     # por dias, eso seria un supuesto). FechaKey = primer dia del mes en el calendario.
+     """SELECT [Escenario], [FechaKey], [DepartamentoKey], [TemporadaKey], [Monto] AS [Meta]
+  FROM [Ventas].[FactMetas]""",
      [col("Escenario", "string"), col("FechaKey", "int64", hidden=True),
       col("DepartamentoKey", "int64", hidden=True), col("TemporadaKey", "int64", hidden=True),
-      col("MetaDiaria", "decimal", fmt=MONEY, hidden=True,
-          desc="Meta diaria de GoalsHyM.xlsx (Monto), expandida a cada dia de su mes y temporada")]),
+      col("Meta", "double", fmt=MONEY, hidden=True,
+          desc="Monto de GoalsHyM.xlsx tal como viene: meta por escenario, seccion, temporada y mes")]),
 ]
 
 # ------------------------------------------------------------------ medidas
@@ -132,12 +137,35 @@ m("FactVentas", ".Acumulado_Anual", "TOTALYTD([.Ventas], DimFecha[Fecha])", MONE
 m("FactVentas", ".Ventas_Ultimos_Dias_7", f"CALCULATE ( [.Ventas], {L7} )", MONEY, F)
 m("FactVentas", ".Ventas_Ultimos_Dias_7_avg", f"AVERAGEX ( {L7}, [.Ventas] )", MONEY, F,
   "Promedio diario de ventas de los últimos 7 días (media móvil)")
-m("FactVentas", ".Ventas_Mismo_Periodo_AA", """
-VAR fechas = SELECTCOLUMNS(VALUES(DimFecha[Fecha]), "F", EDATE(DimFecha[Fecha], -12))
+# Comparacion escalable: año elegido (filtro Año) contra el año de la tabla AnioComparacion (filtro "Comparar con");
+# si no se elige año de comparacion se usa el anterior. Nada fijo: los años salen de los datos.
+m("DimFecha", ".Anio_Elegido", "IF(HASONEVALUE(DimFecha[Anio]), VALUES(DimFecha[Anio]))", "0", F,
+  "Año elegido en el filtro (vacío si se ven todos los años)")
+m("DimFecha", ".Anio_Comparacion", """
+VAR a = [.Anio_Elegido]
+VAR c = SELECTEDVALUE(AnioComparacion[Comparar con])
 RETURN
-    IF(HASONEVALUE(DimFecha[Anio]),                       -- solo tiene sentido dentro de un año
+    IF(ISBLANK(a), BLANK(), IF(ISBLANK(c), a - 1, c))""", "0", F,
+  "Año contra el que se compara: el del filtro Comparar con, o el anterior al elegido")
+m("DimFecha", ".Desfase_Meses", "IF(ISBLANK([.Anio_Elegido]), BLANK(), 12 * ([.Anio_Elegido] - [.Anio_Comparacion]))", "0", F)
+m("FactVentas", ".Comparacion_Incompleta", """
+VAR k = [.Desfase_Meses]
+VAR fechas = SELECTCOLUMNS(VALUES(DimFecha[Fecha]), "F", EDATE(DimFecha[Fecha], -k))
+VAR dias = DISTINCTCOUNT(FactVentas[FechaKey])
+VAR dias_comp = CALCULATE(DISTINCTCOUNT(FactVentas[FechaKey]), ALL(DimFecha), TREATAS(fechas, DimFecha[Fecha]))
+RETURN
+    IF(NOT ISBLANK(k) && k <> 0, dias_comp < dias * 0.9)""", None, F,
+  "Verdadero si el año de comparación tiene menos de 90 % de los días con venta (datos incompletos)")
+m("DimFecha", ".Txt_Comparacion", """
+IF(ISBLANK([.Anio_Comparacion]), BLANK(),
+   "vs " & [.Anio_Comparacion] & IF([.Comparacion_Incompleta], " (año con datos incompletos)"))""", None, F)
+m("FactVentas", ".Ventas_Mismo_Periodo_AA", """
+VAR k = [.Desfase_Meses]
+VAR fechas = SELECTCOLUMNS(VALUES(DimFecha[Fecha]), "F", EDATE(DimFecha[Fecha], -k))
+RETURN
+    IF(NOT ISBLANK(k) && k <> 0,                        -- solo cuando se elige un año para comparar
        CALCULATE([.Ventas], ALL(DimFecha), TREATAS(fechas, DimFecha[Fecha])))""", MONEY, F,
-  "Ventas de exactamente los mismos días del año anterior (SAMEPERIODLASTYEAR completaba septiembre 2019)")
+  "Ventas de exactamente los mismos días (y meses filtrados) del año de comparación")
 m("FactVentas", ".%Crecimiento_Interanual",
   "DIVIDE([.Ventas] - [.Ventas_Mismo_Periodo_AA], [.Ventas_Mismo_Periodo_AA])", PCT, F)
 for i, suf in enumerate(["Actual", "prev-1", "prev-2"]):
@@ -197,7 +225,7 @@ m("FactMetas", ".Escenario_Activo", 'SELECTEDVALUE(FactMetas[Escenario], "Escena
 m("FactMetas", ".Meta", """
 VAR esc = [.Escenario_Activo]
 RETURN
-    CALCULATE(SUM(FactMetas[MetaDiaria]), FactMetas[Escenario] = esc)""", MONEY, F)
+    CALCULATE(SUM(FactMetas[Meta]), FactMetas[Escenario] = esc)""", MONEY, F)
 m("FactMetas", ".%Cumplimiento_Meta", "DIVIDE([.Ventas], [.Meta])", PCT, F)
 m("FactMetas", ".Brecha_Meta", "IF(ISBLANK([.Meta]), BLANK(), [.Ventas] - [.Meta])", MONEY, F)
 m("FactMetas", ".Cumplimiento_I", """
@@ -207,9 +235,9 @@ RETURN
 m("FactMetas", ".Color_Cumplimiento", """
 VAR c = [.%Cumplimiento_Meta]
 RETURN
-    SWITCH(TRUE(), ISBLANK(c), BLANK(), c >= 1, "#2E7D32", c >= 0.9, "#F9A825", "#C62828")""", None, F,
+    SWITCH(TRUE(), ISBLANK(c), BLANK(), c >= 1, "#1E8449", c >= 0.9, "#B9770E", "#B03A2E")""", None, F,
   "Verde >= 100 %, ámbar >= 90 %, rojo < 90 % (formato condicional por valor de campo)")
-m("FactMetas", ".Titulo_Ventas_vs_Meta", '"Ventas vs meta diaria acumulada - " & [.Escenario_Activo]', None, F)
+m("FactMetas", ".Titulo_Ventas_vs_Meta", '"Ventas vs meta - " & [.Escenario_Activo]', None, F)
 
 # 5. Clientes
 F = "5. Clientes"
@@ -220,7 +248,7 @@ m("DimCliente", ".Edad_Promedio_Compradores",
 m("DimCliente", ".%Clientes_Compradores", "DIVIDE([.Clientes_Unicos], [.Clientes_Registrados])", PCT, F)
 
 # 6. Indicadores del caso (docs\Indicadores_y_Dashboards.md)
-VERDE, AMBAR, ROJO = '"#2E7D32"', '"#F9A825"', '"#C62828"'
+VERDE, AMBAR, ROJO = '"#1E8449"', '"#B9770E"', '"#B03A2E"'   # paleta de los prototipos
 def semaforo(measure, meta, mayor_es_mejor=True, tolerancia=0.05):
     if mayor_es_mejor:
         return (f"VAR x = [{measure}]\nRETURN\n    SWITCH(TRUE(), ISBLANK(x), BLANK(), x >= {meta}, {VERDE}, "
@@ -297,11 +325,13 @@ F = "6. Indicadores del caso\\Narrativa"
 m("FactVentas", ".Narrativa_Estrategica", """
 VAR y = [.%Crecimiento_Interanual]
 RETURN
-    "Cumplimos el " & FORMAT([.%Cumplimiento_Meta], "0 %") & " de la meta, pero vendemos " & FORMAT(y, "+0.0 %;-0.0 %")
-        & " vs. el año anterior (tienda " & FORMAT([.%Interanual_Tienda], "+0.0 %;-0.0 %") & ", online "
-        & FORMAT([.%Interanual_Online], "+0.0 %;-0.0 %") & "). El cliente omnicanal compra "
-        & FORMAT([.Multiplicador_Omnicanal], "0.0") & " veces más."
-""", None, F, "Elige un año para ver la comparación interanual")
+    IF(ISBLANK(y),
+       "Todo el periodo: " & FORMAT([.Ventas] / 1E9, "#,0") & " MM vendidos y " & FORMAT([.%Cumplimiento_Meta], "0.0 %")
+           & " de la meta. Elige un año (y con cuál compararlo) para ver si crecemos.",
+       "En " & [.Anio_Elegido] & " llegamos al " & FORMAT([.%Cumplimiento_Meta], "0.0 %") & " de la meta y vendemos "
+           & FORMAT(y, "+0.0 %;-0.0 %") & " " & [.Txt_Comparacion] & " (tienda "
+           & FORMAT([.%Interanual_Tienda], "+0.0 %;-0.0 %") & ", online " & FORMAT([.%Interanual_Online], "+0.0 %;-0.0 %") & ").")
+""", None, F, "Cambia con los filtros de año y Comparar con")
 m("FactMetas", ".Narrativa_Metas", """
 "Llegamos al " & FORMAT([.%Cumplimiento_Meta], "0 %") & " de la meta, pero solo " & [.Secciones_Cumplen] & " de "
     & [.Secciones_con_Meta] & " secciones cumplen y " & [.Secciones_Bajo_50] & " no llegan al 50 %: metas mal repartidas."
@@ -311,6 +341,127 @@ m("FactVentas", ".Narrativa_Cliente", """
     & FORMAT([.%Plus_Club], "+0 %") & "; el top 20 % genera el " & FORMAT([.%Ventas_Top20_Clientes], "0 %")
     & " de la venta. Descuento implícito: " & FORMAT([.%Descuento_Implicito], "0.0 %") & "."
 """, None, F)
+
+# 7. Dashboards (prototipos docs\HM_Modelos_Dashboards.pptx): anillos de avance, comparacion y textos.
+#    Escalable: ningun año fijo; se compara el año elegido contra el de "Comparar con" (o el anterior).
+F = "7. Dashboards"
+V2, A2, R2, AZ = '"#1E8449"', '"#B9770E"', '"#B03A2E"', '"#2E6DA4"'   # paleta de los prototipos
+
+def aa(expr):
+    """Mismos dias del año de comparacion (igual que .Ventas_Mismo_Periodo_AA)."""
+    return f"""
+VAR k = [.Desfase_Meses]
+VAR fechas = SELECTCOLUMNS(VALUES(DimFecha[Fecha]), "F", EDATE(DimFecha[Fecha], -k))
+RETURN
+    IF(NOT ISBLANK(k) && k <> 0, CALCULATE({expr}, ALL(DimFecha), TREATAS(fechas, DimFecha[Fecha])))"""
+
+ELIGE = '"Elige un año para compararlo"'
+
+def vs_txt(medida, fmt="0.0 %"):
+    """'vs 2019: 72,8 %' o la invitacion a elegir un año."""
+    return f'IF(ISBLANK([{medida}]), {ELIGE}, [.Txt_Comparacion] & ": " & FORMAT([{medida}], "{fmt}"))'
+
+
+def anillo(table, nombre, ratio, color_fijo=None):
+    """Anillo de avance frente a la meta: avance (0-1), resto y color del semaforo (verde >= 1, ambar >= 0,9)."""
+    m(table, f".Anillo_{nombre}", f"VAR r = {ratio}\nRETURN IF(ISBLANK(r), BLANK(), MAX(0, MIN(r, 1)))", PCT, F)
+    m(table, f".Anillo_{nombre}_Resto", f"IF(ISBLANK([.Anillo_{nombre}]), BLANK(), 1 - [.Anillo_{nombre}])", PCT, F)
+    m(table, f".Color_Anillo_{nombre}", color_fijo or
+      f"VAR r = {ratio}\nRETURN SWITCH(TRUE(), ISBLANK(r), BLANK(), r >= 1, {V2}, r >= 0.9, {A2}, {R2})", None, F)
+
+def pct_txt(measure, prefijo):
+    return f'IF(ISBLANK([{measure}]), BLANK(), "{prefijo}" & FORMAT([{measure}], "0.0 %"))'
+
+# Ventas en miles de millones (MM) y año anterior
+m("FactVentas", ".Ventas_MM", "DIVIDE([.Ventas], 1E9)", "#,0", F, "Ventas en miles de millones")
+m("FactVentas", ".Ventas_AA_MM", "DIVIDE([.Ventas_Mismo_Periodo_AA], 1E9)", "#,0", F, "Año de comparación, mismos días, en MM")
+m("FactVentas", ".Ventas_Online_AA", aa("[.Ventas_Online]"), MONEY, F)
+m("FactVentas", ".%Ventas_Online_AA", "DIVIDE([.Ventas_Online_AA], [.Ventas_Mismo_Periodo_AA])", PCT, F)
+m("FactVentas", ".Det_Online", vs_txt(".%Ventas_Online_AA"), None, F)
+m("FactVentas", ".Det_Ventas", f'IF(ISBLANK([.Interanual_I]), {ELIGE}, [.Interanual_I] & " " & [.Txt_Comparacion])', None, F)
+m("FactVentas", ".Interanual_Tienda_I", 'IF(ISBLANK([.%Interanual_Tienda]), "—", FORMAT([.%Interanual_Tienda], "+0.0 %;-0.0 %"))', None, F)
+m("FactVentas", ".Interanual_Total_I", 'IF(ISBLANK([.%Crecimiento_Interanual]), "—", FORMAT([.%Crecimiento_Interanual], "+0.0 %;-0.0 %"))', None, F,
+  "Crecimiento contra el año de comparacion; sin año elegido muestra un guion")
+m("FactVentas", ".Ventas_AA_MM_Txt", 'IF(ISBLANK([.Ventas_AA_MM]), "Elige un año", FORMAT([.Ventas_AA_MM], "#,0"))', None, F,
+  "Venta del mismo periodo del año de comparacion (MM); sin año elegido pide elegirlo")
+m("FactVentas", ".Retencion_I", 'IF(ISBLANK([.%Retencion]), "Elige un año", FORMAT([.%Retencion], "0.0 %"))', None, F,
+  "Retencion del año elegido; sin año elegido pide elegirlo")
+m("FactVentas", ".Interanual_Online_I", 'IF(ISBLANK([.%Interanual_Online]), "—", FORMAT([.%Interanual_Online], "+0.0 %;-0.0 %"))', None, F)
+m("DimFecha", ".Txt_Comparacion_Tarjeta", 'IF(ISBLANK([.Txt_Comparacion]), "Elige un año para ver la variación", [.Txt_Comparacion])', None, F)
+m("FactVentas", ".Ventas_por_Cliente_M", "DIVIDE([.Ventas_por_Cliente], 1E6)", "#,0", F, "Venta por cliente en millones")
+m("FactVentas", ".Color_Interanual_Tienda", semaforo(".%Interanual_Tienda", 0, True, 0.10), None, F)
+m("FactVentas", ".Color_Interanual_Online", semaforo(".%Interanual_Online", 0, True, 0.10), None, F)
+anillo("FactVentas", "Online", "[.%Ventas_Online]", AZ)
+
+# Cumplimiento de meta
+m("FactMetas", ".Meta_AA", aa("[.Meta]"), MONEY, F)
+m("FactMetas", ".%Cumplimiento_AA", "DIVIDE([.Ventas_Mismo_Periodo_AA], [.Meta_AA])", PCT, F)
+m("FactMetas", ".Det_Cumplimiento", 'IF(ISBLANK([.%Cumplimiento_AA]), "Meta ≥ 100 %", "Meta ≥ 100 % · " & [.Txt_Comparacion] & ": " & FORMAT([.%Cumplimiento_AA], "0.0 %"))', None, F)
+anillo("FactMetas", "Cumplimiento", "[.%Cumplimiento_Meta]")
+m("FactMetas", ".Cumpl_Peor_Temporada", 'MINX(FILTER(VALUES(DimTemporada[Temporada]), NOT ISBLANK([.Meta])), [.%Cumplimiento_Meta])', PCT, F)
+m("FactMetas", ".Peor_Temporada", """
+VAR t = TOPN(1, FILTER(VALUES(DimTemporada[Temporada]), NOT ISBLANK([.Meta])), [.%Cumplimiento_Meta], ASC)
+RETURN CONCATENATEX(t, DimTemporada[Temporada], ", ")""", None, F, "Temporada con menor cumplimiento en el filtro")
+anillo("FactMetas", "Peor_Temporada", "[.Cumpl_Peor_Temporada]")
+m("FactMetas", ".Secciones_Cumplen_Txt", '(0 + [.Secciones_Cumplen]) & " de " & (0 + [.Secciones_con_Meta])', None, F)
+m("FactMetas", ".Secciones_Bajo_50_Txt", '(0 + [.Secciones_Bajo_50]) & " de " & (0 + [.Secciones_con_Meta])', None, F)
+m("FactMetas", ".Det_Secciones", 'FORMAT(DIVIDE([.Secciones_Cumplen], [.Secciones_con_Meta]), "0 %") & " de las secciones con meta"', None, F)
+m("FactMetas", ".Det_Bajo_50", '"No llegan a la mitad de su meta"', None, F)
+anillo("FactMetas", "Secciones", "DIVIDE([.Secciones_Cumplen], [.Secciones_con_Meta])")
+anillo("FactMetas", "Bajo_50", "DIVIDE([.Secciones_Bajo_50], [.Secciones_con_Meta])", R2)
+m("FactMetas", ".Gauge_Max", "1.5", PCT, F, "Escala del velocímetro (0 a 150 %)")
+m("FactMetas", ".Gauge_Meta", "1", PCT, F, "Meta del velocímetro (100 %)")
+m("FactMetas", ".Gauge_Uno", "1", PCT, F, "Escala de los anillos de los KPI (0 a 100 %)")
+
+# Retencion y descuento de tienda
+# Retencion entre dos años cualesquiera: los del filtro, o el ultimo año con datos contra el anterior
+m("FactVentas", ".Retencion_Anio", "IF(ISBLANK([.Anio_Elegido]), CALCULATE(MAX(DimFecha[Anio]), ALL(DimFecha)), [.Anio_Elegido])", "0", F)
+m("FactVentas", ".Retencion_Base", "IF(ISBLANK([.Anio_Elegido]), [.Retencion_Anio] - 1, [.Anio_Comparacion])", "0", F)
+m("FactVentas", ".%Retencion", """
+VAR a = [.Retencion_Anio]
+VAR c = [.Retencion_Base]
+VAR antes = CALCULATETABLE(VALUES(FactVentas[ClienteKey]), ALL(DimFecha), DimFecha[Anio] = c)
+VAR despues = CALCULATETABLE(VALUES(FactVentas[ClienteKey]), ALL(DimFecha), DimFecha[Anio] = a)
+RETURN
+    IF(c < a, DIVIDE(COUNTROWS(INTERSECT(antes, despues)), COUNTROWS(antes)))""", PCT, F,
+  "Clientes que compraron en el año base y vuelven a comprar en el año elegido")
+anillo("FactVentas", "Retencion", "DIVIDE([.%Retencion], 0.65)")
+m("FactVentas", ".Det_Retencion", '"Meta ≥ 65 % · clientes de " & [.Retencion_Base] & " que vuelven en " & [.Retencion_Anio]', None, F)
+m("FactVentas", ".%Descuento_Tienda", 'CALCULATE([.%Descuento_Implicito], DimCanal[NombreCanal] = "Tienda fisica")', PCT, F)
+m("FactVentas", ".%Descuento_Tienda_AA", aa("[.%Descuento_Tienda]"), PCT, F)
+m("FactVentas", ".Det_Descuento", 'IF(ISBLANK([.%Descuento_Tienda_AA]), "Meta ≤ 17 %", "Meta ≤ 17 % · " & [.Txt_Comparacion] & ": " & FORMAT([.%Descuento_Tienda_AA], "0.0 %"))', None, F)
+anillo("FactVentas", "Descuento", "DIVIDE(0.17, [.%Descuento_Tienda])")
+
+# Cliente y precio (dashboard 3)
+m("FactVentas", ".Ticket_Cesta_Online", 'CALCULATE([.Ticket_Cesta], DimCanal[NombreCanal] = "Online")', MONEY, F)
+m("FactVentas", ".Ticket_Cesta_Online_M", "DIVIDE([.Ticket_Cesta_Online], 1E6)", "#,0.0", F, "Ticket por cesta online en millones")
+m("FactVentas", ".Ticket_Cesta_Online_AA", aa("[.Ticket_Cesta_Online]"), MONEY, F)
+m("FactVentas", ".Det_Ticket", f'IF(ISBLANK([.Ticket_Cesta_Online_AA]), {ELIGE}, FORMAT(DIVIDE([.Ticket_Cesta_Online], [.Ticket_Cesta_Online_AA]) - 1, "+0.0 %;-0.0 %") & " " & [.Txt_Comparacion] & " (" & FORMAT([.Ticket_Cesta_Online_AA] / 1E6, "#,0.0") & " M)")', None, F)
+anillo("FactVentas", "Ticket", "DIVIDE([.Ticket_Cesta_Online], [.Ticket_Cesta_Online_AA])")
+m("FactVentas", ".Articulos_Cesta_Online", 'CALCULATE([.Articulos_por_Cesta], DimCanal[NombreCanal] = "Online")', "#,0.00", F)
+m("FactVentas", ".Det_Articulos", '"Meta propuesta ≥ 3,7"', None, F)
+anillo("FactVentas", "Articulos", "DIVIDE([.Articulos_Cesta_Online], 3.7)")
+m("DimCliente", ".Clientes_Nuevos_AA", """
+VAR k = [.Desfase_Meses]
+VAR d1 = EDATE(MIN(DimFecha[Fecha]), -k)
+VAR d2 = EDATE(MAX(DimFecha[Fecha]), -k)
+RETURN
+    IF(NOT ISBLANK(k) && k <> 0,
+       CALCULATE(COUNTROWS(DimCliente), DimCliente[FechaPrimeraCompra] >= d1, DimCliente[FechaPrimeraCompra] <= d2))""",
+  INT, F, "Clientes nuevos de los mismos días del año de comparación")
+m("DimCliente", ".Det_Nuevos", f'IF(ISBLANK([.Clientes_Nuevos_AA]) || [.Clientes_Nuevos_AA] = 0, {ELIGE}, FORMAT(DIVIDE([.Clientes_Nuevos], [.Clientes_Nuevos_AA]) - 1, "+0.0 %;-0.0 %") & " " & [.Txt_Comparacion] & " (" & FORMAT([.Clientes_Nuevos_AA], "#,0") & ")")', None, F)
+anillo("DimCliente", "Nuevos", "DIVIDE([.Clientes_Nuevos], [.Clientes_Nuevos_AA])")
+anillo("FactVentas", "Omnicanal", "DIVIDE([.%Clientes_Omnicanal], 0.40)")
+m("FactVentas", ".Det_Omnicanal", '"Meta ≥ 40 % · valen " & FORMAT([.Multiplicador_Omnicanal], "0.0") & " veces más"', None, F)
+anillo("FactVentas", "Club", "DIVIDE([.%Penetracion_Club], 0.40)")
+m("FactVentas", ".Det_Club", '"Meta ≥ 40 % · compran " & FORMAT([.%Plus_Club], "+0 %") & " más"', None, F)
+for nombre, filtro in (("Omnicanal", 'DimCliente[TipoCanal] = "Omnicanal"'),
+                       ("UnCanal", 'DimCliente[TipoCanal] IN {"Solo online", "Solo tienda"}'),
+                       ("Club", 'DimCliente[ClubActivo] = "Club activo"'),
+                       ("NoClub", 'DimCliente[ClubActivo] = "No activo"')):
+    m("FactVentas", f".VPC_{nombre}_M", f"DIVIDE(CALCULATE([.Ventas_por_Cliente], {filtro}), 1E6)", "#,0", F,
+      "Venta por cliente en millones")
+m("FactVentas", ".Multiplicador_Omnicanal_I", '"× " & FORMAT([.Multiplicador_Omnicanal], "0.0")', None, F)
 
 # ------------------------------------------------------------------ ensamblado
 tables = []
@@ -323,6 +474,15 @@ for name, query, cols in TABLES:
     if ms:
         t["measures"] = ms
     tables.append(t)
+
+tables.append({
+    "name": "AnioComparacion",
+    "description": "Años disponibles para el filtro Comparar con (sale de DimFecha: crece solo con los datos)",
+    "columns": [{"type": "calculatedTableColumn", "name": "Comparar con", "dataType": "int64", "isNameInferred": True,
+                 "isDataTypeInferred": True, "sourceColumn": "[Comparar con]", "formatString": "0",
+                 "summarizeBy": "none"}],
+    "partitions": [{"name": "AnioComparacion", "source": {
+        "type": "calculated", "expression": 'DISTINCT(SELECTCOLUMNS(DimFecha, "Comparar con", DimFecha[Anio]))'}}]})
 
 def rel(name, ft, fc, tt, tc):
     return {"name": name, "fromTable": ft, "fromColumn": fc, "toTable": tt, "toColumn": tc}
@@ -353,6 +513,10 @@ bim = {
         }],
         "tables": tables,
         "relationships": relationships,
+        # el job de SQL Server Agent (paso 3) procesa el cubo con la cuenta del servicio del Agente
+        "roles": [{"name": "ProcesoETL", "modelPermission": "refresh",
+                   "description": "Permite al job Job_HM (SQL Server Agent) procesar el cubo",
+                   "members": [{"memberName": "NT Service\\SQLAgent$DEV"}]}],
         "annotations": [{"name": "ClientCompatibilityLevel", "value": "400"}],
     },
     "id": "SemanticModel",

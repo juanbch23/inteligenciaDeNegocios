@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:ObjectName="FF transaction"
-  DTS:DTSID="{E68F79C6-245F-4919-9D66-F3FFF9D5F991}"
+  DTS:DTSID="{7BF04F64-6570-46A9-8456-E4FD7269E0DA}"
   DTS:CreationName="FLATFILE">
   <DTS:PropertyExpression
     DTS:Name="ConnectionString">@[$Project::RutaDatos] + "\\transaction.csv"</DTS:PropertyExpression>
@@ -19,45 +19,56 @@
         <DTS:FlatFileColumn
           DTS:ColumnType="Delimited"
           DTS:ColumnDelimiter="_x002C_"
-          DTS:DataType="3"
-          DTS:ObjectName="t_dat"
-          DTS:DTSID="{BC889FC7-AE62-483A-853F-213D7E8AC13D}"
-          DTS:CreationName="" />
-        <DTS:FlatFileColumn
-          DTS:ColumnType="Delimited"
-          DTS:ColumnDelimiter="_x002C_"
-          DTS:MaximumWidth="64"
+          DTS:MaximumWidth="100"
           DTS:DataType="129"
+          DTS:TextQualified="True"
+          DTS:ObjectName="t_dat"
+          DTS:DTSID="{BB05EF0F-7B02-4396-8800-F2EE7E18355D}"
+          DTS:CreationName="" />
+        <DTS:FlatFileColumn
+          DTS:ColumnType="Delimited"
+          DTS:ColumnDelimiter="_x002C_"
+          DTS:MaximumWidth="100"
+          DTS:DataType="129"
+          DTS:TextQualified="True"
           DTS:ObjectName="customer_id"
-          DTS:DTSID="{9D26FF81-37FE-4913-ABFF-97501DC6D0B1}"
+          DTS:DTSID="{AF162804-56C5-433F-B278-94A51A6C69B9}"
           DTS:CreationName="" />
         <DTS:FlatFileColumn
           DTS:ColumnType="Delimited"
           DTS:ColumnDelimiter="_x002C_"
-          DTS:DataType="3"
+          DTS:MaximumWidth="100"
+          DTS:DataType="129"
+          DTS:TextQualified="True"
           DTS:ObjectName="article_id"
-          DTS:DTSID="{052E3843-E812-48CB-B040-2ED7E8265CE6}"
+          DTS:DTSID="{52DFF9D6-9ACD-4D1D-BEDD-56EC031BDEFE}"
           DTS:CreationName="" />
         <DTS:FlatFileColumn
           DTS:ColumnType="Delimited"
           DTS:ColumnDelimiter="_x002C_"
-          DTS:DataType="5"
+          DTS:MaximumWidth="100"
+          DTS:DataType="129"
+          DTS:TextQualified="True"
           DTS:ObjectName="price"
-          DTS:DTSID="{2ED07D6E-E951-4705-BBA7-174B585E4E01}"
+          DTS:DTSID="{80DC6F85-EB80-4E24-BD42-BC4CC130C213}"
           DTS:CreationName="" />
         <DTS:FlatFileColumn
           DTS:ColumnType="Delimited"
           DTS:ColumnDelimiter="_x002C_"
-          DTS:DataType="17"
+          DTS:MaximumWidth="100"
+          DTS:DataType="129"
+          DTS:TextQualified="True"
           DTS:ObjectName="sales_channel_id"
-          DTS:DTSID="{04732CB0-ADDB-4B28-8329-3AE194CA957A}"
+          DTS:DTSID="{6A9F3FEE-E163-49FE-9F96-81253560A8D0}"
           DTS:CreationName="" />
         <DTS:FlatFileColumn
           DTS:ColumnType="Delimited"
           DTS:ColumnDelimiter="_x000D__x000A_"
-          DTS:DataType="17"
+          DTS:MaximumWidth="100"
+          DTS:DataType="129"
+          DTS:TextQualified="True"
           DTS:ObjectName="TemporadaID"
-          DTS:DTSID="{1A45903D-F240-4427-B470-580385E5A66C}"
+          DTS:DTSID="{83291914-6918-4A84-84F9-DE2C968EBA0A}"
           DTS:CreationName="" />
       </DTS:FlatFileColumns>
     </DTS:ConnectionManager>

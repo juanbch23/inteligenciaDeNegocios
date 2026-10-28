@@ -2,42 +2,23 @@
    Proyecto H&M - Vistas que alimentan el cubo tabular
    Instancia: LAPTOP-IO596P6A\DEV
 
-   GoalsHyM.xlsx trae una meta por Escenario, departamento/seccion,
-   temporada y mes. Comparando contra las ventas reales, [Monto] se
-   comporta como META DIARIA:
-       ventas / (Monto x dias)  =  139% / 121% / 105%  (Escenario 1/2/3)
-   mientras que tomarlo como meta mensual da ~2.800%.
-   Por eso el cubo usa la meta expandida a nivel dia: asi se suma bien
-   con cualquier filtro de fechas (dia, semana, mes, temporada).
+   El cubo importa las dimensiones y la tabla Ventas.FactMetas directamente
+   (la meta tal como viene: un monto por escenario, seccion, temporada y mes,
+   sin repartirla ni multiplicarla). Estas vistas preparan solo lo que un
+   indicador necesita y no esta en el DWH tal cual: precio de lista y banda de
+   descuento (vw_FactVentasCubo) y comportamiento de cada cliente
+   (vw_ClienteComportamiento).
    ===================================================================== */
 USE [DWH_HM]
 GO
 
--- dia -> temporada, tal como lo asignan las transacciones (un dia = una temporada)
-CREATE OR ALTER VIEW [Ventas].[vw_FechaTemporada]
-AS
-SELECT DISTINCT [FechaKey], [TemporadaKey]
-  FROM [Ventas].[FactVentas];
-GO
-
--- meta diaria: una fila por escenario, departamento y dia del mes/temporada de la meta
-CREATE OR ALTER VIEW [Ventas].[vw_FactMetasDiaria]
-AS
-SELECT m.[Escenario],
-       ft.[FechaKey],
-       m.[DepartamentoKey],
-       m.[TemporadaKey],
-       m.[Monto] AS [MetaDiaria]
-  FROM [Ventas].[FactMetas] m
-  JOIN [Ventas].[vw_FechaTemporada] ft
-    ON ft.[TemporadaKey] = m.[TemporadaKey]
-  JOIN [GENERICO].[DimFecha] d
-    ON d.[FechaKey] = ft.[FechaKey]
-   AND d.[AnioMes]  = m.[AnioMes];
+-- (ya no se usa la meta repartida por dia: era un supuesto)
+DROP VIEW IF EXISTS [Ventas].[vw_FactMetasDiaria];
+DROP VIEW IF EXISTS [Ventas].[vw_FechaTemporada];
 GO
 
 -- ventas con precio de lista (precio máximo observado del artículo) y banda de descuento
--- -> indicador "Descuento implícito" (docs\Indicadores_y_Dashboards.md, 3.11)
+-- -> indicador "Descuento implícito" (Dashboard 2 · Artículos)
 CREATE OR ALTER VIEW [Ventas].[vw_FactVentasCubo]
 AS
 SELECT v.[FechaKey], v.[ClienteKey], v.[ArticuloKey], v.[DepartamentoKey], v.[CanalKey], v.[TemporadaKey],

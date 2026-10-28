@@ -310,11 +310,12 @@ Ejecute **`sql\03_validaciones.sql`**. Todos los conteos deben coincidir con la 
    *área de trabajo*: use el mismo.
 4. Verifique con una consulta DAX:
    ```powershell
-   .\dax_query.ps1 -Dax 'EVALUATE ROW("Ventas",[.Ventas],"Transacciones",[.Transacciones],"Cumplimiento",[.%Cumplimiento_Meta])'
+   .\dax_query.ps1 -Dax 'EVALUATE ROW("Ventas",[.Ventas],"Transacciones",[.Transacciones],"Clientes",[.Clientes_Unicos])'
    ```
-   Debe dar ≈ 88,464,597,098 de ventas, 31,788,324 transacciones y 1.10 de cumplimiento.
+   Los valores deben ser iguales a los del DWH: `SELECT COUNT_BIG(*), SUM(Precio), COUNT(DISTINCT ClienteKey) FROM DWH_HM.Ventas.FactVentas`.
 
-El cubo tiene 8 tablas, 9 relaciones y 73 medidas DAX (documentadas en `Tabular_HM\MEDIDAS_DAX.md`).
+El cubo tiene 9 tablas (incluida `AnioComparacion`, para el filtro *Comparar con*), 9 relaciones y las medidas DAX de
+`Tabular_HM\gen_bim_hm.py`.
 
 ---
 
@@ -326,12 +327,14 @@ El cubo tiene 8 tablas, 9 relaciones y 73 medidas DAX (documentadas en `Tabular_
 
    | Página | Pregunta |
    |---|---|
-   | 1 · Estratégico | ¿Crecemos de forma sana? |
-   | 2 · Táctico: Torre de metas | ¿Qué secciones y temporadas no cumplen? |
-   | 3 · Analítico: Cliente y precio | ¿Qué palanca de cliente y precio genera más impacto? |
+   | 1 · Clientes | ¿Quiénes compran y cómo? |
+   | 2 · Artículos | ¿Qué artículos y secciones mueven la venta? |
+   | 3 · Transacciones | ¿Cómo evolucionan las ventas y por qué canal? |
+   | 4 · Temporadas y fechas | ¿Cómo se comparan las temporadas y los años? |
+   | 5 · Metas por temporada y fechas | ¿Qué temporadas y secciones están fuera de meta? |
 
-4. Comprobación rápida: en *1 · Estratégico* (año 2020, Escenario 2) debe ver **−10,6 %** frente al año anterior
-   y **103,0 %** de cumplimiento.
+4. Presione **Inicio → Actualizar** después de cada carga. Las páginas se regeneran con
+   `python PowerBI\generar_dashboards_hm.py` (con Power BI cerrado).
 
 Si pide credenciales, elija **Usar mis credenciales actuales (Windows)**.
 

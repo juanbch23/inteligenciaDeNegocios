@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:ObjectName="Excel GoalsHyM"
-  DTS:DTSID="{A32BD50C-86C5-4403-AB89-B322CFF18C19}"
+  DTS:DTSID="{7EEEC570-2CE4-4FC2-94FF-82FB093DD2AE}"
   DTS:CreationName="EXCEL">
   <DTS:PropertyExpression
     DTS:Name="ExcelFilePath">@[$Project::RutaDatos] + "\\GoalsHyM.xlsx"</DTS:PropertyExpression>

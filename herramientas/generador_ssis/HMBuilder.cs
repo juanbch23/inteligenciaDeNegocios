@@ -45,12 +45,16 @@ public class HMBuilder
            ,'N')
 SELECT CAST(SCOPE_IDENTITY() AS INT) AS AuditKey";
 
+    // Mismo UPDATE del laboratorio, dentro de un SP que ademas registra duplicados y filas con error
     const string UpdateAuditSql =
+@"EXEC [dbo].[sp_CerrarAuditoria] @AuditKey = @AuditKey, @RowCount = @RowCount;";
+
+    // Controlador OnError: si el paquete falla, la auditoria queda en 'N' con el mensaje del error
+    const string OnErrorAuditSql =
 @"UPDATE [DIM_AUDIT]
 SET ExecStopDT = SYSDATETIME()
- , ExtractRowCnt = @RowCount
- ,TableFinalRowCnt = @RowCount
- ,SuccessfulProcessingInd='Y'
+ ,SuccessfulProcessingInd = 'N'
+ ,MensajeError = LEFT(ISNULL(MensajeError + N' | ', N'') + @Mensaje, 2000)
 WHERE AuditKey = @AuditKey;";
 
     const string MasterGetAuditSql =
@@ -230,6 +234,17 @@ WHERE AuditKey = @AuditKey;";
             Chain(pkg, prior, key, Sql(pkg, "TRUNCATE", target, truncateSql), work, post, upd);
         else
             Chain(pkg, prior, key, work, post, upd);
+        OnErrorAudit(pkg, adoDwh);
+    }
+
+    static void OnErrorAudit(Package pkg, ConnectionManager adoDwh)
+    {
+        DtsEventHandler eh = (DtsEventHandler)pkg.EventHandlers.Add("OnError");
+        TaskHost th = Sql(eh, "Registrar error en DIM_AUDIT", adoDwh, OnErrorAuditSql);
+        th.DisableEventHandlers = true;   // si esta tarea fallara, que no se dispare otra vez el OnError
+        ExecuteSQLTask t = (ExecuteSQLTask)th.InnerObject;
+        Param(t, "Mensaje", "System::ErrorDescription", DbString);
+        Param(t, "AuditKey", "User::AuditKey", DbInt32);
     }
 
     static MainPipe DataFlow(Package pkg, string name, out TaskHost th)
@@ -309,6 +324,13 @@ WHERE AuditKey = @AuditKey;";
         SetConn(c, cm);
         d.SetComponentProperty("RetainNulls", true);   // campos vacios -> NULL
         Refresh(d);
+        // dato sucio nunca detiene la carga: un valor mas largo que la columna se recorta (y luego
+        // falla la validacion del DWH con su motivo) en vez de hacer fallar el paquete
+        foreach (IDTSOutputColumn100 oc in c.OutputCollection[0].OutputColumnCollection)
+        {
+            oc.TruncationRowDisposition = DTSRowDisposition.RD_IgnoreFailure;
+            oc.ErrorRowDisposition = DTSRowDisposition.RD_IgnoreFailure;
+        }
         return c;
     }
 
@@ -396,7 +418,7 @@ WHERE AuditKey = @AuditKey;";
 
     static string Lin(IDTSVirtualInput100 vi, string col) { return "#" + VCol(vi, col).LineageID; }
 
-    // Division condicional: salida "bad" si alguna llave es NULL
+    // Division condicional: salida "bad" si la consulta de origen puso un MotivoDescarte o si alguna llave es NULL
     static IDTSComponentMetaData100 BadSplit(MainPipe mp, IDTSOutput100 from, string[] keys)
     {
         CManagedComponentWrapper d;
@@ -405,15 +427,43 @@ WHERE AuditKey = @AuditKey;";
         IDTSInput100 inp = c.InputCollection[0];
         IDTSVirtualInput100 vi = inp.GetVirtualInput();
         foreach (string k in keys) d.SetUsageType(inp.ID, vi, VCol(vi, k).LineageID, DTSUsageType.UT_READONLY);
+        d.SetUsageType(inp.ID, vi, VCol(vi, "MotivoDescarte").LineageID, DTSUsageType.UT_READONLY);
         IDTSOutput100 bad = d.InsertOutput(DTSInsertPlacement.IP_BEFORE, c.OutputCollection[0].ID);
         bad.Name = "bad";
-        bad.Description = "Filas con alguna llave sin coincidencia";
+        bad.Description = "Filas con dato invalido o con alguna llave sin coincidencia";
         bad.IsErrorOut = false;
-        string expr = string.Join(" || ", keys.Select(k => "ISNULL(" + Lin(vi, k) + ")"));
-        string friendly = string.Join(" || ", keys.Select(k => "ISNULL(" + k + ")"));
+        string expr = "!ISNULL(" + Lin(vi, "MotivoDescarte") + ") || " + string.Join(" || ", keys.Select(k => "ISNULL(" + Lin(vi, k) + ")"));
+        string friendly = "!ISNULL(MotivoDescarte) || " + string.Join(" || ", keys.Select(k => "ISNULL(" + k + ")"));
         d.SetOutputProperty(bad.ID, "Expression", expr);
         d.SetOutputProperty(bad.ID, "FriendlyExpression", friendly);
         d.SetOutputProperty(bad.ID, "EvaluationOrder", 0);
+        return c;
+    }
+
+    // Columna derivada "Motivo" para la tabla de error: el motivo de la consulta de origen o,
+    // si no hay, la primera llave sin coincidencia. motivos = (llave, texto)
+    static IDTSComponentMetaData100 MotivoColumn(MainPipe mp, IDTSOutput100 from, string[][] motivos)
+    {
+        CManagedComponentWrapper d;
+        IDTSComponentMetaData100 c = Comp(mp, "Microsoft.DerivedColumn", "Columna derivada Motivo", out d);
+        Connect(mp, from, c);
+        IDTSInput100 inp = c.InputCollection[0];
+        IDTSVirtualInput100 vi = inp.GetVirtualInput();
+        d.SetUsageType(inp.ID, vi, VCol(vi, "MotivoDescarte").LineageID, DTSUsageType.UT_READONLY);
+        foreach (string[] m in motivos) d.SetUsageType(inp.ID, vi, VCol(vi, m[0]).LineageID, DTSUsageType.UT_READONLY);
+        string expr = "(DT_WSTR,200)\"Llave sin coincidencia en una dimensión\"", friendly = expr;
+        for (int i = motivos.Length - 1; i >= 0; i--)
+        {
+            string txt = "(DT_WSTR,200)\"" + motivos[i][1] + "\"";
+            expr = "(ISNULL(" + Lin(vi, motivos[i][0]) + ") ? " + txt + " : " + expr + ")";
+            friendly = "(ISNULL(" + motivos[i][0] + ") ? " + txt + " : " + friendly + ")";
+        }
+        IDTSOutput100 o = c.OutputCollection[0];
+        IDTSOutputColumn100 oc = d.InsertOutputColumnAt(o.ID, 0, "Motivo", "Motivo del descarte");
+        d.SetOutputColumnDataTypeProperties(o.ID, oc.ID, Wrap.DataType.DT_WSTR, 200, 0, 0, 0);
+        d.SetOutputColumnProperty(o.ID, oc.ID, "Expression",
+            "ISNULL(" + Lin(vi, "MotivoDescarte") + ") ? " + expr + " : " + Lin(vi, "MotivoDescarte"));
+        d.SetOutputColumnProperty(o.ID, oc.ID, "FriendlyExpression", "ISNULL(MotivoDescarte) ? " + friendly + " : MotivoDescarte");
         return c;
     }
 
@@ -431,36 +481,33 @@ WHERE AuditKey = @AuditKey;";
         AddConn(AdoType, "AdoNet STAGE_HM", AdoCs("STAGE_HM"));
         AddConn(AdoType, "AdoNet DWH_HM", AdoCs("DWH_HM"));
 
-        var W = Wrap.DataType.DT_WSTR; var S = Wrap.DataType.DT_STR; var I4 = Wrap.DataType.DT_I4;
-        var I2 = Wrap.DataType.DT_I2; var U1 = Wrap.DataType.DT_UI1; var R8 = Wrap.DataType.DT_R8; var D = Wrap.DataType.DT_DBDATE;
+        // Todas las columnas como TEXTO (igual que las tablas del STAGE): un dato sucio no hace fallar la carga.
+        // La conversion de tipos y la validacion se hacen al pasar al DWH (TRY_CONVERT + tablas de error).
+        var W = Wrap.DataType.DT_WSTR; var S = Wrap.DataType.DT_STR;
+        Func<Wrap.DataType, int, string[], FfCol[]> Txt = (t, w, names) => names.Select(n => new FfCol(n, t, w, true)).ToArray();
 
         AddFlatFile("FF articles", "articles.csv", dataFolder, 65001, "\n", new[] {
-            new FfCol("article_id", I4), new FfCol("product_code", I4), new FfCol("prod_name", W, 100, true),
-            new FfCol("product_type_no", I4), new FfCol("product_type_name", W, 50, true), new FfCol("product_group_name", W, 50, true),
-            new FfCol("graphical_appearance_no", I4), new FfCol("graphical_appearance_name", W, 50, true),
-            new FfCol("colour_group_code", I4), new FfCol("colour_group_name", W, 50, true),
-            new FfCol("perceived_colour_value_id", I4), new FfCol("perceived_colour_value_name", W, 50, true),
-            new FfCol("perceived_colour_master_id", I4), new FfCol("perceived_colour_master_name", W, 50, true),
-            new FfCol("department_no", I4), new FfCol("department_name", W, 60, true),
-            new FfCol("index_code", W, 5, true), new FfCol("index_name", W, 50, true),
-            new FfCol("index_group_no", I4), new FfCol("index_group_name", W, 50, true),
-            new FfCol("section_no", I4), new FfCol("section_name", W, 60, true),
-            new FfCol("garment_group_no", I4), new FfCol("garment_group_name", W, 50, true),
-            new FfCol("detail_desc", W, 1000, true) });
-        AddFlatFile("FF customers", "customers.csv", dataFolder, 1252, "\n", new[] {
-            new FfCol("customer_id", S, 64), new FfCol("FN", S, 5), new FfCol("Active", S, 5),
-            new FfCol("club_member_status", S, 20), new FfCol("fashion_news_frequency", S, 20),
-            new FfCol("age", I4), new FfCol("postal_code", S, 64) });
-        AddFlatFile("FF transaction", "transaction.csv", dataFolder, 1252, "\r\n", new[] {
-            new FfCol("t_dat", I4), new FfCol("customer_id", S, 64), new FfCol("article_id", I4),
-            new FfCol("price", R8), new FfCol("sales_channel_id", U1), new FfCol("TemporadaID", U1) });
-        AddFlatFile("FF DimFecha", "DimFecha.csv", dataFolder, 1252, "\r\n", new[] {
-            new FfCol("FechaKey", I4), new FfCol("Fecha", D), new FfCol("Dia_Semana", U1), new FfCol("Nombre_Dia_Semana", S, 15),
-            new FfCol("Dia_Mes", U1), new FfCol("Dia_Anio", I2), new FfCol("Nombre_Mes", S, 15), new FfCol("Mes_Anio", U1),
-            new FfCol("Semana_Anio", U1), new FfCol("Anio", I2), new FfCol("Bimestre", U1), new FfCol("Trimestre", U1),
-            new FfCol("Cuatrimestre", U1), new FfCol("Semestre", U1), new FfCol("Fin_Semana", U1) });
-        AddFlatFile("FF Temporada", "Temporada.csv", dataFolder, 1252, "\r\n", new[] {
-            new FfCol("TemporadaID", U1), new FfCol("Temporada", S, 30), new FfCol("FechaInicio", D), new FfCol("FechaFin", D) });
+            new FfCol("article_id", W, 100, true), new FfCol("product_code", W, 100, true), new FfCol("prod_name", W, 200, true),
+            new FfCol("product_type_no", W, 100, true), new FfCol("product_type_name", W, 200, true), new FfCol("product_group_name", W, 200, true),
+            new FfCol("graphical_appearance_no", W, 100, true), new FfCol("graphical_appearance_name", W, 200, true),
+            new FfCol("colour_group_code", W, 100, true), new FfCol("colour_group_name", W, 200, true),
+            new FfCol("perceived_colour_value_id", W, 100, true), new FfCol("perceived_colour_value_name", W, 200, true),
+            new FfCol("perceived_colour_master_id", W, 100, true), new FfCol("perceived_colour_master_name", W, 200, true),
+            new FfCol("department_no", W, 100, true), new FfCol("department_name", W, 200, true),
+            new FfCol("index_code", W, 100, true), new FfCol("index_name", W, 200, true),
+            new FfCol("index_group_no", W, 100, true), new FfCol("index_group_name", W, 200, true),
+            new FfCol("section_no", W, 100, true), new FfCol("section_name", W, 200, true),
+            new FfCol("garment_group_no", W, 100, true), new FfCol("garment_group_name", W, 200, true),
+            new FfCol("detail_desc", W, 2000, true) });
+        AddFlatFile("FF customers", "customers.csv", dataFolder, 1252, "\n",
+            Txt(S, 100, new[] { "customer_id", "FN", "Active", "club_member_status", "fashion_news_frequency", "age", "postal_code" }));
+        AddFlatFile("FF transaction", "transaction.csv", dataFolder, 1252, "\r\n",
+            Txt(S, 100, new[] { "t_dat", "customer_id", "article_id", "price", "sales_channel_id", "TemporadaID" }));
+        AddFlatFile("FF DimFecha", "DimFecha.csv", dataFolder, 1252, "\r\n",
+            Txt(S, 100, new[] { "FechaKey", "Fecha", "Dia_Semana", "Nombre_Dia_Semana", "Dia_Mes", "Dia_Anio", "Nombre_Mes", "Mes_Anio",
+                                "Semana_Anio", "Anio", "Bimestre", "Trimestre", "Cuatrimestre", "Semestre", "Fin_Semana" }));
+        AddFlatFile("FF Temporada", "Temporada.csv", dataFolder, 1252, "\r\n",
+            Txt(S, 100, new[] { "TemporadaID", "Temporada", "FechaInicio", "FechaFin" }));
 
         ConnectionManager xl = AddConn("EXCEL", "Excel GoalsHyM",
             "Provider=Microsoft.ACE.OLEDB.16.0;Data Source=" + dataFolder + "\\GoalsHyM.xlsx;Extended Properties=\"Excel 12.0 XML;HDR=YES\";");
@@ -499,6 +546,82 @@ WHERE AuditKey = @AuditKey;";
         Template(pkg, "AdoNet STAGE_HM", table, "TRUNCATE TABLE " + table + ";", th);
     }
 
+    // ================================================================== consultas de origen con limpieza
+    // Estrategia (indicaciones del profesor):
+    //   - lineas identicas -> se conserva UNA (GROUP BY de la linea completa; LineasOrigen = cuantas venian)
+    //   - TRY_CONVERT: un valor que no sirve devuelve NULL en vez de detener la carga
+    //   - sin supuestos: un dato que no sirve NO se rellena; va a la tabla de error con MotivoDescarte
+    //   - price x 40000 con 4 decimales, tal como viene (0 o negativo se carga igual: puede ser oferta o devolucion)
+    //   - REGLA del precio: la coma se toma como separador decimal ("1184,74" y "1,184" -> 1184.74 y 1.184)
+    //   - REGLA de fechas con '/': dia/mes/anio como en el Peru (01/02/2019 = 1 de febrero); imposible -> error
+    const string Sql_FactVentas =
+@"WITH G AS (   -- lineas identicas: se conserva una sola
+    SELECT [t_dat], [customer_id], [article_id], [price], [sales_channel_id], [TemporadaID], COUNT_BIG(*) AS [Lineas]
+      FROM [HM].[StageTransactions]
+     GROUP BY [t_dat], [customer_id], [article_id], [price], [sales_channel_id], [TemporadaID]),
+V AS (
+    SELECT G.*,
+           COALESCE(TRY_CONVERT(DATE, t.[Fec], 112), TRY_CONVERT(DATE, t.[Fec], 23),
+                    CASE WHEN t.[Fec] LIKE '%/%/%' THEN [DWH_HM].[dbo].[fn_LeerFecha](t.[Fec]) END) AS [FechaD],
+           NULLIF(LTRIM(RTRIM(G.[customer_id])), '')                           AS [Cli],
+           TRY_CONVERT(INT, LTRIM(RTRIM(G.[article_id])))                      AS [Art],
+           COALESCE(TRY_CONVERT(FLOAT, t.[Pre]),
+                    -- regla: la coma es separador decimal (si el valor trae una sola coma y ningun punto)
+                    CASE WHEN t.[Pre] NOT LIKE '%.%' AND t.[Pre] NOT LIKE '%,%,%'
+                         THEN TRY_CONVERT(FLOAT, REPLACE(t.[Pre], ',', '.')) END)  AS [P],
+           TRY_CONVERT(TINYINT, LTRIM(RTRIM(G.[sales_channel_id])))            AS [Canal]
+      FROM G
+     -- NULLIF: un texto vacio es sin dato (TRY_CONVERT lo convertiria en 0 o en 1900-01-01)
+     CROSS APPLY (SELECT NULLIF(LTRIM(RTRIM(G.[t_dat])), '') AS [Fec], NULLIF(LTRIM(RTRIM(G.[price])), '') AS [Pre]) t)
+SELECT [t_dat] AS [t_dat_origen], [customer_id] AS [customer_id_origen], [article_id] AS [article_id_origen],
+       [price] AS [price_origen], [sales_channel_id] AS [canal_origen], [TemporadaID] AS [temporada_origen],
+       CONVERT(INT, CONVERT(CHAR(8), [FechaD], 112))                     AS [FechaNum],
+       CAST(CASE WHEN LEN([Cli]) <= 64 THEN [Cli] END AS VARCHAR(64))    AS [CustomerID],
+       [Art]                                                             AS [ArticleID],
+       [Canal]                                                           AS [CanalID],
+       CASE WHEN ABS([P]) < 1000000000
+            THEN CAST(ROUND([P] * 40000, 4) AS DECIMAL(19,4)) END        AS [Precio],
+       CAST([Lineas] AS INT)                                             AS [LineasOrigen],
+       CAST(CASE WHEN [FechaD] IS NULL AND [t_dat] LIKE '%/%/%'
+                      THEN N'Fecha inválida: ' + LEFT([t_dat], 30)
+                 WHEN [FechaD] IS NULL THEN N'Fecha inválida: ' + ISNULL(LEFT([t_dat], 30), N'(vacía)')
+                 WHEN [Cli] IS NULL    THEN N'Cliente vacío'
+                 WHEN [Art] IS NULL    THEN N'Artículo inválido: ' + ISNULL(LEFT([article_id], 30), N'(vacío)')
+                 WHEN [Canal] IS NULL  THEN N'Canal inválido: ' + ISNULL(LEFT([sales_channel_id], 30), N'(vacío)')
+                 WHEN [P] IS NULL      THEN N'Precio vacío o no numérico: ' + ISNULL(LEFT([price], 30), N'(vacío)')
+                 WHEN ABS([P]) >= 1000000000 THEN N'Precio fuera de rango: ' + LEFT([price], 30)
+            END AS NVARCHAR(200))                                        AS [MotivoDescarte]
+  FROM V";
+
+    // Metas: Monto tal como viene en GoalsHyM (el x 40000 solo va en price, indicacion del profesor);
+    // una meta repetida (mismo escenario, departamento, seccion, temporada y mes) se carga una sola vez
+    const string Sql_FactMetas =
+@"WITH S AS (
+    SELECT [FilaOrigen], [Escenario], [Monto], [department_name], [section_name], [TemporadaID], [AnioMes],
+           LEFT(NULLIF(LTRIM(RTRIM([Escenario])), N''), 30)                                         AS [Esc],
+           CASE WHEN [Monto] >= 0 AND [Monto] < 1000000000 THEN CAST(ROUND([Monto], 4) AS DECIMAL(19,4)) END AS [MontoDec],
+           LEFT(LTRIM(RTRIM([department_name])), 60)                                                AS [Dep],
+           LEFT(LTRIM(RTRIM([section_name])), 60)                                                   AS [Sec],
+           CASE WHEN [TemporadaID] = FLOOR([TemporadaID]) AND [TemporadaID] BETWEEN 1 AND 255
+                THEN CONVERT(TINYINT, [TemporadaID]) END                                            AS [Temp],
+           CASE WHEN [AnioMes] = FLOOR([AnioMes]) AND [AnioMes] BETWEEN 190001 AND 999912
+                 AND [AnioMes] - FLOOR([AnioMes] / 100) * 100 BETWEEN 1 AND 12 THEN CONVERT(INT, [AnioMes]) END AS [AM]
+      FROM [HM].[StageGoals]),
+R AS (SELECT S.*, ROW_NUMBER() OVER (PARTITION BY [Esc], [Dep], [Sec], [Temp], [AM] ORDER BY [FilaOrigen]) AS [rn] FROM S)
+SELECT [FilaOrigen], [Escenario] AS [escenario_origen], [Monto] AS [monto_origen], [department_name] AS [department_origen],
+       [section_name] AS [section_origen], [TemporadaID] AS [temporada_origen], [AnioMes] AS [aniomes_origen],
+       CAST([Esc] AS NVARCHAR(30)) AS [Escenario], [MontoDec],
+       CAST([Dep] AS NVARCHAR(60)) AS [department_name], CAST([Sec] AS NVARCHAR(60)) AS [section_name],
+       [Temp] AS [TemporadaID], [AM] AS [AnioMes],
+       CAST(CASE WHEN [Esc] IS NULL      THEN N'Escenario vacío'
+                 WHEN [Monto] IS NULL    THEN N'Monto vacío o no numérico'
+                 WHEN [MontoDec] IS NULL THEN N'Monto negativo o fuera de rango'
+                 WHEN [Temp] IS NULL     THEN N'Temporada vacía o inválida'
+                 WHEN [AM] IS NULL       THEN N'Año-mes inválido'
+                 WHEN [rn] > 1           THEN N'Meta repetida (se conservó la primera aparición)'
+            END AS NVARCHAR(200)) AS [MotivoDescarte]
+  FROM R";
+
     // ================================================================== DWH
     public void BuildDwh(string ispac)
     {
@@ -510,65 +633,54 @@ WHERE AuditKey = @AuditKey;";
         AddConn("OLEDB", "OleDB STAGE_HM", OleDbCs("STAGE_HM"));
         AddConn(AdoType, "AdoNet DWH_HM", AdoCs("DWH_HM"));
 
-        foreach (string dim in new[] { "DimTemporada", "DimCanal", "DimDepartamento", "DimArticulo", "DimCliente" })
+        // Dimensiones: cada paquete ejecuta su procedimiento (limpieza + ErrorMaestro + MERGE, ver 02_crear_DWH_HM.sql)
+        foreach (string[] dim in new[] { new[] { "GENERICO", "DimFecha" }, new[] { "Ventas", "DimTemporada" }, new[] { "Ventas", "DimCanal" },
+                                         new[] { "Ventas", "DimDepartamento" }, new[] { "Ventas", "DimArticulo" }, new[] { "Ventas", "DimCliente" } })
         {
-            string table = "[Ventas].[" + dim + "]";
-            Package pkg = NewPackage(dim, table);
-            TaskHost sp = Sql(pkg, "Execute sp_" + dim, C(pkg, "AdoNet DWH_HM"), "EXEC [Ventas].[sp_" + dim + "];");
+            string table = "[" + dim[0] + "].[" + dim[1] + "]";
+            Package pkg = NewPackage(dim[1], table);
+            // el SP recibe el AuditKey para registrar cuantas filas inserto y actualizo su MERGE
+            TaskHost sp = Sql(pkg, "Execute sp_" + dim[1], C(pkg, "AdoNet DWH_HM"),
+                              "EXEC [" + dim[0] + "].[sp_" + dim[1] + "] @AuditKey = @AuditKey;");
+            Param((ExecuteSQLTask)sp.InnerObject, "AuditKey", "User::AuditKey", DbInt32);
             Template(pkg, "AdoNet DWH_HM", table, null, sp);
-        }
-
-        {   // DimFecha: incremental, corrige Fin_Semana
-            Package pkg = NewPackage("DimFecha", "[GENERICO].[DimFecha]");
-            TaskHost th; MainPipe mp = DataFlow(pkg, "DIM FECHA", out th);
-            var src = OleSource(mp, "Origen de OLE DB", C(pkg, "OleDB STAGE_HM"),
-@"SELECT [FechaKey], [Fecha], [Dia_Semana], [Nombre_Dia_Semana], [Dia_Mes], [Dia_Anio], [Nombre_Mes],
-       [Mes_Anio], [Semana_Anio], [Anio], [Bimestre], [Trimestre], [Cuatrimestre], [Semestre]
-  FROM [HM].[StageFecha]");
-            CManagedComponentWrapper dd;
-            var dc = Comp(mp, "Microsoft.DerivedColumn", "Columna derivada Fin_Semana", out dd);
-            Connect(mp, src.OutputCollection[0], dc);
-            IDTSInput100 dcIn = dc.InputCollection[0];
-            IDTSVirtualInput100 dcVi = dcIn.GetVirtualInput();
-            dd.SetUsageType(dcIn.ID, dcVi, VCol(dcVi, "Dia_Semana").LineageID, DTSUsageType.UT_READONLY);
-            IDTSOutputColumn100 oc = dd.InsertOutputColumnAt(dc.OutputCollection[0].ID, 0, "Fin_Semana", "1 = sabado o domingo");
-            dd.SetOutputColumnDataTypeProperties(dc.OutputCollection[0].ID, oc.ID, Wrap.DataType.DT_UI1, 0, 0, 0, 0);
-            string lin = Lin(dcVi, "Dia_Semana");
-            dd.SetOutputColumnProperty(dc.OutputCollection[0].ID, oc.ID, "Expression",
-                "(" + lin + " == 1 || " + lin + " == 7) ? (DT_UI1)1 : (DT_UI1)0");
-            dd.SetOutputColumnProperty(dc.OutputCollection[0].ID, oc.ID, "FriendlyExpression",
-                "(Dia_Semana == 1 || Dia_Semana == 7) ? (DT_UI1)1 : (DT_UI1)0");
-
-            var lk = Lookup(mp, "Existe en DimFecha", C(pkg, "OleDB DWH_HM"), "SELECT [FechaKey] FROM [GENERICO].[DimFecha]",
-                dc.OutputCollection[0], new[] { new[] { "FechaKey", "FechaKey" } }, new string[0][], true);
-            OleDest(mp, "DimFecha", C(pkg, "OleDB DWH_HM"), "[GENERICO].[DimFecha]",
-                lk.OutputCollection[1], null, false);
-            Template(pkg, "AdoNet DWH_HM", "[GENERICO].[DimFecha]", null, th);
         }
 
         {   // FactVentas
             Package pkg = NewPackage("FactVentas", "[Ventas].[FactVentas]");
             TaskHost th; MainPipe mp = DataFlow(pkg, "FACT VENTAS", out th);
             ConnectionManager dwh = C(pkg, "OleDB DWH_HM");
-            var src = OleSource(mp, "Origen de OLE DB", C(pkg, "OleDB STAGE_HM"),
-@"SELECT [t_dat], [customer_id], [article_id], [price], [sales_channel_id], [TemporadaID],
-       CAST([price] AS DECIMAL(19,6)) AS [Precio]
-  FROM [HM].[StageTransactions]");
-            var l1 = Lookup(mp, "DimFecha", dwh, "SELECT [FechaKey] FROM [GENERICO].[DimFecha]", src.OutputCollection[0],
-                new[] { new[] { "t_dat", "FechaKey" } }, new[] { new[] { "FechaKey", "FechaKey" } }, false);
-            var l2 = Lookup(mp, "DimCliente", dwh, "SELECT [ClienteKey], [CustomerID] FROM [Ventas].[DimCliente]", l1.OutputCollection[0],
-                new[] { new[] { "customer_id", "CustomerID" } }, new[] { new[] { "ClienteKey", "ClienteKey" } }, false);
-            var l3 = Lookup(mp, "DimArticulo", dwh, "SELECT [ArticuloKey], [DepartamentoKey], [ArticleID] FROM [Ventas].[DimArticulo]", l2.OutputCollection[0],
-                new[] { new[] { "article_id", "ArticleID" } },
+            var src = OleSource(mp, "Origen de OLE DB", C(pkg, "OleDB STAGE_HM"), Sql_FactVentas);
+            var l1 = Lookup(mp, "DimFecha", dwh, "SELECT [FechaKey] FROM [GENERICO].[DimFecha] WHERE [FechaKey] > 0", src.OutputCollection[0],
+                new[] { new[] { "FechaNum", "FechaKey" } }, new[] { new[] { "FechaKey", "FechaKey" } }, false);
+            var l2 = Lookup(mp, "DimCliente", dwh, "SELECT [ClienteKey], [CustomerID] FROM [Ventas].[DimCliente] WHERE [ClienteKey] > 0", l1.OutputCollection[0],
+                new[] { new[] { "CustomerID", "CustomerID" } }, new[] { new[] { "ClienteKey", "ClienteKey" } }, false);
+            var l3 = Lookup(mp, "DimArticulo", dwh, "SELECT [ArticuloKey], [DepartamentoKey], [ArticleID] FROM [Ventas].[DimArticulo] WHERE [ArticuloKey] > 0", l2.OutputCollection[0],
+                new[] { new[] { "ArticleID", "ArticleID" } },
                 new[] { new[] { "ArticuloKey", "ArticuloKey" }, new[] { "DepartamentoKey", "DepartamentoKey" } }, false);
-            var l4 = Lookup(mp, "DimCanal", dwh, "SELECT [CanalKey], [CanalID] FROM [Ventas].[DimCanal]", l3.OutputCollection[0],
-                new[] { new[] { "sales_channel_id", "CanalID" } }, new[] { new[] { "CanalKey", "CanalKey" } }, false);
-            var l5 = Lookup(mp, "DimTemporada", dwh, "SELECT [TemporadaKey], [TemporadaID] FROM [Ventas].[DimTemporada]", l4.OutputCollection[0],
-                new[] { new[] { "TemporadaID", "TemporadaID" } }, new[] { new[] { "TemporadaKey", "TemporadaKey" } }, false);
+            var l4 = Lookup(mp, "DimCanal", dwh, "SELECT [CanalKey], [CanalID] FROM [Ventas].[DimCanal] WHERE [CanalKey] > 0", l3.OutputCollection[0],
+                new[] { new[] { "CanalID", "CanalID" } }, new[] { new[] { "CanalKey", "CanalKey" } }, false);
+            // la temporada se deduce de la FECHA (no se confia en la columna TemporadaID del archivo);
+            // el dia en que se cruzan dos temporadas pertenece a la que termina, igual que en el archivo original
+            var l5 = Lookup(mp, "DimTemporada (por fecha)", dwh,
+@"SELECT f.[FechaKey], t.[TemporadaKey]
+  FROM [GENERICO].[DimFecha] f
+ CROSS APPLY (SELECT TOP (1) d.[TemporadaKey] FROM [Ventas].[DimTemporada] d
+               WHERE d.[TemporadaKey] > 0 AND f.[Fecha] BETWEEN d.[FechaInicio] AND d.[FechaFin]
+               ORDER BY d.[FechaFin]) t
+ WHERE f.[FechaKey] > 0", l4.OutputCollection[0],
+                new[] { new[] { "FechaKey", "FechaKey" } }, new[] { new[] { "TemporadaKey", "TemporadaKey" } }, false);
             var keys = new[] { "FechaKey", "ClienteKey", "ArticuloKey", "DepartamentoKey", "CanalKey", "TemporadaKey" };
             var cs = BadSplit(mp, l5.OutputCollection[0], keys);
-            OleDest(mp, "ErrorFactVentas", dwh, "[Ventas].[ErrorFactVentas]", Out(cs, "bad"), null, false);
-            var factMap = keys.ToDictionary(k => k, k => k); factMap["Precio"] = "Precio";
+            var mot = MotivoColumn(mp, Out(cs, "bad"), new[] {
+                new[] { "FechaKey", "Fecha fuera del calendario (no existe en DimFecha)" },
+                new[] { "ClienteKey", "Cliente inexistente en DimCliente" },
+                new[] { "ArticuloKey", "Artículo inexistente en DimArticulo" },
+                new[] { "CanalKey", "Canal inexistente en DimCanal" },
+                new[] { "TemporadaKey", "La fecha no cae en ninguna temporada de DimTemporada" } });
+            OleDest(mp, "ErrorFactVentas", dwh, "[Ventas].[ErrorFactVentas]", mot.OutputCollection[0], null, false);
+            var factMap = keys.ToDictionary(k => k, k => k);
+            factMap["Precio"] = "Precio"; factMap["LineasOrigen"] = "LineasOrigen";
             OleDest(mp, "FactVentas", dwh, "[Ventas].[FactVentas]", DefaultOut(cs), factMap, true);
             Template(pkg, "AdoNet DWH_HM", "[Ventas].[FactVentas]",
                 "TRUNCATE TABLE [Ventas].[FactVentas];\r\nTRUNCATE TABLE [Ventas].[ErrorFactVentas];", th);
@@ -578,26 +690,22 @@ WHERE AuditKey = @AuditKey;";
             Package pkg = NewPackage("FactMetas", "[Ventas].[FactMetas]");
             TaskHost th; MainPipe mp = DataFlow(pkg, "FACT METAS", out th);
             ConnectionManager dwh = C(pkg, "OleDB DWH_HM");
-            var src = OleSource(mp, "Origen de OLE DB", C(pkg, "OleDB STAGE_HM"),
-@"SELECT CAST([Escenario] AS NVARCHAR(30))       AS [Escenario],
-       [Monto],
-       CAST([Monto] AS DECIMAL(19,6))            AS [MontoDec],
-       CAST([department_name] AS NVARCHAR(60))   AS [department_name],
-       CAST([section_name] AS NVARCHAR(60))      AS [section_name],
-       CAST([TemporadaID] AS TINYINT)            AS [TemporadaID],
-       CAST([AnioMes] AS INT)                    AS [AnioMes]
-  FROM [HM].[StageGoals]");
-            var l1 = Lookup(mp, "DimDepartamento", dwh, "SELECT [DepartamentoKey], [department_name], [section_name] FROM [Ventas].[DimDepartamento]",
+            var src = OleSource(mp, "Origen de OLE DB", C(pkg, "OleDB STAGE_HM"), Sql_FactMetas);
+            var l1 = Lookup(mp, "DimDepartamento", dwh, "SELECT [DepartamentoKey], [department_name], [section_name] FROM [Ventas].[DimDepartamento] WHERE [DepartamentoKey] > 0",
                 src.OutputCollection[0], new[] { new[] { "department_name", "department_name" }, new[] { "section_name", "section_name" } },
                 new[] { new[] { "DepartamentoKey", "DepartamentoKey" } }, false);
-            var l2 = Lookup(mp, "DimTemporada", dwh, "SELECT [TemporadaKey], [TemporadaID] FROM [Ventas].[DimTemporada]", l1.OutputCollection[0],
+            var l2 = Lookup(mp, "DimTemporada", dwh, "SELECT [TemporadaKey], [TemporadaID] FROM [Ventas].[DimTemporada] WHERE [TemporadaKey] > 0", l1.OutputCollection[0],
                 new[] { new[] { "TemporadaID", "TemporadaID" } }, new[] { new[] { "TemporadaKey", "TemporadaKey" } }, false);
             var l3 = Lookup(mp, "DimFecha (mes)", dwh,
                 "SELECT MIN([FechaKey]) AS [FechaKey], [AnioMes] FROM [GENERICO].[DimFecha] WHERE [FechaKey] > 0 GROUP BY [AnioMes]",
                 l2.OutputCollection[0], new[] { new[] { "AnioMes", "AnioMes" } }, new[] { new[] { "FechaKey", "FechaKey" } }, false);
             var keys = new[] { "DepartamentoKey", "TemporadaKey", "FechaKey" };
             var cs = BadSplit(mp, l3.OutputCollection[0], keys);
-            OleDest(mp, "ErrorFactMetas", dwh, "[Ventas].[ErrorFactMetas]", Out(cs, "bad"), null, false);
+            var mot = MotivoColumn(mp, Out(cs, "bad"), new[] {
+                new[] { "DepartamentoKey", "Departamento/sección inexistente en DimDepartamento" },
+                new[] { "TemporadaKey", "Temporada inexistente en DimTemporada" },
+                new[] { "FechaKey", "Mes fuera del calendario (no existe en DimFecha)" } });
+            OleDest(mp, "ErrorFactMetas", dwh, "[Ventas].[ErrorFactMetas]", mot.OutputCollection[0], null, false);
             OleDest(mp, "FactMetas", dwh, "[Ventas].[FactMetas]", DefaultOut(cs),
                 new Dictionary<string, string> {
                     { "Escenario", "Escenario" }, { "FechaKey", "FechaKey" }, { "AnioMes", "AnioMes" },
@@ -642,5 +750,6 @@ WHERE AuditKey = @AuditKey;";
             prev = seq;
         }
         pkg.PrecedenceConstraints.Add(prev, UpdateAudit(pkg, adoDwh, true));
+        OnErrorAudit(pkg, adoDwh);
     }
 }

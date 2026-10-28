@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="10/21/2026 12:08:11 AM"
+  DTS:CreationDate="10/28/2026 12:35:27 AM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="LAPTOP-IO596P6A"
   DTS:CreatorName="LAPTOP-IO596P6A\Juan"
-  DTS:DTSID="{66D370FF-3463-4436-AFFF-AEEACE0F5D59}"
+  DTS:DTSID="{3F7C842A-A4E2-4850-BD7E-719945E5AA8F}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="17.0.1000.7"
   DTS:LocaleID="3082"
   DTS:ObjectName="DimCanal"
   DTS:ProtectionLevel="0"
-  DTS:VersionGUID="{5B7D0D2C-286F-469F-8CED-1E452E8930FE}">
+  DTS:VersionGUID="{F3036315-5C2C-4A68-980B-7F761A969823}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{9D2A4420-0916-49F2-B9C3-494EAFEC1664}"
+      DTS:DTSID="{64D7968C-3330-4671-8505-FE11E45FE0D1}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
       DTS:ObjectName="AuditKey">
@@ -26,7 +26,7 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{2EBE9BC2-5A96-4609-9D12-579E7331830A}"
+      DTS:DTSID="{D94778AB-03F6-4147-9531-D7D1F36B5905}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
       DTS:ObjectName="RowCount">
@@ -35,7 +35,7 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{3B478941-292B-425B-B6B7-AEA0D3954494}"
+      DTS:DTSID="{37C0CD75-4A65-4EFE-A911-72CAD75F280D}"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="TableName">
@@ -48,7 +48,7 @@
       DTS:refId="Package\Execute sp_DimCanal"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{77F72449-0E5E-43F8-97EE-3B7C8C3524C3}"
+      DTS:DTSID="{301CA0A3-F79B-4343-BC1E-1B658ED591E9}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Execute sp_DimCanal"
@@ -57,15 +57,22 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
-          SQLTask:SqlStatementSource="EXEC [Ventas].[sp_DimCanal];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
+          SQLTask:SqlStatementSource="EXEC [Ventas].[sp_DimCanal] @AuditKey = @AuditKey;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="AuditKey"
+            SQLTask:DtsVariableName="User::AuditKey"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="11"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
       DTS:refId="Package\Task Get AuditKey"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{C529154B-96A7-4C54-BAC2-E114601218AB}"
+      DTS:DTSID="{51F42A99-5A05-4D3A-B170-4AB6943B2924}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Get AuditKey"
@@ -74,7 +81,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
           SQLTask:SqlStatementSource="INSERT INTO [DIM_AUDIT]&#xA;           ([TableName]&#xA;           ,[PkgName]&#xA;           ,[PkgGUID]&#xA;           ,[ExecStartDT]&#xA;           ,[ExecStopDT]&#xA;           ,[ExecutionInstanceGUID]&#xA;           ,[ExtractRowCnt]&#xA;           ,[TableInitialRowCnt]&#xA;           ,[TableFinalRowCnt]&#xA;           ,[SuccessfulProcessingInd])&#xA;     VALUES&#xA;           (@TableName&#xA;           ,@PkgName&#xA;           ,@PkgGUID&#xA;           ,@StartTime&#xA;           ,NULL&#xA;           ,@PkgExecGUID&#xA;           ,NULL&#xA;           ,@RowCount&#xA;           ,NULL&#xA;           ,'N')&#xA;SELECT CAST(SCOPE_IDENTITY() AS INT) AS AuditKey"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -123,7 +130,7 @@
       DTS:refId="Package\Task Post RowCnt"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{934142A5-D0A0-4125-9F0A-7A07AC5C2507}"
+      DTS:DTSID="{D103FBAA-B03C-49F5-A6ED-FBB4BC2FA3A3}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Post RowCnt"
@@ -132,7 +139,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
           SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [Ventas].[DimCanal]"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -145,7 +152,7 @@
       DTS:refId="Package\Task Prior RowCnt"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{91EA9CFA-66BB-4CB1-932D-49EFDB2F1BBE}"
+      DTS:DTSID="{D15B8C93-7A4C-45AB-B7B8-951CE3B48B0E}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Prior RowCnt"
@@ -154,7 +161,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
           SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [Ventas].[DimCanal]"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -167,7 +174,7 @@
       DTS:refId="Package\Update AuditDim"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{368114BB-1602-4D1A-95AC-DB4D21971027}"
+      DTS:DTSID="{6056792E-5B09-4E77-A966-EBB4FC661A08}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Update AuditDim"
@@ -176,8 +183,8 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
-          SQLTask:SqlStatementSource="UPDATE [DIM_AUDIT]&#xA;SET ExecStopDT = SYSDATETIME()&#xA; , ExtractRowCnt = @RowCount&#xA; ,TableFinalRowCnt = @RowCount&#xA; ,SuccessfulProcessingInd='Y'&#xA;WHERE AuditKey = @AuditKey;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
+          SQLTask:SqlStatementSource="EXEC [dbo].[sp_CerrarAuditoria] @AuditKey = @AuditKey, @RowCount = @RowCount;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ParameterBinding
             SQLTask:ParameterName="RowCount"
             SQLTask:DtsVariableName="User::RowCount"
@@ -196,36 +203,90 @@
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{2110FF6B-BE72-4423-98F4-21D932A90657\}]"
+      DTS:refId="Package.PrecedenceConstraints[{62D97D42-2E5F-43C0-AAA9-36D3CAE5F946\}]"
       DTS:CreationName=""
-      DTS:DTSID="{2110FF6B-BE72-4423-98F4-21D932A90657}"
-      DTS:From="Package\Task Post RowCnt"
-      DTS:LogicalAnd="True"
-      DTS:ObjectName="{2110FF6B-BE72-4423-98F4-21D932A90657}"
-      DTS:To="Package\Update AuditDim" />
-    <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{2337C14D-2AEB-44C2-BC1F-9CBE125F2BBC\}]"
-      DTS:CreationName=""
-      DTS:DTSID="{2337C14D-2AEB-44C2-BC1F-9CBE125F2BBC}"
+      DTS:DTSID="{62D97D42-2E5F-43C0-AAA9-36D3CAE5F946}"
       DTS:From="Package\Task Prior RowCnt"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="{2337C14D-2AEB-44C2-BC1F-9CBE125F2BBC}"
+      DTS:ObjectName="{62D97D42-2E5F-43C0-AAA9-36D3CAE5F946}"
       DTS:To="Package\Task Get AuditKey" />
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{869C7348-F7D5-4EBE-8B13-E6A820111A1C\}]"
+      DTS:refId="Package.PrecedenceConstraints[{998F0AD0-46EC-4A1B-9AF5-240AEEA3EB3B\}]"
       DTS:CreationName=""
-      DTS:DTSID="{869C7348-F7D5-4EBE-8B13-E6A820111A1C}"
+      DTS:DTSID="{998F0AD0-46EC-4A1B-9AF5-240AEEA3EB3B}"
       DTS:From="Package\Task Get AuditKey"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="{869C7348-F7D5-4EBE-8B13-E6A820111A1C}"
+      DTS:ObjectName="{998F0AD0-46EC-4A1B-9AF5-240AEEA3EB3B}"
       DTS:To="Package\Execute sp_DimCanal" />
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{B854219C-28A6-48D7-8C45-D0C11C931145\}]"
+      DTS:refId="Package.PrecedenceConstraints[{C3B941AF-B944-459B-B1B8-D63662089AB9\}]"
       DTS:CreationName=""
-      DTS:DTSID="{B854219C-28A6-48D7-8C45-D0C11C931145}"
+      DTS:DTSID="{C3B941AF-B944-459B-B1B8-D63662089AB9}"
       DTS:From="Package\Execute sp_DimCanal"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="{B854219C-28A6-48D7-8C45-D0C11C931145}"
+      DTS:ObjectName="{C3B941AF-B944-459B-B1B8-D63662089AB9}"
       DTS:To="Package\Task Post RowCnt" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{ED856A96-264F-4A79-87CB-CCEF0BE1CD60\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{ED856A96-264F-4A79-87CB-CCEF0BE1CD60}"
+      DTS:From="Package\Task Post RowCnt"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{ED856A96-264F-4A79-87CB-CCEF0BE1CD60}"
+      DTS:To="Package\Update AuditDim" />
   </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{1705AA44-639D-4040-8878-BD84FF9098B6}"
+      DTS:EventID="943011906"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="La propiedad de propagación del evento"
+          DTS:DTSID="{88587092-0553-4BCD-B774-7FCA4A0E7267}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\Registrar error en DIM_AUDIT"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Tarea Ejecutar SQL"
+          DTS:DisableEventHandlers="True"
+          DTS:DTSID="{C01BB035-6992-4F79-A2A0-5E31BA6D16C9}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Registrar error en DIM_AUDIT"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
+              SQLTask:SqlStatementSource="UPDATE [DIM_AUDIT]&#xA;SET ExecStopDT = SYSDATETIME()&#xA; ,SuccessfulProcessingInd = 'N'&#xA; ,MensajeError = LEFT(ISNULL(MensajeError + N' | ', N'') + @Mensaje, 2000)&#xA;WHERE AuditKey = @AuditKey;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="Mensaje"
+                SQLTask:DtsVariableName="System::ErrorDescription"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="16"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="AuditKey"
+                SQLTask:DtsVariableName="User::AuditKey"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="11"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
 </DTS:Executable>

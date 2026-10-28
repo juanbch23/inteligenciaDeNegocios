@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:ObjectName="FF customers"
-  DTS:DTSID="{CBC4517D-7BC4-4896-B5B1-974618279BC9}"
+  DTS:DTSID="{6D1F63F9-EE16-41A0-9C9E-F74C99365800}"
   DTS:CreationName="FLATFILE">
   <DTS:PropertyExpression
     DTS:Name="ConnectionString">@[$Project::RutaDatos] + "\\customers.csv"</DTS:PropertyExpression>
@@ -19,57 +19,65 @@
         <DTS:FlatFileColumn
           DTS:ColumnType="Delimited"
           DTS:ColumnDelimiter="_x002C_"
-          DTS:MaximumWidth="64"
+          DTS:MaximumWidth="100"
           DTS:DataType="129"
+          DTS:TextQualified="True"
           DTS:ObjectName="customer_id"
-          DTS:DTSID="{FD14687F-9D7D-4DD3-B8AC-D59FB813086E}"
+          DTS:DTSID="{2D0ADBB7-AC8B-4955-858B-A080F4AE46ED}"
           DTS:CreationName="" />
         <DTS:FlatFileColumn
           DTS:ColumnType="Delimited"
           DTS:ColumnDelimiter="_x002C_"
-          DTS:MaximumWidth="5"
+          DTS:MaximumWidth="100"
           DTS:DataType="129"
+          DTS:TextQualified="True"
           DTS:ObjectName="FN"
-          DTS:DTSID="{D01D649F-2EF2-4AD2-AE78-A2A6D76F0EF5}"
+          DTS:DTSID="{CC3A303A-A775-4A49-98E1-027B40D0F799}"
           DTS:CreationName="" />
         <DTS:FlatFileColumn
           DTS:ColumnType="Delimited"
           DTS:ColumnDelimiter="_x002C_"
-          DTS:MaximumWidth="5"
+          DTS:MaximumWidth="100"
           DTS:DataType="129"
+          DTS:TextQualified="True"
           DTS:ObjectName="Active"
-          DTS:DTSID="{FFF93A08-D441-4F10-A0B6-1557F0CC1D1A}"
+          DTS:DTSID="{5619B3F0-F0A1-497A-B0A3-C64287112062}"
           DTS:CreationName="" />
         <DTS:FlatFileColumn
           DTS:ColumnType="Delimited"
           DTS:ColumnDelimiter="_x002C_"
-          DTS:MaximumWidth="20"
+          DTS:MaximumWidth="100"
           DTS:DataType="129"
+          DTS:TextQualified="True"
           DTS:ObjectName="club_member_status"
-          DTS:DTSID="{EE267FE9-EC54-4253-80C3-E1560B19B399}"
+          DTS:DTSID="{0D95AEAA-416A-421B-9D94-44EF8721D41F}"
           DTS:CreationName="" />
         <DTS:FlatFileColumn
           DTS:ColumnType="Delimited"
           DTS:ColumnDelimiter="_x002C_"
-          DTS:MaximumWidth="20"
+          DTS:MaximumWidth="100"
           DTS:DataType="129"
+          DTS:TextQualified="True"
           DTS:ObjectName="fashion_news_frequency"
-          DTS:DTSID="{9EF46CAE-8285-457F-8D09-51CC01B14B5E}"
+          DTS:DTSID="{040D55C7-267C-4350-81EE-5B534C1F2F53}"
           DTS:CreationName="" />
         <DTS:FlatFileColumn
           DTS:ColumnType="Delimited"
           DTS:ColumnDelimiter="_x002C_"
-          DTS:DataType="3"
+          DTS:MaximumWidth="100"
+          DTS:DataType="129"
+          DTS:TextQualified="True"
           DTS:ObjectName="age"
-          DTS:DTSID="{101AE30B-E972-4EF7-B744-5C7FC5685357}"
+          DTS:DTSID="{79184725-B99B-4BE6-BFEA-75620E5D876A}"
           DTS:CreationName="" />
         <DTS:FlatFileColumn
           DTS:ColumnType="Delimited"
           DTS:ColumnDelimiter="_x000A_"
-          DTS:MaximumWidth="64"
+          DTS:MaximumWidth="100"
           DTS:DataType="129"
+          DTS:TextQualified="True"
           DTS:ObjectName="postal_code"
-          DTS:DTSID="{6006A6D4-754B-45B5-AD9D-738FB4C47438}"
+          DTS:DTSID="{B3852C1D-71C1-4C26-A934-4BF19A20298F}"
           DTS:CreationName="" />
       </DTS:FlatFileColumns>
     </DTS:ConnectionManager>

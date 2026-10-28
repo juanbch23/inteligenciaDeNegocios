@@ -9,7 +9,8 @@ $bim = Get-Content $BimPath -Raw -Encoding UTF8 | ConvertFrom-Json
 $bim.name = $Db; $bim.id = $Db
 $bim.model | Add-Member -NotePropertyName name -NotePropertyValue "Modelo" -Force
 $tmsl = @{ createOrReplace = @{ object = @{ database = $Db }; database = $bim } } | ConvertTo-Json -Depth 50 -Compress
-$refresh = @{ refresh = @{ type = "full"; objects = @(@{ database = $Db }) } } | ConvertTo-Json -Depth 10 -Compress
+# de a una tabla (maxParallelism 1): con poca RAM libre el procesamiento en paralelo puede colgar SQL Server
+$refresh = @{ sequence = @{ maxParallelism = 1; operations = @(@{ refresh = @{ type = "full"; objects = @(@{ database = $Db }) } }) } } | ConvertTo-Json -Depth 10 -Compress
 
 $s = New-Object Microsoft.AnalysisServices.Server
 $s.Connect($Server)

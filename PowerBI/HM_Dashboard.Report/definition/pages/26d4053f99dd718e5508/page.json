@@ -1,9 +1,9 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
   "name": "26d4053f99dd718e5508",
-  "displayName": "2 · Táctico: Torre de metas",
+  "displayName": "2 · Artículos",
   "displayOption": "FitToPage",
-  "height": 920,
+  "height": 720,
   "width": 1280,
   "objects": {
     "background": [
@@ -14,7 +14,7 @@
               "color": {
                 "expr": {
                   "Literal": {
-                    "Value": "'#F3F4F6'"
+                    "Value": "'#F2F4F7'"
                   }
                 }
               }

@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="10/21/2026 12:07:51 AM"
+  DTS:CreationDate="10/28/2026 12:35:04 AM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="LAPTOP-IO596P6A"
   DTS:CreatorName="LAPTOP-IO596P6A\Juan"
-  DTS:DTSID="{CCEF775D-9E68-4BAF-BBFF-6DC926043230}"
+  DTS:DTSID="{8861D49E-8432-434E-8923-B9F000379A83}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="17.0.1000.7"
   DTS:LocaleID="3082"
   DTS:ObjectName="StageFecha"
   DTS:ProtectionLevel="0"
-  DTS:VersionGUID="{E0AC58A8-288F-4044-B275-88571A53AA6E}">
+  DTS:VersionGUID="{53718153-D91C-4E0D-9362-4142F102EB1F}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{6F9D54AA-E089-4ABF-B7A7-4AF3065DFB01}"
+      DTS:DTSID="{2E469ADD-6FC6-488C-AED7-9D4660317FBF}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
       DTS:ObjectName="AuditKey">
@@ -26,7 +26,7 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{58F8C6BD-3E06-436D-9E11-EFDAAFD5C5B1}"
+      DTS:DTSID="{F27F069A-0245-4C01-A967-A28341D85F39}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
       DTS:ObjectName="RowCount">
@@ -35,7 +35,7 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{45B97A61-701B-47EF-9CA4-C9DD44FAD55A}"
+      DTS:DTSID="{E2F25EB3-7687-4DFC-979B-9D9DBBE357C7}"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="TableName">
@@ -48,7 +48,7 @@
       DTS:refId="Package\DF StageFecha"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Tarea Flujo de datos"
-      DTS:DTSID="{34C21A7A-463E-467C-8D0F-A6A115ADD55F}"
+      DTS:DTSID="{64324E28-20DE-4513-8E00-02EDECC59683}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
       DTS:ObjectName="DF StageFecha"
@@ -81,7 +81,7 @@
               <connections>
                 <connection
                   refId="Package\DF StageFecha\Origen de archivo plano.Connections[FlatFileConnection]"
-                  connectionManagerID="{3119AD2E-AF21-4ED0-9798-94CB79772540}:external"
+                  connectionManagerID="{1D017F50-EDE6-4016-871F-6AA87A9472DD}:external"
                   connectionManagerRefId="Project.ConnectionManagers[FF DimFecha]"
                   name="FlatFileConnection" />
               </connections>
@@ -92,13 +92,15 @@
                   <outputColumns>
                     <outputColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[FechaKey]"
-                      dataType="i4"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[FechaKey]"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[FechaKey]"
                       name="FechaKey"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -112,13 +114,15 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Fecha]"
-                      dataType="dbDate"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Fecha]"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Fecha]"
                       name="Fecha"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -132,13 +136,15 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Dia_Semana]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Dia_Semana]"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Dia_Semana]"
                       name="Dia_Semana"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -155,12 +161,12 @@
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Nombre_Dia_Semana]"
-                      length="15"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Nombre_Dia_Semana]"
                       name="Nombre_Dia_Semana"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -174,13 +180,15 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Dia_Mes]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Dia_Mes]"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Dia_Mes]"
                       name="Dia_Mes"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -194,13 +202,15 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Dia_Anio]"
-                      dataType="i2"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Dia_Anio]"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Dia_Anio]"
                       name="Dia_Anio"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -217,12 +227,12 @@
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Nombre_Mes]"
-                      length="15"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Nombre_Mes]"
                       name="Nombre_Mes"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -236,13 +246,15 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Mes_Anio]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Mes_Anio]"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Mes_Anio]"
                       name="Mes_Anio"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -256,13 +268,15 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Semana_Anio]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Semana_Anio]"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Semana_Anio]"
                       name="Semana_Anio"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -276,13 +290,15 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Anio]"
-                      dataType="i2"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Anio]"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Anio]"
                       name="Anio"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -296,13 +312,15 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Bimestre]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Bimestre]"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Bimestre]"
                       name="Bimestre"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -316,13 +334,15 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Trimestre]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Trimestre]"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Trimestre]"
                       name="Trimestre"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -336,13 +356,15 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Cuatrimestre]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Cuatrimestre]"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Cuatrimestre]"
                       name="Cuatrimestre"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -356,13 +378,15 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Semestre]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Semestre]"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Semestre]"
                       name="Semestre"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -376,13 +400,15 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Fin_Semana]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Fin_Semana]"
+                      length="100"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Fin_Semana]"
                       name="Fin_Semana"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -399,67 +425,93 @@
                     isUsed="True">
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[FechaKey]"
-                      dataType="i4"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="FechaKey" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Fecha]"
-                      dataType="dbDate"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Fecha" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Dia_Semana]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Dia_Semana" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Nombre_Dia_Semana]"
                       codePage="1252"
                       dataType="str"
-                      length="15"
+                      length="100"
                       name="Nombre_Dia_Semana" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Dia_Mes]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Dia_Mes" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Dia_Anio]"
-                      dataType="i2"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Dia_Anio" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Nombre_Mes]"
                       codePage="1252"
                       dataType="str"
-                      length="15"
+                      length="100"
                       name="Nombre_Mes" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Mes_Anio]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Mes_Anio" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Semana_Anio]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Semana_Anio" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Anio]"
-                      dataType="i2"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Anio" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Bimestre]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Bimestre" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Trimestre]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Trimestre" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Cuatrimestre]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Cuatrimestre" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Semestre]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Semestre" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Fin_Semana]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Fin_Semana" />
                   </externalMetadataColumns>
                 </output>
@@ -551,7 +603,7 @@
               <connections>
                 <connection
                   refId="Package\DF StageFecha\StageFecha.Connections[OleDbConnection]"
-                  connectionManagerID="{8C7C07A6-87F9-4051-ADAA-5AE5E07EC012}:external"
+                  connectionManagerID="{1F94AEFB-E77D-4A29-B2E3-9231B86F21F6}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB STAGE_HM]"
                   description="La conexión de tiempo de ejecución OLE DB usada para obtener acceso a la base de datos."
                   name="OleDbConnection" />
@@ -566,19 +618,25 @@
                   <inputColumns>
                     <inputColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[FechaKey]"
-                      cachedDataType="i4"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="FechaKey"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[FechaKey]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[FechaKey]" />
                     <inputColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[Fecha]"
-                      cachedDataType="dbDate"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="Fecha"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Fecha]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Fecha]" />
                     <inputColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[Dia_Semana]"
-                      cachedDataType="ui1"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="Dia_Semana"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Dia_Semana]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Dia_Semana]" />
@@ -586,19 +644,23 @@
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[Nombre_Dia_Semana]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="15"
+                      cachedLength="100"
                       cachedName="Nombre_Dia_Semana"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Nombre_Dia_Semana]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Nombre_Dia_Semana]" />
                     <inputColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[Dia_Mes]"
-                      cachedDataType="ui1"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="Dia_Mes"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Dia_Mes]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Dia_Mes]" />
                     <inputColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[Dia_Anio]"
-                      cachedDataType="i2"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="Dia_Anio"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Dia_Anio]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Dia_Anio]" />
@@ -606,55 +668,71 @@
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[Nombre_Mes]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="15"
+                      cachedLength="100"
                       cachedName="Nombre_Mes"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Nombre_Mes]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Nombre_Mes]" />
                     <inputColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[Mes_Anio]"
-                      cachedDataType="ui1"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="Mes_Anio"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Mes_Anio]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Mes_Anio]" />
                     <inputColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[Semana_Anio]"
-                      cachedDataType="ui1"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="Semana_Anio"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Semana_Anio]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Semana_Anio]" />
                     <inputColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[Anio]"
-                      cachedDataType="i2"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="Anio"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Anio]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Anio]" />
                     <inputColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[Bimestre]"
-                      cachedDataType="ui1"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="Bimestre"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Bimestre]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Bimestre]" />
                     <inputColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[Trimestre]"
-                      cachedDataType="ui1"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="Trimestre"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Trimestre]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Trimestre]" />
                     <inputColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[Cuatrimestre]"
-                      cachedDataType="ui1"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="Cuatrimestre"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Cuatrimestre]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Cuatrimestre]" />
                     <inputColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[Semestre]"
-                      cachedDataType="ui1"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="Semestre"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Semestre]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Semestre]" />
                     <inputColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].Columns[Fin_Semana]"
-                      cachedDataType="ui1"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="Fin_Semana"
                       externalMetadataColumnId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Fin_Semana]"
                       lineageId="Package\DF StageFecha\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Fin_Semana]" />
@@ -662,68 +740,98 @@
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[FechaKey]"
+                      refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[FilaOrigen]"
                       dataType="i4"
+                      name="FilaOrigen" />
+                    <externalMetadataColumn
+                      refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[FechaKey]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="FechaKey" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Fecha]"
-                      dataType="dbDate"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Fecha" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Dia_Semana]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Dia_Semana" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Nombre_Dia_Semana]"
                       codePage="1252"
                       dataType="str"
-                      length="15"
+                      length="100"
                       name="Nombre_Dia_Semana" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Dia_Mes]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Dia_Mes" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Dia_Anio]"
-                      dataType="i2"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Dia_Anio" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Nombre_Mes]"
                       codePage="1252"
                       dataType="str"
-                      length="15"
+                      length="100"
                       name="Nombre_Mes" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Mes_Anio]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Mes_Anio" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Semana_Anio]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Semana_Anio" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Anio]"
-                      dataType="i2"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Anio" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Bimestre]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Bimestre" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Trimestre]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Trimestre" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Cuatrimestre]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Cuatrimestre" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Semestre]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Semestre" />
                     <externalMetadataColumn
                       refId="Package\DF StageFecha\StageFecha.Inputs[Entrada de destino de OLE DB].ExternalColumns[Fin_Semana]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="Fin_Semana" />
                   </externalMetadataColumns>
                 </input>
@@ -768,7 +876,7 @@
       DTS:refId="Package\Task Get AuditKey"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{28F3E6B7-55BA-4CD2-B6E3-355B10A2A88F}"
+      DTS:DTSID="{1DCC291F-2CB1-4267-B338-7D1BA3FA011F}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Get AuditKey"
@@ -777,7 +885,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0C6E4564-200A-45CF-938F-1FDBC0DC7C42}"
+          SQLTask:Connection="{47370620-ACA4-46BD-891B-2DF06EDAA5ED}"
           SQLTask:SqlStatementSource="INSERT INTO [DIM_AUDIT]&#xA;           ([TableName]&#xA;           ,[PkgName]&#xA;           ,[PkgGUID]&#xA;           ,[ExecStartDT]&#xA;           ,[ExecStopDT]&#xA;           ,[ExecutionInstanceGUID]&#xA;           ,[ExtractRowCnt]&#xA;           ,[TableInitialRowCnt]&#xA;           ,[TableFinalRowCnt]&#xA;           ,[SuccessfulProcessingInd])&#xA;     VALUES&#xA;           (@TableName&#xA;           ,@PkgName&#xA;           ,@PkgGUID&#xA;           ,@StartTime&#xA;           ,NULL&#xA;           ,@PkgExecGUID&#xA;           ,NULL&#xA;           ,@RowCount&#xA;           ,NULL&#xA;           ,'N')&#xA;SELECT CAST(SCOPE_IDENTITY() AS INT) AS AuditKey"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -826,7 +934,7 @@
       DTS:refId="Package\Task Post RowCnt"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{1AB4BACF-0F0E-477E-A260-F510726E5331}"
+      DTS:DTSID="{A72AA7A8-CE2E-4119-B304-1113DCC57146}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Post RowCnt"
@@ -835,7 +943,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{6BE669DC-F545-498B-B148-714CD4C30B75}"
+          SQLTask:Connection="{774A0D68-F4B5-4FAE-8E5D-B5062AE9026E}"
           SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [HM].[StageFecha]"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -848,7 +956,7 @@
       DTS:refId="Package\Task Prior RowCnt"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{D622B3AF-9442-4D76-80B3-8BBF2DCF7C48}"
+      DTS:DTSID="{0429A193-120F-4A98-92F6-7CF9C7524570}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Prior RowCnt"
@@ -857,7 +965,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{6BE669DC-F545-498B-B148-714CD4C30B75}"
+          SQLTask:Connection="{774A0D68-F4B5-4FAE-8E5D-B5062AE9026E}"
           SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [HM].[StageFecha]"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -870,7 +978,7 @@
       DTS:refId="Package\TRUNCATE"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{AF5105DF-BC31-4B7B-8C46-10C9E1DA8EFD}"
+      DTS:DTSID="{48FEC61A-9794-433F-8D03-46DAB1FE270D}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="TRUNCATE"
@@ -879,7 +987,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{6BE669DC-F545-498B-B148-714CD4C30B75}"
+          SQLTask:Connection="{774A0D68-F4B5-4FAE-8E5D-B5062AE9026E}"
           SQLTask:SqlStatementSource="TRUNCATE TABLE [HM].[StageFecha];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -887,7 +995,7 @@
       DTS:refId="Package\Update AuditDim"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{BC7B7C6D-48DE-4192-B4F9-319EA99D506C}"
+      DTS:DTSID="{9799DF3F-073F-4754-9B74-C2CF818AE783}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Update AuditDim"
@@ -896,8 +1004,8 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0C6E4564-200A-45CF-938F-1FDBC0DC7C42}"
-          SQLTask:SqlStatementSource="UPDATE [DIM_AUDIT]&#xA;SET ExecStopDT = SYSDATETIME()&#xA; , ExtractRowCnt = @RowCount&#xA; ,TableFinalRowCnt = @RowCount&#xA; ,SuccessfulProcessingInd='Y'&#xA;WHERE AuditKey = @AuditKey;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          SQLTask:Connection="{47370620-ACA4-46BD-891B-2DF06EDAA5ED}"
+          SQLTask:SqlStatementSource="EXEC [dbo].[sp_CerrarAuditoria] @AuditKey = @AuditKey, @RowCount = @RowCount;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ParameterBinding
             SQLTask:ParameterName="RowCount"
             SQLTask:DtsVariableName="User::RowCount"
@@ -916,44 +1024,98 @@
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{56205243-0B62-43FA-A9E9-7D0E6778D0FD\}]"
+      DTS:refId="Package.PrecedenceConstraints[{2BC6C447-2A96-4942-815E-A735971A2FB5\}]"
       DTS:CreationName=""
-      DTS:DTSID="{56205243-0B62-43FA-A9E9-7D0E6778D0FD}"
-      DTS:From="Package\DF StageFecha"
-      DTS:LogicalAnd="True"
-      DTS:ObjectName="{56205243-0B62-43FA-A9E9-7D0E6778D0FD}"
-      DTS:To="Package\Task Post RowCnt" />
-    <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{6386711C-A232-454E-9C13-43A3A743C287\}]"
-      DTS:CreationName=""
-      DTS:DTSID="{6386711C-A232-454E-9C13-43A3A743C287}"
+      DTS:DTSID="{2BC6C447-2A96-4942-815E-A735971A2FB5}"
       DTS:From="Package\TRUNCATE"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="{6386711C-A232-454E-9C13-43A3A743C287}"
+      DTS:ObjectName="{2BC6C447-2A96-4942-815E-A735971A2FB5}"
       DTS:To="Package\DF StageFecha" />
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{E150EAC8-72A1-4B19-ADE8-42E02A125458\}]"
+      DTS:refId="Package.PrecedenceConstraints[{2D4A7F25-9A99-4E74-B881-1CEA7C4BBAA5\}]"
       DTS:CreationName=""
-      DTS:DTSID="{E150EAC8-72A1-4B19-ADE8-42E02A125458}"
-      DTS:From="Package\Task Prior RowCnt"
-      DTS:LogicalAnd="True"
-      DTS:ObjectName="{E150EAC8-72A1-4B19-ADE8-42E02A125458}"
-      DTS:To="Package\Task Get AuditKey" />
-    <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{E2960C44-415C-4097-A9CB-A8894B343133\}]"
-      DTS:CreationName=""
-      DTS:DTSID="{E2960C44-415C-4097-A9CB-A8894B343133}"
-      DTS:From="Package\Task Post RowCnt"
-      DTS:LogicalAnd="True"
-      DTS:ObjectName="{E2960C44-415C-4097-A9CB-A8894B343133}"
-      DTS:To="Package\Update AuditDim" />
-    <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{F4748BE3-883D-4443-81BD-43699A0B5523\}]"
-      DTS:CreationName=""
-      DTS:DTSID="{F4748BE3-883D-4443-81BD-43699A0B5523}"
+      DTS:DTSID="{2D4A7F25-9A99-4E74-B881-1CEA7C4BBAA5}"
       DTS:From="Package\Task Get AuditKey"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="{F4748BE3-883D-4443-81BD-43699A0B5523}"
+      DTS:ObjectName="{2D4A7F25-9A99-4E74-B881-1CEA7C4BBAA5}"
       DTS:To="Package\TRUNCATE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{35FF4BD8-10D2-42E3-86D6-7988614A1C02\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{35FF4BD8-10D2-42E3-86D6-7988614A1C02}"
+      DTS:From="Package\DF StageFecha"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{35FF4BD8-10D2-42E3-86D6-7988614A1C02}"
+      DTS:To="Package\Task Post RowCnt" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{CFDEABB9-8780-4CA5-A56A-93F01F877D1C\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{CFDEABB9-8780-4CA5-A56A-93F01F877D1C}"
+      DTS:From="Package\Task Post RowCnt"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{CFDEABB9-8780-4CA5-A56A-93F01F877D1C}"
+      DTS:To="Package\Update AuditDim" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{E9999CED-D4ED-460E-8511-9052BF49CBD0\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{E9999CED-D4ED-460E-8511-9052BF49CBD0}"
+      DTS:From="Package\Task Prior RowCnt"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{E9999CED-D4ED-460E-8511-9052BF49CBD0}"
+      DTS:To="Package\Task Get AuditKey" />
   </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{044880A8-C3E5-472A-8973-6FDC006F76CF}"
+      DTS:EventID="0"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="La propiedad de propagación del evento"
+          DTS:DTSID="{5335CB20-88FF-4694-9B95-659A088EA575}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\Registrar error en DIM_AUDIT"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Tarea Ejecutar SQL"
+          DTS:DisableEventHandlers="True"
+          DTS:DTSID="{32508094-16B3-4A28-9B30-5C76235FC5A6}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Registrar error en DIM_AUDIT"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{47370620-ACA4-46BD-891B-2DF06EDAA5ED}"
+              SQLTask:SqlStatementSource="UPDATE [DIM_AUDIT]&#xA;SET ExecStopDT = SYSDATETIME()&#xA; ,SuccessfulProcessingInd = 'N'&#xA; ,MensajeError = LEFT(ISNULL(MensajeError + N' | ', N'') + @Mensaje, 2000)&#xA;WHERE AuditKey = @AuditKey;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="Mensaje"
+                SQLTask:DtsVariableName="System::ErrorDescription"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="16"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="AuditKey"
+                SQLTask:DtsVariableName="User::AuditKey"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="11"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
 </DTS:Executable>

@@ -16,3 +16,6 @@ obj/
 
 # Material de referencia de terceros (no se publica)
 referencia/
+
+# Paquetes compilados (se generan con build_hm.ps1)
+herramientas/generador_ssis/out/

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:ObjectName="OleDB STAGE_HM"
-  DTS:DTSID="{88DD4EE8-77DE-4968-85B0-94F2D5243896}"
+  DTS:DTSID="{14B66C3C-74F6-4C8A-9859-876DE64EB424}"
   DTS:CreationName="OLEDB">
   <DTS:ObjectData>
     <DTS:ConnectionManager

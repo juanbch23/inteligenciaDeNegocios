@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="10/21/2026 12:08:14 AM"
+  DTS:CreationDate="10/28/2026 12:35:33 AM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="LAPTOP-IO596P6A"
   DTS:CreatorName="LAPTOP-IO596P6A\Juan"
-  DTS:DTSID="{FA7BDAB7-8406-43D3-8C98-8AB55FE0D942}"
+  DTS:DTSID="{5F83756E-0BA4-4180-A924-27CA04B360F7}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="17.0.1000.7"
   DTS:LocaleID="3082"
   DTS:ObjectName="FactMetas"
   DTS:ProtectionLevel="0"
-  DTS:VersionGUID="{B7D89254-6C26-4931-80BF-CDC5BA337999}">
+  DTS:VersionGUID="{E2D9D824-1178-4E9D-BA87-7E6092EC84B3}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{85C27222-AA5B-43DA-A536-F48C05C801D7}"
+      DTS:DTSID="{E81005F9-B32C-4CBB-910E-4EFC1618CEB3}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
       DTS:ObjectName="AuditKey">
@@ -26,7 +26,7 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{49969B82-35DD-4230-8CE0-0C9A43BDAEB6}"
+      DTS:DTSID="{3B46BE5C-0D30-4293-95B8-F76FFA25D762}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
       DTS:ObjectName="RowCount">
@@ -35,7 +35,7 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{0F59ED08-D59C-4107-9031-C7686F8ABD7B}"
+      DTS:DTSID="{CD23524A-E1A1-426E-92ED-C86BD1518BE0}"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="TableName">
@@ -48,7 +48,7 @@
       DTS:refId="Package\FACT METAS"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Tarea Flujo de datos"
-      DTS:DTSID="{50744136-D6E0-4CF6-B566-0FCFB4F1BE57}"
+      DTS:DTSID="{1DE4366C-6B22-437C-AAF0-7C27794458DA}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
       DTS:ObjectName="FACT METAS"
@@ -59,6 +59,104 @@
           autoAdjustBufferSize="true"
           version="1">
           <components>
+            <component
+              refId="Package\FACT METAS\Columna derivada Motivo"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Columna derivada;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;0"
+              description="Crea nuevos valores de columna aplicando expresiones a las columnas de entrada de la transformación. Crea nuevas columnas o sobrescribe las columnas existentes. Por ejemplo, se concatenan los valores de las columnas 'nombre' y 'apellidos' para crear una columna 'nombre completo'."
+              name="Columna derivada Motivo"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\FACT METAS\Columna derivada Motivo.Inputs[Entrada de columna derivada]"
+                  description="Entrada en la transformación Columna derivada"
+                  name="Entrada de columna derivada">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\FACT METAS\Columna derivada Motivo.Inputs[Entrada de columna derivada].Columns[MotivoDescarte]"
+                      cachedDataType="wstr"
+                      cachedLength="200"
+                      cachedName="MotivoDescarte"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MotivoDescarte]" />
+                    <inputColumn
+                      refId="Package\FACT METAS\Columna derivada Motivo.Inputs[Entrada de columna derivada].Columns[DepartamentoKey]"
+                      cachedDataType="i4"
+                      cachedName="DepartamentoKey"
+                      lineageId="Package\FACT METAS\DimDepartamento.Outputs[Salida de entradas coincidentes de búsqueda].Columns[DepartamentoKey]" />
+                    <inputColumn
+                      refId="Package\FACT METAS\Columna derivada Motivo.Inputs[Entrada de columna derivada].Columns[TemporadaKey]"
+                      cachedDataType="i4"
+                      cachedName="TemporadaKey"
+                      lineageId="Package\FACT METAS\DimTemporada.Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]" />
+                    <inputColumn
+                      refId="Package\FACT METAS\Columna derivada Motivo.Inputs[Entrada de columna derivada].Columns[FechaKey]"
+                      cachedDataType="i4"
+                      cachedName="FechaKey"
+                      lineageId="Package\FACT METAS\DimFecha (mes).Outputs[Salida de entradas coincidentes de búsqueda].Columns[FechaKey]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\FACT METAS\Columna derivada Motivo.Outputs[Salida de columna derivada]"
+                  description="Salida predeterminada de la transformación Columna derivada"
+                  exclusionGroup="1"
+                  name="Salida de columna derivada"
+                  synchronousInputId="Package\FACT METAS\Columna derivada Motivo.Inputs[Entrada de columna derivada]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\FACT METAS\Columna derivada Motivo.Outputs[Salida de columna derivada].Columns[Motivo]"
+                      dataType="wstr"
+                      description="Motivo del descarte"
+                      errorOrTruncationOperation="Cálculo"
+                      errorRowDisposition="FailComponent"
+                      length="200"
+                      lineageId="Package\FACT METAS\Columna derivada Motivo.Outputs[Salida de columna derivada].Columns[Motivo]"
+                      name="Motivo"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expresión de columna derivada"
+                          name="Expression">[ISNULL](#{Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MotivoDescarte]}) ? ([ISNULL](#{Package\FACT METAS\DimDepartamento.Outputs[Salida de entradas coincidentes de búsqueda].Columns[DepartamentoKey]}) ? (DT_WSTR,200)"Departamento/sección inexistente en DimDepartamento" : ([ISNULL](#{Package\FACT METAS\DimTemporada.Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]}) ? (DT_WSTR,200)"Temporada inexistente en DimTemporada" : ([ISNULL](#{Package\FACT METAS\DimFecha (mes).Outputs[Salida de entradas coincidentes de búsqueda].Columns[FechaKey]}) ? (DT_WSTR,200)"Mes fuera del calendario (no existe en DimFecha)" : (DT_WSTR,200)"Llave sin coincidencia en una dimensión"))) : #{Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MotivoDescarte]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Expresión descriptiva de columna derivada"
+                          expressionType="Notify"
+                          name="FriendlyExpression">ISNULL(MotivoDescarte) ? (ISNULL(DepartamentoKey) ? (DT_WSTR,200)"Departamento/sección inexistente en DimDepartamento" : (ISNULL(TemporadaKey) ? (DT_WSTR,200)"Temporada inexistente en DimTemporada" : (ISNULL(FechaKey) ? (DT_WSTR,200)"Mes fuera del calendario (no existe en DimFecha)" : (DT_WSTR,200)"Llave sin coincidencia en una dimensión"))) : MotivoDescarte</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\FACT METAS\Columna derivada Motivo.Outputs[Salida de error de columna derivada]"
+                  description="Salida de error de la transformación Columna derivada"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Salida de error de columna derivada"
+                  synchronousInputId="Package\FACT METAS\Columna derivada Motivo.Inputs[Entrada de columna derivada]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\FACT METAS\Columna derivada Motivo.Outputs[Salida de error de columna derivada].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\FACT METAS\Columna derivada Motivo.Outputs[Salida de error de columna derivada].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\FACT METAS\Columna derivada Motivo.Outputs[Salida de error de columna derivada].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\FACT METAS\Columna derivada Motivo.Outputs[Salida de error de columna derivada].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
             <component
               refId="Package\FACT METAS\DimDepartamento"
               componentClassID="Microsoft.Lookup"
@@ -73,7 +171,7 @@
                   description="Especifica la instrucción SQL que genera la tabla de búsqueda."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [DepartamentoKey], [department_name], [section_name] FROM [Ventas].[DimDepartamento]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [DepartamentoKey], [department_name], [section_name] FROM [Ventas].[DimDepartamento] WHERE [DepartamentoKey] &gt; 0</property>
                 <property
                   dataType="System.String"
                   description="Especifica una instrucción SQL que usa parámetros para generar la tabla de búsqueda."
@@ -128,7 +226,7 @@
               <connections>
                 <connection
                   refId="Package\FACT METAS\DimDepartamento.Connections[OleDbConnection]"
-                  connectionManagerID="{4DF34612-2498-4854-A81E-1FA2BAFB57B2}:external"
+                  connectionManagerID="{A2EB6CD2-DDDE-484A-8BD1-35E289523D39}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB DWH_HM]"
                   description="Administrador de conexiones utilizado para obtener acceso a los datos de búsqueda."
                   name="OleDbConnection" />
@@ -303,7 +401,7 @@
               <connections>
                 <connection
                   refId="Package\FACT METAS\DimFecha (mes).Connections[OleDbConnection]"
-                  connectionManagerID="{4DF34612-2498-4854-A81E-1FA2BAFB57B2}:external"
+                  connectionManagerID="{A2EB6CD2-DDDE-484A-8BD1-35E289523D39}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB DWH_HM]"
                   description="Administrador de conexiones utilizado para obtener acceso a los datos de búsqueda."
                   name="OleDbConnection" />
@@ -405,7 +503,7 @@
                   description="Especifica la instrucción SQL que genera la tabla de búsqueda."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [TemporadaKey], [TemporadaID] FROM [Ventas].[DimTemporada]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [TemporadaKey], [TemporadaID] FROM [Ventas].[DimTemporada] WHERE [TemporadaKey] &gt; 0</property>
                 <property
                   dataType="System.String"
                   description="Especifica una instrucción SQL que usa parámetros para generar la tabla de búsqueda."
@@ -460,7 +558,7 @@
               <connections>
                 <connection
                   refId="Package\FACT METAS\DimTemporada.Connections[OleDbConnection]"
-                  connectionManagerID="{4DF34612-2498-4854-A81E-1FA2BAFB57B2}:external"
+                  connectionManagerID="{A2EB6CD2-DDDE-484A-8BD1-35E289523D39}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB DWH_HM]"
                   description="Administrador de conexiones utilizado para obtener acceso a los datos de búsqueda."
                   name="OleDbConnection" />
@@ -576,6 +674,12 @@
                       cachedDataType="i4"
                       cachedName="FechaKey"
                       lineageId="Package\FACT METAS\DimFecha (mes).Outputs[Salida de entradas coincidentes de búsqueda].Columns[FechaKey]" />
+                    <inputColumn
+                      refId="Package\FACT METAS\División condicional.Inputs[Entrada de división condicional].Columns[MotivoDescarte]"
+                      cachedDataType="wstr"
+                      cachedLength="200"
+                      cachedName="MotivoDescarte"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MotivoDescarte]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -583,7 +687,7 @@
               <outputs>
                 <output
                   refId="Package\FACT METAS\División condicional.Outputs[bad]"
-                  description="Filas con alguna llave sin coincidencia"
+                  description="Filas con dato invalido o con alguna llave sin coincidencia"
                   errorOrTruncationOperation="Cálculo"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
@@ -595,13 +699,13 @@
                       containsID="true"
                       dataType="System.String"
                       description="Especifica la expresión. Esta versión de expresión usa identificadores de linaje en lugar de nombres de columna."
-                      name="Expression">[ISNULL](#{Package\FACT METAS\DimDepartamento.Outputs[Salida de entradas coincidentes de búsqueda].Columns[DepartamentoKey]}) || [ISNULL](#{Package\FACT METAS\DimTemporada.Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]}) || [ISNULL](#{Package\FACT METAS\DimFecha (mes).Outputs[Salida de entradas coincidentes de búsqueda].Columns[FechaKey]})</property>
+                      name="Expression">![ISNULL](#{Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MotivoDescarte]}) || [ISNULL](#{Package\FACT METAS\DimDepartamento.Outputs[Salida de entradas coincidentes de búsqueda].Columns[DepartamentoKey]}) || [ISNULL](#{Package\FACT METAS\DimTemporada.Outputs[Salida de entradas coincidentes de búsqueda].Columns[TemporadaKey]}) || [ISNULL](#{Package\FACT METAS\DimFecha (mes).Outputs[Salida de entradas coincidentes de búsqueda].Columns[FechaKey]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Especifica la versión descriptiva de la expresión. Esta versión de expresión usa nombres de columna."
                       expressionType="Notify"
-                      name="FriendlyExpression">ISNULL(DepartamentoKey) || ISNULL(TemporadaKey) || ISNULL(FechaKey)</property>
+                      name="FriendlyExpression">!ISNULL(MotivoDescarte) || ISNULL(DepartamentoKey) || ISNULL(TemporadaKey) || ISNULL(FechaKey)</property>
                     <property
                       dataType="System.Int32"
                       description="Especifica la posición de la condición en la lista de condiciones que evalúa la transformación. El orden de evaluación es del menor al mayor valor."
@@ -706,7 +810,7 @@
               <connections>
                 <connection
                   refId="Package\FACT METAS\ErrorFactMetas.Connections[OleDbConnection]"
-                  connectionManagerID="{4DF34612-2498-4854-A81E-1FA2BAFB57B2}:external"
+                  connectionManagerID="{A2EB6CD2-DDDE-484A-8BD1-35E289523D39}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB DWH_HM]"
                   description="La conexión de tiempo de ejecución OLE DB usada para obtener acceso a la base de datos."
                   name="OleDbConnection" />
@@ -720,44 +824,50 @@
                   name="Entrada de destino de OLE DB">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[Escenario]"
-                      cachedDataType="wstr"
-                      cachedLength="30"
-                      cachedName="Escenario"
-                      externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[Escenario]"
-                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Escenario]" />
-                    <inputColumn
-                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[Monto]"
-                      cachedDataType="r8"
-                      cachedName="Monto"
-                      externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[Monto]"
-                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Monto]" />
-                    <inputColumn
-                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[department_name]"
-                      cachedDataType="wstr"
-                      cachedLength="60"
-                      cachedName="department_name"
-                      externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[department_name]"
-                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[department_name]" />
-                    <inputColumn
-                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[section_name]"
-                      cachedDataType="wstr"
-                      cachedLength="60"
-                      cachedName="section_name"
-                      externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[section_name]"
-                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[section_name]" />
-                    <inputColumn
-                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[TemporadaID]"
-                      cachedDataType="ui1"
-                      cachedName="TemporadaID"
-                      externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[TemporadaID]"
-                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[TemporadaID]" />
-                    <inputColumn
-                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[AnioMes]"
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[FilaOrigen]"
                       cachedDataType="i4"
-                      cachedName="AnioMes"
-                      externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[AnioMes]"
-                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[AnioMes]" />
+                      cachedName="FilaOrigen"
+                      externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[FilaOrigen]"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[FilaOrigen]" />
+                    <inputColumn
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[escenario_origen]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="escenario_origen"
+                      externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[escenario_origen]"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[escenario_origen]" />
+                    <inputColumn
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[monto_origen]"
+                      cachedDataType="r8"
+                      cachedName="monto_origen"
+                      externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[monto_origen]"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[monto_origen]" />
+                    <inputColumn
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[department_origen]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="department_origen"
+                      externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[department_origen]"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[department_origen]" />
+                    <inputColumn
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[section_origen]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="section_origen"
+                      externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[section_origen]"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[section_origen]" />
+                    <inputColumn
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[temporada_origen]"
+                      cachedDataType="r8"
+                      cachedName="temporada_origen"
+                      externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[temporada_origen]"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[temporada_origen]" />
+                    <inputColumn
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[aniomes_origen]"
+                      cachedDataType="r8"
+                      cachedName="aniomes_origen"
+                      externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[aniomes_origen]"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[aniomes_origen]" />
                     <inputColumn
                       refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[DepartamentoKey]"
                       cachedDataType="i4"
@@ -776,36 +886,47 @@
                       cachedName="FechaKey"
                       externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[FechaKey]"
                       lineageId="Package\FACT METAS\DimFecha (mes).Outputs[Salida de entradas coincidentes de búsqueda].Columns[FechaKey]" />
+                    <inputColumn
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].Columns[Motivo]"
+                      cachedDataType="wstr"
+                      cachedLength="200"
+                      cachedName="Motivo"
+                      externalMetadataColumnId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[Motivo]"
+                      lineageId="Package\FACT METAS\Columna derivada Motivo.Outputs[Salida de columna derivada].Columns[Motivo]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[Escenario]"
-                      dataType="wstr"
-                      length="30"
-                      name="Escenario" />
-                    <externalMetadataColumn
-                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[Monto]"
-                      dataType="r8"
-                      name="Monto" />
-                    <externalMetadataColumn
-                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[department_name]"
-                      dataType="wstr"
-                      length="60"
-                      name="department_name" />
-                    <externalMetadataColumn
-                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[section_name]"
-                      dataType="wstr"
-                      length="60"
-                      name="section_name" />
-                    <externalMetadataColumn
-                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[TemporadaID]"
-                      dataType="ui1"
-                      name="TemporadaID" />
-                    <externalMetadataColumn
-                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[AnioMes]"
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[FilaOrigen]"
                       dataType="i4"
-                      name="AnioMes" />
+                      name="FilaOrigen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[escenario_origen]"
+                      dataType="wstr"
+                      length="255"
+                      name="escenario_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[monto_origen]"
+                      dataType="r8"
+                      name="monto_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[department_origen]"
+                      dataType="wstr"
+                      length="255"
+                      name="department_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[section_origen]"
+                      dataType="wstr"
+                      length="255"
+                      name="section_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[temporada_origen]"
+                      dataType="r8"
+                      name="temporada_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[aniomes_origen]"
+                      dataType="r8"
+                      name="aniomes_origen" />
                     <externalMetadataColumn
                       refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[FechaKey]"
                       dataType="i4"
@@ -818,6 +939,11 @@
                       refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[TemporadaKey]"
                       dataType="i4"
                       name="TemporadaKey" />
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[Motivo]"
+                      dataType="wstr"
+                      length="200"
+                      name="Motivo" />
                     <externalMetadataColumn
                       refId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[FechaRegistro]"
                       dataType="dbTimeStamp"
@@ -909,7 +1035,7 @@
               <connections>
                 <connection
                   refId="Package\FACT METAS\FactMetas.Connections[OleDbConnection]"
-                  connectionManagerID="{4DF34612-2498-4854-A81E-1FA2BAFB57B2}:external"
+                  connectionManagerID="{A2EB6CD2-DDDE-484A-8BD1-35E289523D39}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB DWH_HM]"
                   description="La conexión de tiempo de ejecución OLE DB usada para obtener acceso a la base de datos."
                   name="OleDbConnection" />
@@ -934,7 +1060,7 @@
                       cachedDataType="numeric"
                       cachedName="MontoDec"
                       cachedPrecision="19"
-                      cachedScale="6"
+                      cachedScale="4"
                       externalMetadataColumnId="Package\FACT METAS\FactMetas.Inputs[Entrada de destino de OLE DB].ExternalColumns[Monto]"
                       lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MontoDec]" />
                     <inputColumn
@@ -990,7 +1116,7 @@
                       dataType="numeric"
                       name="Monto"
                       precision="19"
-                      scale="6" />
+                      scale="4" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -1044,14 +1170,31 @@
                   dataType="System.String"
                   description="Comando SQL para ejecutar."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT CAST([Escenario] AS NVARCHAR(30))       AS [Escenario],
-       [Monto],
-       CAST([Monto] AS DECIMAL(19,6))            AS [MontoDec],
-       CAST([department_name] AS NVARCHAR(60))   AS [department_name],
-       CAST([section_name] AS NVARCHAR(60))      AS [section_name],
-       CAST([TemporadaID] AS TINYINT)            AS [TemporadaID],
-       CAST([AnioMes] AS INT)                    AS [AnioMes]
-  FROM [HM].[StageGoals]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">WITH S AS (
+    SELECT [FilaOrigen], [Escenario], [Monto], [department_name], [section_name], [TemporadaID], [AnioMes],
+           LEFT(NULLIF(LTRIM(RTRIM([Escenario])), N''), 30)                                         AS [Esc],
+           CASE WHEN [Monto] &gt;= 0 AND [Monto] &lt; 1000000000 THEN CAST(ROUND([Monto], 4) AS DECIMAL(19,4)) END AS [MontoDec],
+           LEFT(LTRIM(RTRIM([department_name])), 60)                                                AS [Dep],
+           LEFT(LTRIM(RTRIM([section_name])), 60)                                                   AS [Sec],
+           CASE WHEN [TemporadaID] = FLOOR([TemporadaID]) AND [TemporadaID] BETWEEN 1 AND 255
+                THEN CONVERT(TINYINT, [TemporadaID]) END                                            AS [Temp],
+           CASE WHEN [AnioMes] = FLOOR([AnioMes]) AND [AnioMes] BETWEEN 190001 AND 999912
+                 AND [AnioMes] - FLOOR([AnioMes] / 100) * 100 BETWEEN 1 AND 12 THEN CONVERT(INT, [AnioMes]) END AS [AM]
+      FROM [HM].[StageGoals]),
+R AS (SELECT S.*, ROW_NUMBER() OVER (PARTITION BY [Esc], [Dep], [Sec], [Temp], [AM] ORDER BY [FilaOrigen]) AS [rn] FROM S)
+SELECT [FilaOrigen], [Escenario] AS [escenario_origen], [Monto] AS [monto_origen], [department_name] AS [department_origen],
+       [section_name] AS [section_origen], [TemporadaID] AS [temporada_origen], [AnioMes] AS [aniomes_origen],
+       CAST([Esc] AS NVARCHAR(30)) AS [Escenario], [MontoDec],
+       CAST([Dep] AS NVARCHAR(60)) AS [department_name], CAST([Sec] AS NVARCHAR(60)) AS [section_name],
+       [Temp] AS [TemporadaID], [AM] AS [AnioMes],
+       CAST(CASE WHEN [Esc] IS NULL      THEN N'Escenario vacío'
+                 WHEN [Monto] IS NULL    THEN N'Monto vacío o no numérico'
+                 WHEN [MontoDec] IS NULL THEN N'Monto negativo o fuera de rango'
+                 WHEN [Temp] IS NULL     THEN N'Temporada vacía o inválida'
+                 WHEN [AM] IS NULL       THEN N'Año-mes inválido'
+                 WHEN [rn] &gt; 1           THEN N'Meta repetida (se conservó la primera aparición)'
+            END AS NVARCHAR(200)) AS [MotivoDescarte]
+  FROM R</property>
                 <property
                   dataType="System.String"
                   description="Variable que contiene el comando SQL para ejecutar."
@@ -1077,7 +1220,7 @@
               <connections>
                 <connection
                   refId="Package\FACT METAS\Origen de OLE DB.Connections[OleDbConnection]"
-                  connectionManagerID="{88DD4EE8-77DE-4968-85B0-94F2D5243896}:external"
+                  connectionManagerID="{14B66C3C-74F6-4C8A-9859-876DE64EB424}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB STAGE_HM]"
                   description="La conexión de tiempo de ejecución OLE DB usada para obtener acceso a la base de datos."
                   name="OleDbConnection" />
@@ -1087,6 +1230,72 @@
                   refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB]"
                   name="Salida de origen de OLE DB">
                   <outputColumns>
+                    <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[FilaOrigen]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[FilaOrigen]"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[FilaOrigen]"
+                      name="FilaOrigen"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[escenario_origen]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[escenario_origen]"
+                      length="255"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[escenario_origen]"
+                      name="escenario_origen"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[monto_origen]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[monto_origen]"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[monto_origen]"
+                      name="monto_origen"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[department_origen]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[department_origen]"
+                      length="255"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[department_origen]"
+                      name="department_origen"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[section_origen]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[section_origen]"
+                      length="255"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[section_origen]"
+                      name="section_origen"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[temporada_origen]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[temporada_origen]"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[temporada_origen]"
+                      name="temporada_origen"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[aniomes_origen]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[aniomes_origen]"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[aniomes_origen]"
+                      name="aniomes_origen"
+                      truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Escenario]"
                       dataType="wstr"
@@ -1098,15 +1307,6 @@
                       name="Escenario"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Monto]"
-                      dataType="r8"
-                      errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Monto]"
-                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[Monto]"
-                      name="Monto"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
                       refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MontoDec]"
                       dataType="numeric"
                       errorOrTruncationOperation="Conversión"
@@ -1115,7 +1315,7 @@
                       lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MontoDec]"
                       name="MontoDec"
                       precision="19"
-                      scale="6"
+                      scale="4"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[department_name]"
@@ -1155,24 +1355,61 @@
                       lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[AnioMes]"
                       name="AnioMes"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MotivoDescarte]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[MotivoDescarte]"
+                      length="200"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].Columns[MotivoDescarte]"
+                      name="MotivoDescarte"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[FilaOrigen]"
+                      dataType="i4"
+                      name="FilaOrigen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[escenario_origen]"
+                      dataType="wstr"
+                      length="255"
+                      name="escenario_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[monto_origen]"
+                      dataType="r8"
+                      name="monto_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[department_origen]"
+                      dataType="wstr"
+                      length="255"
+                      name="department_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[section_origen]"
+                      dataType="wstr"
+                      length="255"
+                      name="section_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[temporada_origen]"
+                      dataType="r8"
+                      name="temporada_origen" />
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[aniomes_origen]"
+                      dataType="r8"
+                      name="aniomes_origen" />
                     <externalMetadataColumn
                       refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Escenario]"
                       dataType="wstr"
                       length="30"
                       name="Escenario" />
                     <externalMetadataColumn
-                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[Monto]"
-                      dataType="r8"
-                      name="Monto" />
-                    <externalMetadataColumn
                       refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[MontoDec]"
                       dataType="numeric"
                       name="MontoDec"
                       precision="19"
-                      scale="6" />
+                      scale="4" />
                     <externalMetadataColumn
                       refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[department_name]"
                       dataType="wstr"
@@ -1191,6 +1428,11 @@
                       refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[AnioMes]"
                       dataType="i4"
                       name="AnioMes" />
+                    <externalMetadataColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de origen de OLE DB].ExternalColumns[MotivoDescarte]"
+                      dataType="wstr"
+                      length="200"
+                      name="MotivoDescarte" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -1199,23 +1441,56 @@
                   name="Salida de error de origen de OLE DB">
                   <outputColumns>
                     <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[FilaOrigen]"
+                      dataType="i4"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[FilaOrigen]"
+                      name="FilaOrigen" />
+                    <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[escenario_origen]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[escenario_origen]"
+                      name="escenario_origen" />
+                    <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[monto_origen]"
+                      dataType="r8"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[monto_origen]"
+                      name="monto_origen" />
+                    <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[department_origen]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[department_origen]"
+                      name="department_origen" />
+                    <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[section_origen]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[section_origen]"
+                      name="section_origen" />
+                    <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[temporada_origen]"
+                      dataType="r8"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[temporada_origen]"
+                      name="temporada_origen" />
+                    <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[aniomes_origen]"
+                      dataType="r8"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[aniomes_origen]"
+                      name="aniomes_origen" />
+                    <outputColumn
                       refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Escenario]"
                       dataType="wstr"
                       length="30"
                       lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Escenario]"
                       name="Escenario" />
                     <outputColumn
-                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Monto]"
-                      dataType="r8"
-                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[Monto]"
-                      name="Monto" />
-                    <outputColumn
                       refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[MontoDec]"
                       dataType="numeric"
                       lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[MontoDec]"
                       name="MontoDec"
                       precision="19"
-                      scale="6" />
+                      scale="4" />
                     <outputColumn
                       refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[department_name]"
                       dataType="wstr"
@@ -1239,6 +1514,12 @@
                       lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[AnioMes]"
                       name="AnioMes" />
                     <outputColumn
+                      refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[MotivoDescarte]"
+                      dataType="wstr"
+                      length="200"
+                      lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[MotivoDescarte]"
+                      name="MotivoDescarte" />
+                    <outputColumn
                       refId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]"
                       dataType="i4"
                       lineageId="Package\FACT METAS\Origen de OLE DB.Outputs[Salida de error de origen de OLE DB].Columns[ErrorCode]"
@@ -1259,24 +1540,29 @@
           <paths>
             <path
               refId="Package\FACT METAS.Paths[bad]"
-              endId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB]"
+              endId="Package\FACT METAS\Columna derivada Motivo.Inputs[Entrada de columna derivada]"
               name="bad"
               startId="Package\FACT METAS\División condicional.Outputs[bad]" />
+            <path
+              refId="Package\FACT METAS.Paths[Salida de columna derivada]"
+              endId="Package\FACT METAS\ErrorFactMetas.Inputs[Entrada de destino de OLE DB]"
+              name="Salida de columna derivada"
+              startId="Package\FACT METAS\Columna derivada Motivo.Outputs[Salida de columna derivada]" />
             <path
               refId="Package\FACT METAS.Paths[Salida de entradas coincidentes de búsqueda2]"
               endId="Package\FACT METAS\División condicional.Inputs[Entrada de división condicional]"
               name="Salida de entradas coincidentes de búsqueda"
               startId="Package\FACT METAS\DimFecha (mes).Outputs[Salida de entradas coincidentes de búsqueda]" />
             <path
-              refId="Package\FACT METAS.Paths[Salida de entradas coincidentes de búsqueda1]"
-              endId="Package\FACT METAS\DimFecha (mes).Inputs[Entrada de búsqueda]"
-              name="Salida de entradas coincidentes de búsqueda"
-              startId="Package\FACT METAS\DimTemporada.Outputs[Salida de entradas coincidentes de búsqueda]" />
-            <path
               refId="Package\FACT METAS.Paths[Salida de entradas coincidentes de búsqueda]"
               endId="Package\FACT METAS\DimTemporada.Inputs[Entrada de búsqueda]"
               name="Salida de entradas coincidentes de búsqueda"
               startId="Package\FACT METAS\DimDepartamento.Outputs[Salida de entradas coincidentes de búsqueda]" />
+            <path
+              refId="Package\FACT METAS.Paths[Salida de entradas coincidentes de búsqueda1]"
+              endId="Package\FACT METAS\DimFecha (mes).Inputs[Entrada de búsqueda]"
+              name="Salida de entradas coincidentes de búsqueda"
+              startId="Package\FACT METAS\DimTemporada.Outputs[Salida de entradas coincidentes de búsqueda]" />
             <path
               refId="Package\FACT METAS.Paths[Salida de origen de OLE DB]"
               endId="Package\FACT METAS\DimDepartamento.Inputs[Entrada de búsqueda]"
@@ -1295,7 +1581,7 @@
       DTS:refId="Package\Task Get AuditKey"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{7C2AE82C-EC93-4B03-BDD6-638CDA1863F5}"
+      DTS:DTSID="{A9B2BAA0-AC0E-4854-AC2D-30AA47E8C0AC}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Get AuditKey"
@@ -1304,7 +1590,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
           SQLTask:SqlStatementSource="INSERT INTO [DIM_AUDIT]&#xA;           ([TableName]&#xA;           ,[PkgName]&#xA;           ,[PkgGUID]&#xA;           ,[ExecStartDT]&#xA;           ,[ExecStopDT]&#xA;           ,[ExecutionInstanceGUID]&#xA;           ,[ExtractRowCnt]&#xA;           ,[TableInitialRowCnt]&#xA;           ,[TableFinalRowCnt]&#xA;           ,[SuccessfulProcessingInd])&#xA;     VALUES&#xA;           (@TableName&#xA;           ,@PkgName&#xA;           ,@PkgGUID&#xA;           ,@StartTime&#xA;           ,NULL&#xA;           ,@PkgExecGUID&#xA;           ,NULL&#xA;           ,@RowCount&#xA;           ,NULL&#xA;           ,'N')&#xA;SELECT CAST(SCOPE_IDENTITY() AS INT) AS AuditKey"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -1353,7 +1639,7 @@
       DTS:refId="Package\Task Post RowCnt"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{CB557730-4F4E-40EE-A762-2469815856AB}"
+      DTS:DTSID="{40F43679-91B9-4709-B21E-97257FDEB180}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Post RowCnt"
@@ -1362,7 +1648,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
           SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [Ventas].[FactMetas]"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -1375,7 +1661,7 @@
       DTS:refId="Package\Task Prior RowCnt"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{299082AA-2639-4E24-9EA2-699F6056475A}"
+      DTS:DTSID="{F80E6707-C29D-40BB-B050-6D2A90892F83}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Prior RowCnt"
@@ -1384,7 +1670,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
           SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [Ventas].[FactMetas]"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -1397,7 +1683,7 @@
       DTS:refId="Package\TRUNCATE"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{D51B8397-6F4F-4C88-9DF1-392C318E37A0}"
+      DTS:DTSID="{9DFC0C06-F164-4D2E-A2B4-45ECE330BD7D}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="TRUNCATE"
@@ -1406,7 +1692,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
           SQLTask:SqlStatementSource="TRUNCATE TABLE [Ventas].[FactMetas];&#xA;TRUNCATE TABLE [Ventas].[ErrorFactMetas];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -1414,7 +1700,7 @@
       DTS:refId="Package\Update AuditDim"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{481CC78A-885C-4923-BE2A-56CA72141B61}"
+      DTS:DTSID="{DDFF27DC-ED27-417E-B532-60E1BD7FF706}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Update AuditDim"
@@ -1423,8 +1709,8 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0A8457A5-F5E2-487D-A5EE-334DD5031B6A}"
-          SQLTask:SqlStatementSource="UPDATE [DIM_AUDIT]&#xA;SET ExecStopDT = SYSDATETIME()&#xA; , ExtractRowCnt = @RowCount&#xA; ,TableFinalRowCnt = @RowCount&#xA; ,SuccessfulProcessingInd='Y'&#xA;WHERE AuditKey = @AuditKey;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
+          SQLTask:SqlStatementSource="EXEC [dbo].[sp_CerrarAuditoria] @AuditKey = @AuditKey, @RowCount = @RowCount;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ParameterBinding
             SQLTask:ParameterName="RowCount"
             SQLTask:DtsVariableName="User::RowCount"
@@ -1443,44 +1729,98 @@
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{1128BF3C-753E-4701-AE1B-D7F67EDE088A\}]"
+      DTS:refId="Package.PrecedenceConstraints[{0D49DF44-8082-4A70-BA46-8930CCB975E9\}]"
       DTS:CreationName=""
-      DTS:DTSID="{1128BF3C-753E-4701-AE1B-D7F67EDE088A}"
-      DTS:From="Package\FACT METAS"
-      DTS:LogicalAnd="True"
-      DTS:ObjectName="{1128BF3C-753E-4701-AE1B-D7F67EDE088A}"
-      DTS:To="Package\Task Post RowCnt" />
-    <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{21A04363-260A-4A69-A352-8E4A4E44A50D\}]"
-      DTS:CreationName=""
-      DTS:DTSID="{21A04363-260A-4A69-A352-8E4A4E44A50D}"
-      DTS:From="Package\Task Post RowCnt"
-      DTS:LogicalAnd="True"
-      DTS:ObjectName="{21A04363-260A-4A69-A352-8E4A4E44A50D}"
-      DTS:To="Package\Update AuditDim" />
-    <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{52644593-4DE5-431D-A45E-A76927D5E295\}]"
-      DTS:CreationName=""
-      DTS:DTSID="{52644593-4DE5-431D-A45E-A76927D5E295}"
+      DTS:DTSID="{0D49DF44-8082-4A70-BA46-8930CCB975E9}"
       DTS:From="Package\Task Prior RowCnt"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="{52644593-4DE5-431D-A45E-A76927D5E295}"
+      DTS:ObjectName="{0D49DF44-8082-4A70-BA46-8930CCB975E9}"
       DTS:To="Package\Task Get AuditKey" />
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{76CABB2D-CC4C-4947-B535-E35EA71A0A27\}]"
+      DTS:refId="Package.PrecedenceConstraints[{6BF52E43-27FD-465D-AEAD-D942FFA3FB40\}]"
       DTS:CreationName=""
-      DTS:DTSID="{76CABB2D-CC4C-4947-B535-E35EA71A0A27}"
+      DTS:DTSID="{6BF52E43-27FD-465D-AEAD-D942FFA3FB40}"
+      DTS:From="Package\Task Post RowCnt"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{6BF52E43-27FD-465D-AEAD-D942FFA3FB40}"
+      DTS:To="Package\Update AuditDim" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{BF00ADE8-8385-4D38-901A-2E315EE47532\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{BF00ADE8-8385-4D38-901A-2E315EE47532}"
       DTS:From="Package\TRUNCATE"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="{76CABB2D-CC4C-4947-B535-E35EA71A0A27}"
+      DTS:ObjectName="{BF00ADE8-8385-4D38-901A-2E315EE47532}"
       DTS:To="Package\FACT METAS" />
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{87D15F6C-3711-4915-9DB4-856DF4AB81C1\}]"
+      DTS:refId="Package.PrecedenceConstraints[{DBDFE352-8E23-46EF-B7F3-9FB5FAFEFE0F\}]"
       DTS:CreationName=""
-      DTS:DTSID="{87D15F6C-3711-4915-9DB4-856DF4AB81C1}"
+      DTS:DTSID="{DBDFE352-8E23-46EF-B7F3-9FB5FAFEFE0F}"
+      DTS:From="Package\FACT METAS"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{DBDFE352-8E23-46EF-B7F3-9FB5FAFEFE0F}"
+      DTS:To="Package\Task Post RowCnt" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{FB6437A8-7A9C-404B-8FEB-ECE421783B69\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{FB6437A8-7A9C-404B-8FEB-ECE421783B69}"
       DTS:From="Package\Task Get AuditKey"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="{87D15F6C-3711-4915-9DB4-856DF4AB81C1}"
+      DTS:ObjectName="{FB6437A8-7A9C-404B-8FEB-ECE421783B69}"
       DTS:To="Package\TRUNCATE" />
   </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{DE7BCB88-1878-4C9A-8941-F90BFA4E3BED}"
+      DTS:EventID="0"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="La propiedad de propagación del evento"
+          DTS:DTSID="{A88C4B17-93A6-4DED-80A9-3AC8189DFCAF}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\Registrar error en DIM_AUDIT"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Tarea Ejecutar SQL"
+          DTS:DisableEventHandlers="True"
+          DTS:DTSID="{E93BB8BC-C0D9-4BEB-AA87-C1FDDC29676D}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Registrar error en DIM_AUDIT"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{B7D475C4-ECCF-4211-9B34-5F5B5AED8CA3}"
+              SQLTask:SqlStatementSource="UPDATE [DIM_AUDIT]&#xA;SET ExecStopDT = SYSDATETIME()&#xA; ,SuccessfulProcessingInd = 'N'&#xA; ,MensajeError = LEFT(ISNULL(MensajeError + N' | ', N'') + @Mensaje, 2000)&#xA;WHERE AuditKey = @AuditKey;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="Mensaje"
+                SQLTask:DtsVariableName="System::ErrorDescription"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="16"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="AuditKey"
+                SQLTask:DtsVariableName="User::AuditKey"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="11"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
 </DTS:Executable>

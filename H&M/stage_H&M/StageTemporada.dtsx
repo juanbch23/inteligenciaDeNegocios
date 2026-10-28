@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="10/21/2026 12:07:52 AM"
+  DTS:CreationDate="10/28/2026 12:35:04 AM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="LAPTOP-IO596P6A"
   DTS:CreatorName="LAPTOP-IO596P6A\Juan"
-  DTS:DTSID="{007EB37D-4C63-4408-B943-8B46B987B783}"
+  DTS:DTSID="{783083F9-F1E9-4E3F-BD03-DABBC3A170F8}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="17.0.1000.7"
   DTS:LocaleID="3082"
   DTS:ObjectName="StageTemporada"
   DTS:ProtectionLevel="0"
-  DTS:VersionGUID="{E428D5C7-56E5-4A97-B3F2-211EEB6809C0}">
+  DTS:VersionGUID="{922B8C4D-8513-412F-ABF4-AFFC57AFBB30}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{28A04DEA-4DE1-4216-941C-C699AF831522}"
+      DTS:DTSID="{BA2113E7-9D25-44B6-A742-946194343500}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
       DTS:ObjectName="AuditKey">
@@ -26,7 +26,7 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{80D079E2-11E9-4377-9E27-16AB3B155C0B}"
+      DTS:DTSID="{9A8930BB-DEBA-4DE7-8306-EB35ABEC5A22}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
       DTS:ObjectName="RowCount">
@@ -35,7 +35,7 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{54EBC832-8EAD-4C76-BAD6-447F209EB1D2}"
+      DTS:DTSID="{E2DC5595-33A9-4FFC-ADE6-4A0C8D2A4E8D}"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="TableName">
@@ -48,7 +48,7 @@
       DTS:refId="Package\DF StageTemporada"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Tarea Flujo de datos"
-      DTS:DTSID="{6E6FF2C1-BA23-4DDC-A8F9-648D0E043371}"
+      DTS:DTSID="{DF6D92DA-B4C3-4D64-8E21-8C46DF78AACE}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
       DTS:ObjectName="DF StageTemporada"
@@ -81,7 +81,7 @@
               <connections>
                 <connection
                   refId="Package\DF StageTemporada\Origen de archivo plano.Connections[FlatFileConnection]"
-                  connectionManagerID="{112BF104-EDB8-4867-8D0F-AABD19334AED}:external"
+                  connectionManagerID="{02983ABE-5E28-45F2-89BF-4DAD012205B3}:external"
                   connectionManagerRefId="Project.ConnectionManagers[FF Temporada]"
                   name="FlatFileConnection" />
               </connections>
@@ -92,13 +92,15 @@
                   <outputColumns>
                     <outputColumn
                       refId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[TemporadaID]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[TemporadaID]"
+                      length="100"
                       lineageId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[TemporadaID]"
                       name="TemporadaID"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -115,12 +117,12 @@
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Temporada]"
-                      length="30"
+                      length="100"
                       lineageId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Temporada]"
                       name="Temporada"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -134,13 +136,15 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[FechaInicio]"
-                      dataType="dbDate"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[FechaInicio]"
+                      length="100"
                       lineageId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[FechaInicio]"
                       name="FechaInicio"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -154,13 +158,15 @@
                     </outputColumn>
                     <outputColumn
                       refId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[FechaFin]"
-                      dataType="dbDate"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Conversión"
-                      errorRowDisposition="FailComponent"
+                      errorRowDisposition="IgnoreFailure"
                       externalMetadataColumnId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[FechaFin]"
+                      length="100"
                       lineageId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[FechaFin]"
                       name="FechaFin"
-                      truncationRowDisposition="FailComponent">
+                      truncationRowDisposition="IgnoreFailure">
                       <properties>
                         <property
                           dataType="System.Boolean"
@@ -177,21 +183,27 @@
                     isUsed="True">
                     <externalMetadataColumn
                       refId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[TemporadaID]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="TemporadaID" />
                     <externalMetadataColumn
                       refId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[Temporada]"
                       codePage="1252"
                       dataType="str"
-                      length="30"
+                      length="100"
                       name="Temporada" />
                     <externalMetadataColumn
                       refId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[FechaInicio]"
-                      dataType="dbDate"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="FechaInicio" />
                     <externalMetadataColumn
                       refId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].ExternalColumns[FechaFin]"
-                      dataType="dbDate"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="FechaFin" />
                   </externalMetadataColumns>
                 </output>
@@ -283,7 +295,7 @@
               <connections>
                 <connection
                   refId="Package\DF StageTemporada\StageTemporada.Connections[OleDbConnection]"
-                  connectionManagerID="{8C7C07A6-87F9-4051-ADAA-5AE5E07EC012}:external"
+                  connectionManagerID="{1F94AEFB-E77D-4A29-B2E3-9231B86F21F6}:external"
                   connectionManagerRefId="Project.ConnectionManagers[OleDB STAGE_HM]"
                   description="La conexión de tiempo de ejecución OLE DB usada para obtener acceso a la base de datos."
                   name="OleDbConnection" />
@@ -298,7 +310,9 @@
                   <inputColumns>
                     <inputColumn
                       refId="Package\DF StageTemporada\StageTemporada.Inputs[Entrada de destino de OLE DB].Columns[TemporadaID]"
-                      cachedDataType="ui1"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="TemporadaID"
                       externalMetadataColumnId="Package\DF StageTemporada\StageTemporada.Inputs[Entrada de destino de OLE DB].ExternalColumns[TemporadaID]"
                       lineageId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[TemporadaID]" />
@@ -306,19 +320,23 @@
                       refId="Package\DF StageTemporada\StageTemporada.Inputs[Entrada de destino de OLE DB].Columns[Temporada]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="30"
+                      cachedLength="100"
                       cachedName="Temporada"
                       externalMetadataColumnId="Package\DF StageTemporada\StageTemporada.Inputs[Entrada de destino de OLE DB].ExternalColumns[Temporada]"
                       lineageId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[Temporada]" />
                     <inputColumn
                       refId="Package\DF StageTemporada\StageTemporada.Inputs[Entrada de destino de OLE DB].Columns[FechaInicio]"
-                      cachedDataType="dbDate"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="FechaInicio"
                       externalMetadataColumnId="Package\DF StageTemporada\StageTemporada.Inputs[Entrada de destino de OLE DB].ExternalColumns[FechaInicio]"
                       lineageId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[FechaInicio]" />
                     <inputColumn
                       refId="Package\DF StageTemporada\StageTemporada.Inputs[Entrada de destino de OLE DB].Columns[FechaFin]"
-                      cachedDataType="dbDate"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
                       cachedName="FechaFin"
                       externalMetadataColumnId="Package\DF StageTemporada\StageTemporada.Inputs[Entrada de destino de OLE DB].ExternalColumns[FechaFin]"
                       lineageId="Package\DF StageTemporada\Origen de archivo plano.Outputs[Salida de origen de archivo plano].Columns[FechaFin]" />
@@ -326,22 +344,32 @@
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
+                      refId="Package\DF StageTemporada\StageTemporada.Inputs[Entrada de destino de OLE DB].ExternalColumns[FilaOrigen]"
+                      dataType="i4"
+                      name="FilaOrigen" />
+                    <externalMetadataColumn
                       refId="Package\DF StageTemporada\StageTemporada.Inputs[Entrada de destino de OLE DB].ExternalColumns[TemporadaID]"
-                      dataType="ui1"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="TemporadaID" />
                     <externalMetadataColumn
                       refId="Package\DF StageTemporada\StageTemporada.Inputs[Entrada de destino de OLE DB].ExternalColumns[Temporada]"
                       codePage="1252"
                       dataType="str"
-                      length="30"
+                      length="100"
                       name="Temporada" />
                     <externalMetadataColumn
                       refId="Package\DF StageTemporada\StageTemporada.Inputs[Entrada de destino de OLE DB].ExternalColumns[FechaInicio]"
-                      dataType="dbDate"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="FechaInicio" />
                     <externalMetadataColumn
                       refId="Package\DF StageTemporada\StageTemporada.Inputs[Entrada de destino de OLE DB].ExternalColumns[FechaFin]"
-                      dataType="dbDate"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
                       name="FechaFin" />
                   </externalMetadataColumns>
                 </input>
@@ -386,7 +414,7 @@
       DTS:refId="Package\Task Get AuditKey"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{668338B0-7D52-4DE8-BBE3-BB36158EA4AE}"
+      DTS:DTSID="{44E5B70F-D1E8-4289-B1E0-04D88D31D3E5}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Get AuditKey"
@@ -395,7 +423,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0C6E4564-200A-45CF-938F-1FDBC0DC7C42}"
+          SQLTask:Connection="{47370620-ACA4-46BD-891B-2DF06EDAA5ED}"
           SQLTask:SqlStatementSource="INSERT INTO [DIM_AUDIT]&#xA;           ([TableName]&#xA;           ,[PkgName]&#xA;           ,[PkgGUID]&#xA;           ,[ExecStartDT]&#xA;           ,[ExecStopDT]&#xA;           ,[ExecutionInstanceGUID]&#xA;           ,[ExtractRowCnt]&#xA;           ,[TableInitialRowCnt]&#xA;           ,[TableFinalRowCnt]&#xA;           ,[SuccessfulProcessingInd])&#xA;     VALUES&#xA;           (@TableName&#xA;           ,@PkgName&#xA;           ,@PkgGUID&#xA;           ,@StartTime&#xA;           ,NULL&#xA;           ,@PkgExecGUID&#xA;           ,NULL&#xA;           ,@RowCount&#xA;           ,NULL&#xA;           ,'N')&#xA;SELECT CAST(SCOPE_IDENTITY() AS INT) AS AuditKey"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -444,7 +472,7 @@
       DTS:refId="Package\Task Post RowCnt"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{FF9A3FC1-ACE5-4B98-AE4F-48647BED3C60}"
+      DTS:DTSID="{C56E9D11-B337-4AB0-A2EC-3F28B9C5C929}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Post RowCnt"
@@ -453,7 +481,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{6BE669DC-F545-498B-B148-714CD4C30B75}"
+          SQLTask:Connection="{774A0D68-F4B5-4FAE-8E5D-B5062AE9026E}"
           SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [HM].[StageTemporada]"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -466,7 +494,7 @@
       DTS:refId="Package\Task Prior RowCnt"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{7828732D-32B1-45CC-AF58-BE12BDD880A4}"
+      DTS:DTSID="{E6B52855-67F2-479C-B4A3-DB191E7697DC}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Task Prior RowCnt"
@@ -475,7 +503,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{6BE669DC-F545-498B-B148-714CD4C30B75}"
+          SQLTask:Connection="{774A0D68-F4B5-4FAE-8E5D-B5062AE9026E}"
           SQLTask:SqlStatementSource="SELECT COUNT(1) AS RowCnt FROM [HM].[StageTemporada]"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
@@ -488,7 +516,7 @@
       DTS:refId="Package\TRUNCATE"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{BB1F5EC6-2691-4775-84A9-7A0B308C7B2D}"
+      DTS:DTSID="{5AC48C86-18C8-438A-AD6F-A79F30126B0C}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="TRUNCATE"
@@ -497,7 +525,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{6BE669DC-F545-498B-B148-714CD4C30B75}"
+          SQLTask:Connection="{774A0D68-F4B5-4FAE-8E5D-B5062AE9026E}"
           SQLTask:SqlStatementSource="TRUNCATE TABLE [HM].[StageTemporada];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -505,7 +533,7 @@
       DTS:refId="Package\Update AuditDim"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Tarea Ejecutar SQL"
-      DTS:DTSID="{DB1BB357-2F78-4AE7-A9DC-0494E9A9DB2B}"
+      DTS:DTSID="{5342BE35-01DF-4BC7-A097-6F03BD94672D}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Update AuditDim"
@@ -514,8 +542,8 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0C6E4564-200A-45CF-938F-1FDBC0DC7C42}"
-          SQLTask:SqlStatementSource="UPDATE [DIM_AUDIT]&#xA;SET ExecStopDT = SYSDATETIME()&#xA; , ExtractRowCnt = @RowCount&#xA; ,TableFinalRowCnt = @RowCount&#xA; ,SuccessfulProcessingInd='Y'&#xA;WHERE AuditKey = @AuditKey;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          SQLTask:Connection="{47370620-ACA4-46BD-891B-2DF06EDAA5ED}"
+          SQLTask:SqlStatementSource="EXEC [dbo].[sp_CerrarAuditoria] @AuditKey = @AuditKey, @RowCount = @RowCount;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ParameterBinding
             SQLTask:ParameterName="RowCount"
             SQLTask:DtsVariableName="User::RowCount"
@@ -534,44 +562,98 @@
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{5571D9FB-FE3B-4EFC-B207-3651EA86F4F9\}]"
+      DTS:refId="Package.PrecedenceConstraints[{3C0CA590-237A-48B2-933F-2FC0E9AE87B4\}]"
       DTS:CreationName=""
-      DTS:DTSID="{5571D9FB-FE3B-4EFC-B207-3651EA86F4F9}"
-      DTS:From="Package\Task Get AuditKey"
-      DTS:LogicalAnd="True"
-      DTS:ObjectName="{5571D9FB-FE3B-4EFC-B207-3651EA86F4F9}"
-      DTS:To="Package\TRUNCATE" />
-    <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{B096FC44-213E-405B-B807-72DED202DCD6\}]"
-      DTS:CreationName=""
-      DTS:DTSID="{B096FC44-213E-405B-B807-72DED202DCD6}"
-      DTS:From="Package\Task Prior RowCnt"
-      DTS:LogicalAnd="True"
-      DTS:ObjectName="{B096FC44-213E-405B-B807-72DED202DCD6}"
-      DTS:To="Package\Task Get AuditKey" />
-    <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{BC447A4F-4B18-4E83-8830-9D7D827BD65C\}]"
-      DTS:CreationName=""
-      DTS:DTSID="{BC447A4F-4B18-4E83-8830-9D7D827BD65C}"
-      DTS:From="Package\Task Post RowCnt"
-      DTS:LogicalAnd="True"
-      DTS:ObjectName="{BC447A4F-4B18-4E83-8830-9D7D827BD65C}"
-      DTS:To="Package\Update AuditDim" />
-    <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{D8CD481E-1F0D-4237-AEC1-3405408FF14E\}]"
-      DTS:CreationName=""
-      DTS:DTSID="{D8CD481E-1F0D-4237-AEC1-3405408FF14E}"
+      DTS:DTSID="{3C0CA590-237A-48B2-933F-2FC0E9AE87B4}"
       DTS:From="Package\DF StageTemporada"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="{D8CD481E-1F0D-4237-AEC1-3405408FF14E}"
+      DTS:ObjectName="{3C0CA590-237A-48B2-933F-2FC0E9AE87B4}"
       DTS:To="Package\Task Post RowCnt" />
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[{D96EBA5E-1615-4B8B-80CC-8858D38850C9\}]"
+      DTS:refId="Package.PrecedenceConstraints[{517E3A01-E8AC-4DBA-8A57-D36D3C13FE31\}]"
       DTS:CreationName=""
-      DTS:DTSID="{D96EBA5E-1615-4B8B-80CC-8858D38850C9}"
+      DTS:DTSID="{517E3A01-E8AC-4DBA-8A57-D36D3C13FE31}"
+      DTS:From="Package\Task Post RowCnt"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{517E3A01-E8AC-4DBA-8A57-D36D3C13FE31}"
+      DTS:To="Package\Update AuditDim" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{79B58528-D6ED-4D65-A0C7-CE255A2960F4\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{79B58528-D6ED-4D65-A0C7-CE255A2960F4}"
+      DTS:From="Package\Task Prior RowCnt"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{79B58528-D6ED-4D65-A0C7-CE255A2960F4}"
+      DTS:To="Package\Task Get AuditKey" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{84779676-6BE3-4DD8-B6E0-3448AC401D1A\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{84779676-6BE3-4DD8-B6E0-3448AC401D1A}"
+      DTS:From="Package\Task Get AuditKey"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{84779676-6BE3-4DD8-B6E0-3448AC401D1A}"
+      DTS:To="Package\TRUNCATE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{893307FF-1E16-47EF-9858-63756BE5A4D7\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{893307FF-1E16-47EF-9858-63756BE5A4D7}"
       DTS:From="Package\TRUNCATE"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="{D96EBA5E-1615-4B8B-80CC-8858D38850C9}"
+      DTS:ObjectName="{893307FF-1E16-47EF-9858-63756BE5A4D7}"
       DTS:To="Package\DF StageTemporada" />
   </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{62DDC2F8-3756-4AD2-A08B-7BF96E4FA63C}"
+      DTS:EventID="0"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="La propiedad de propagación del evento"
+          DTS:DTSID="{F6FF19F7-3880-4A22-9CBB-00A9F4D5B2DE}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\Registrar error en DIM_AUDIT"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Tarea Ejecutar SQL"
+          DTS:DisableEventHandlers="True"
+          DTS:DTSID="{12C339D7-FE4D-4B6D-BEF6-AA62B934B3C0}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Registrar error en DIM_AUDIT"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{47370620-ACA4-46BD-891B-2DF06EDAA5ED}"
+              SQLTask:SqlStatementSource="UPDATE [DIM_AUDIT]&#xA;SET ExecStopDT = SYSDATETIME()&#xA; ,SuccessfulProcessingInd = 'N'&#xA; ,MensajeError = LEFT(ISNULL(MensajeError + N' | ', N'') + @Mensaje, 2000)&#xA;WHERE AuditKey = @AuditKey;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="Mensaje"
+                SQLTask:DtsVariableName="System::ErrorDescription"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="16"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="AuditKey"
+                SQLTask:DtsVariableName="User::AuditKey"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="11"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
 </DTS:Executable>

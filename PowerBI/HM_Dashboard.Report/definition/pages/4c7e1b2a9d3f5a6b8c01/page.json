@@ -1,0 +1,66 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "4c7e1b2a9d3f5a6b8c01",
+  "displayName": "4 · Temporadas y fechas",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#F2F4F7'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "66ef5e69e699f4be2716",
+      "target": "e4bb65e30680495c98c4",
+      "type": "NoFilter"
+    },
+    {
+      "source": "66ef5e69e699f4be2716",
+      "target": "4dc0c3c43da8484ba0a3",
+      "type": "NoFilter"
+    },
+    {
+      "source": "66ef5e69e699f4be2716",
+      "target": "b346cacbc729fbee4eff",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8e642e11c516d32c32d3",
+      "target": "e4bb65e30680495c98c4",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8e642e11c516d32c32d3",
+      "target": "4dc0c3c43da8484ba0a3",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8e642e11c516d32c32d3",
+      "target": "b346cacbc729fbee4eff",
+      "type": "NoFilter"
+    }
+  ]
+}
